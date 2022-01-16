@@ -675,6 +675,13 @@
     "moment" "^2.18.0"
     "nunjucks" "^3.2.1"
 
+"hexo-filter-emoji@^2.2.2":
+  "integrity" "sha512-/RE4HB5OPucFiy3ynT0AAdGpIwioVRhn74IvoAfL8I23DJK5gTRBwUDcu+Gx+O+U1OUXfwX2AkJtXVtEGVftng=="
+  "resolved" "https://registry.npmjs.org/hexo-filter-emoji/-/hexo-filter-emoji-2.2.2.tgz"
+  "version" "2.2.2"
+  dependencies:
+    "lodash" "4.17.21"
+
 "hexo-front-matter@^2.0.0":
   "integrity" "sha512-IR3tjAyK2Ga/0a/WDAoNy5+n3ju2/mkuAsCDEeGgGLf5+7kkiOkkG/FrnueuYgz0h2MPfWDLBiDsSTCmB0sLCA=="
   "resolved" "https://registry.npmjs.org/hexo-front-matter/-/hexo-front-matter-2.0.0.tgz"
@@ -1041,7 +1048,7 @@
     "prelude-ls" "~1.1.2"
     "type-check" "~0.3.2"
 
-"lodash@^4.7.0":
+"lodash@^4.7.0", "lodash@4.17.21":
   "integrity" "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
   "resolved" "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   "version" "4.17.21"
