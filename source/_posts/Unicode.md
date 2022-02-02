@@ -5,6 +5,7 @@ tags: 翻译,JS,Unicode
 
 > [What every JavaScript developer should know about Unicode](https://dmitripavlutin.com/what-every-javascript-developer-should-know-about-unicode/)
 
+<!-- more -->
 ## 1、Unicode 背后的故事
 
 ## 2、Unicode 基本术语
