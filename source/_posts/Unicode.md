@@ -3,11 +3,44 @@ title: 每个JS开发者都应该知道的 Unicode
 tags: 翻译,JS,Unicode
 ---
 
-> [What every JavaScript developer should know about Unicode](https://dmitripavlutin.com/what-every-javascript-developer-should-know-about-unicode/)
+{% blockquote 原文 https://dmitripavlutin.com/what-every-javascript-developer-should-know-about-unicode/ %}
+What every JavaScript developer should know about Unicode
+{% endblockquote %}
+本文起源于一个忏悔：我对 Unicode 已经恐惧很久了。当实际工作中需要 Unicode 知识时，我一般仅针对问题搜索答案，而不会对其原理进行深入探究。
+
+我一直在回避这件事，直到我遇到了一个需要深入理解 Unicode 原理的问题。此刻没有现成的解决方案可用了。
+
+在付出大量努力（阅读一大堆文章）后，我才发现，其实 Unicode 也没那么难懂。好吧。。。有些文章确实需要至少3遍之后才能理解。
+
+如果你在理解 Unicode 方面也有同样的困惑，那么此刻正是时候！真的不难！首先准备好可口的🍵或者咖啡。接下来，就一起进入抽象、字符、astrals和代理的世界吧。
+
+本文将阐述 Unicode 的基本原理及其创建的必要性。然后介绍 JavaScript 如何使用 Unicode, 以及开发中可能遇到的问题。同时也会学习如何使用最新的 ECMAScript 2015 特性解决一部分难题。
+
+准备好了吗？
 
 <!-- more -->
-## 1、Unicode 背后的故事
 
+[toc]
+
+## 1、Unicode 缘起
+
+我们先从一个简单的问题开始。你是如何阅读理解本文的？原因很简单，因为你知道每个字母的意思和由一组字母组成的单词的意思。
+
+那么你为什么能理解这些字母呢？原因也很简单，因为你（读者）和我（作者）在英语字符（意思）和图形符号（显示在屏幕上的符号）之间的联系达成了共识。
+
+计算机也是同样的道理。不同之处在于计算机是不理解字母的意思的。对于计算机而言，字母就是一列二进制位。
+
+想象一下, 用户1通过网络向用户2发送了一条 `hello` 的消息。
+
+用户1的计算机是不知道这些字母的含义。所以它把 `hello` 转换为数字序列`0x68 0x65 0x6C 0x6F`,此处每个字母都对应一个数字: `h` 对应 `0x68`，`e` 对应 `0x65`等。这些数字最终会被传送给用户2的电脑。
+
+用户2的电脑收到这堆数字序列，然后它使用相同的数字字母对照将数字转换为字母信息。最终显示出正确的消息: `hello`。
+
+两台电脑间关于数字与字符之间达成的对照协议就是 Unicode 标准化的内容。
+
+从 Unicode 的角度来看，`h` 是名为 `H` 的小写拉丁抽象字符。此字符的对应数字为 `0x68`，也就是经常用 `U+0068` 来表示的码点。
+
+Unicode 存在的意义就是提供一系列的抽象字符（字符集）且为每个字符分配一个独一无二的码点（编码字符集）。
 ## 2、Unicode 基本术语
 
 `www.unicode.org` 网站提到:
