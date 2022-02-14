@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="http://fonts.gmirror.org/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shuttlespace.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="gradle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gradle">
+<meta property="og:url" content="https://shuttlespace.github.io/2019/03/28/gradle/">
+<meta property="og:site_name" content="HumphreyIO">
+<meta property="og:description" content="gradle">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-03-28T05:00:38.000Z">
+<meta property="article:modified_time" content="2022-01-16T03:04:27.664Z">
+<meta property="article:author" content="HumphreyDan">
+<meta property="article:tag" content="kotlin">
+<meta property="article:tag" content="gradle">
+<meta property="article:tag" content="构建">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://shuttlespace.github.io/2019/03/28/gradle/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>gradle | HumphreyIO</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">HumphreyIO</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">云青青兮欲雨, 水澹澹兮生烟</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://shuttlespace.github.io/2019/03/28/gradle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://picbed.dang8080.cn/avatar.jpeg">
+      <meta itemprop="name" content="HumphreyDan">
+      <meta itemprop="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HumphreyIO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          gradle
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-28 13:00:38" itemprop="dateCreated datePublished" datetime="2019-03-28T13:00:38+08:00">2019-03-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-16 11:04:27" itemprop="dateModified" datetime="2022-01-16T11:04:27+08:00">2022-01-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>gradle</p>
+<span id="more"></span>
+<h3 id="Gradle-升级日志"><a href="#Gradle-升级日志" class="headerlink" title="Gradle 升级日志"></a>Gradle 升级日志</h3><p>5.0 包含了 Kotlin DSL 生产级支持,依赖版本对齐(类似 Maven BOM),任务超时,Java 11 支持</p>
+<ul>
+<li><p>Kotlin DSL 1.0</p>
+</li>
+<li><p>依赖版本对齐:</p>
+<ul>
+<li>同一逻辑组(platform)下的不同模块在依赖树中可以有相同的版本.也可以导入 Maven BOMs 定义 platform.</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">  <span class="comment">// 导入 BOM.此文件中版本将覆盖依赖树中的其他版本</span></span><br><span class="line">  implementation(enforcedPlatform(<span class="string">&quot;org.springframework.boot:spring-boot-dependencies:1.5.8.RELEASE&quot;</span>))</span><br><span class="line">  <span class="comment">// 使用上面定义的版本</span></span><br><span class="line">  implementation(<span class="string">&quot;com.google.code.gson:gson&quot;</span>)</span><br><span class="line">  implementation(<span class="string">&quot;dom4j:dom4j&quot;</span>)</span><br><span class="line">  <span class="comment">// 覆盖上面的版本</span></span><br><span class="line">  implementation(<span class="string">&quot;org.codehaus.groovy:groovy:1.8.6&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Gradle build 初始化特性</p>
+</li>
+<li><p>可搜索文档</p>
+</li>
+<li><p>任务超时</p>
+</li>
+<li><p>解析依赖时 HTTP 重试</p>
+</li>
+<li><p>性能特性</p>
+<ul>
+<li>Gradle 可以作为一个低优先级的进程启动: –priority low 或者 org.gradle.priority=low.可以保证 IDE/Browser 不卡,即使是一个很消耗资源的 gradle 任务.</li>
+<li>多任务输出属性不再禁用缓存.当使用 <code>@OutputFiles</code> 或 <code>OutputDirectories</code> 标记一个<code>Iterable</code>类型,Gradle 通常会对该任务禁用缓存且输出如下信息:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Declares multiple output files <span class="keyword">for</span> the single output property <span class="string">&#x27;outputFiles&#x27;</span> via @OutputFiles,@OutputDirectories or TaskOutputs.files()</span><br></pre></td></tr></table></figure>
+
+<p>现在不会再阻止缓存了.对该任务禁用缓存的唯一理由可能是如果输出包含文件树.</p>
+</li>
+<li><p>Java 11 运行时支持</p>
+</li>
+<li><p>插件授权特性</p>
+</li>
+<li><p><code>Provider 追踪产品任务</code>：Provider API 实例提供了追踪某值和任务或生成该值的任务。</p>
+</li>
+<li><p>Gradle Native 特性</p>
+</li>
+<li><p>推广特性</p>
+</li>
+</ul>
+<h3 id="Gradle-编译语言指南"><a href="#Gradle-编译语言指南" class="headerlink" title="Gradle 编译语言指南"></a><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/index.html">Gradle 编译语言指南</a></h3><h4 id="gradle-可以使用不同的语言或-DSL-来执行编译任务"><a href="#gradle-可以使用不同的语言或-DSL-来执行编译任务" class="headerlink" title="gradle 可以使用不同的语言或 DSL 来执行编译任务"></a>gradle 可以使用不同的语言或 DSL 来执行编译任务</h4><h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><p>理解以下概念可以帮助书写 gradle 脚本.<br>首先，gradle 脚本是一种可配置脚本.当脚本执行时，会生成一个特定类型的配置对象.例如 build script 执行时，会生成一个类型为 Project 的配置对象.这个对象作为脚本的代理对象被使用.下面显示了 gradle 脚本对应的代理对象.</p>
+<table>
+<thead>
+<tr>
+<th>脚本类型</th>
+<th>代理对象</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>build script</td>
+<td>Project</td>
+</tr>
+<tr>
+<td>init script</td>
+<td>Gradle</td>
+</tr>
+<tr>
+<td>settings script</td>
+<td>settings</td>
+</tr>
+</tbody></table>
+<p>在脚本内可以使用这些代理对象的属性和方法.</p>
+<h4 id="build-script-结构"><a href="#build-script-结构" class="headerlink" title="build script 结构"></a>build script 结构</h4><p>一段编译脚本由 0 个或多个语句和脚本块组成。语句可以包含方法调用，属性赋值，定义局部变量。一个脚本块是一个接受 closure 作为参数的方法调用.这个 closure 可以看作是一个当其执行时配置了一些代理对象的可配置 closure. 最顶层的脚本块如下</p>
+<table>
+<thead>
+<tr>
+<th>脚本块</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>allprojects{}</td>
+<td>配置此项目及其所有子项目</td>
+</tr>
+<tr>
+<td>artifacts{}</td>
+<td>配置此项目的发布产物</td>
+</tr>
+<tr>
+<td>buildscript{}</td>
+<td>配置此项目的 build script classpath</td>
+</tr>
+<tr>
+<td>configurations{}</td>
+<td>配置此项目的依赖配置项</td>
+</tr>
+<tr>
+<td>dependencies{}</td>
+<td>配置此项目的依赖</td>
+</tr>
+<tr>
+<td>repositories{}</td>
+<td>配置此项目的仓库</td>
+</tr>
+<tr>
+<td>sourceSets{}</td>
+<td>配置此项目的 source set</td>
+</tr>
+<tr>
+<td>subprojects{}</td>
+<td>配置此项目的子项目</td>
+</tr>
+<tr>
+<td>publishing{}</td>
+<td>配置由 publishing plugin 添加的 publishingExtension</td>
+</tr>
+</tbody></table>
+<p>一段编译脚本同时也是一个 groovy 脚本,所以可以包含能出现在 groovy 脚本中的元素,如 方法定义，类定义</p>
+<h4 id="核心类型"><a href="#核心类型" class="headerlink" title="核心类型"></a>核心类型</h4><p>以下是在 gradle 脚本中常用的核心类型</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Project</td>
+<td>此接口是你在你的编译脚本中最常使用的 API。通过 Project,你可以使用 gradle 的所有特性</td>
+</tr>
+<tr>
+<td>Task</td>
+<td>一个 task 代表一个编译过程中的一个单一原子任务，如编译 class,生成 javadoc</td>
+</tr>
+<tr>
+<td>Gradle</td>
+<td>表示 gradle 的调用</td>
+</tr>
+<tr>
+<td>Settings</td>
+<td>声明实例化和配置要参与构建的 Project 实例的层次结构所需的配置</td>
+</tr>
+<tr>
+<td>Script</td>
+<td>此接口由所有的 gradle 脚本实现并添加一些 gradle 特定的方法。当你编译脚本类时将会实现此接口，你可以在脚本中使用此接口声明的方法和属性</td>
+</tr>
+<tr>
+<td>JavaToolChain</td>
+<td>一组用于编译 Java 源文件的工具</td>
+</tr>
+<tr>
+<td>SourceSet</td>
+<td>表示 Java 源文件和资源文件的逻辑组</td>
+</tr>
+<tr>
+<td>SourceSetOutput</td>
+<td>所有输出目录的集合(编译的类，处理过的资源等),SourceSetOutput 继承自 FileCollection</td>
+</tr>
+<tr>
+<td>SourceDirectorySet</td>
+<td>表示一组由一系列源文件目录组成的源文件。以及相关的 include 和 exclude pattern</td>
+</tr>
+<tr>
+<td>IncrementalTaskInputs</td>
+<td>提供通过增量任务访问任意需要被处理文件的途径</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td>表示一组产物及其依赖。从 ConfigurationContainer 中可以获取更多关于对 configuration 声明依赖或者管理 configuration 的信息</td>
+</tr>
+<tr>
+<td>ResolutingStrategy</td>
+<td>定义依赖解析的策略.例如强制固定依赖版本号，替代，冲突解决方案或快照</td>
+</tr>
+<tr>
+<td>ArtifactResolutingQuery</td>
+<td>发起可以解析特定组件的指定软件产物的查询的生成器</td>
+</tr>
+<tr>
+<td>ComponentSelection</td>
+<td>表示一个模块的组件选择器和某个组件选中规则中评估的候选版本的元组</td>
+</tr>
+<tr>
+<td>ComponentSelectionRules</td>
+<td>表示组件选中规则的容器.规则可以作为一个 configuration 的解析规则一部分被使用，而且独立的组件可以明确接受或拒绝该规则。既不接受也不拒绝的组件将被指定到默认的版本匹配规则</td>
+</tr>
+<tr>
+<td>ExtensionAware</td>
+<td>在运行时可以和其他对象一起被扩展的对象</td>
+</tr>
+<tr>
+<td>ExtraPropertiesExtension</td>
+<td>Gradle 域对象的附加 ad-hoc 属性</td>
+</tr>
+<tr>
+<td>PluginDependenciesSpec</td>
+<td>在脚本中使用的声明插件的 DSL</td>
+</tr>
+<tr>
+<td>PluginDependencySpec</td>
+<td>插件依赖的可变规范</td>
+</tr>
+<tr>
+<td>PluginManagementSpec</td>
+<td>配置插件如何被解析</td>
+</tr>
+<tr>
+<td>ResourceHandler</td>
+<td>提供访问特定资源的工具方法的途径,例如创建各种资源的工厂方法</td>
+</tr>
+<tr>
+<td>TextResourceFactory</td>
+<td>创建由字符串、文件、存档实体等资源提供的 TextResources</td>
+</tr>
+</tbody></table>
+<h4 id="type-safe-model-accessors"><a href="#type-safe-model-accessors" class="headerlink" title="type-safe model accessors"></a>type-safe model accessors</h4><p>执行时机：plugins{} 块后，script 脚本之前.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">// build.gradle.kts</span><br><span class="line">plugins &#123;</span><br><span class="line">  `java-library`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">  api(&quot;junit:junit;4.12&quot;)</span><br><span class="line">  implementation(&quot;junit:junit:4.12&quot;)</span><br><span class="line">  testImplementation(&quot;junit:junit:4.12&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">configurations &#123;</span><br><span class="line">  implementation &#123;</span><br><span class="line">    resolutinStrategy.failOnVersionConflict()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sourceSets &#123;</span><br><span class="line">  main &#123;</span><br><span class="line">    java.srcDir(&quot;src/core/java&quot;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">java &#123;</span><br><span class="line">  sourceCompatibility = JavaVersion.VERSION_11</span><br><span class="line">  targetCompatibility = JavaVersion.VERSION_11</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">tasks &#123;</span><br><span class="line">  test &#123;</span><br><span class="line">    testLogging.showExceptions = true</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="了解-type-safe-accessors-不可用时要执行的操作"><a href="#了解-type-safe-accessors-不可用时要执行的操作" class="headerlink" title="了解 type-safe accessors 不可用时要执行的操作"></a>了解 type-safe accessors 不可用时要执行的操作</h4><p>下面的脚本明确使用了 apply() 方法应用插件.编译脚本无法使用 type-safe accessors,因为 apply() 方法是在这个编译脚本内调用的。你可以采用其他技巧，如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">// build.gradle.kts</span><br><span class="line">apply(plugin = &quot;java-library&quot;)</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">  &quot;api&quot;(&quot;junit:junit:4.12&quot;)</span><br><span class="line">  &quot;implementation&quot;(&quot;junit:junit:&quot;4.12&quot;)</span><br><span class="line">  &quot;testImplementation&quot;(&quot;junit:junit:4.12&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">configurations &#123;</span><br><span class="line">  &quot;implementation&quot; &#123;</span><br><span class="line">    resolutinStrategy.failOnVersionConflict()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">configure&lt;SourceSetContainer&gt; &#123;</span><br><span class="line">  named(&quot;main&quot;) &#123;</span><br><span class="line">    java.srcDir(&quot;src/core/java&quot;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">configure&lt;JavaPluginConvention&gt; &#123;</span><br><span class="line">  sourceCompatibility = JavaVersion.VERSION_11</span><br><span class="line">  targetCompatibility = JavaVersion.VERSION_11</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">tasks &#123;</span><br><span class="line">  named&lt;Test&gt;(&quot;test&quot;) &#123;</span><br><span class="line">    testLogging.showException = true</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下列情况下，type-safe accessor 不可用</p>
+<ul>
+<li>使用 apply(plugin = id) 应用插件</li>
+<li>项目 build script</li>
+<li>通过 apply(from = “script-plugin.gradle.kts”) 应用的脚本插件</li>
+<li>跨项目配置的插件</li>
+</ul>
+<h4 id="产物配置"><a href="#产物配置" class="headerlink" title="产物配置"></a>产物配置</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// build.gradle.jts</span><br><span class="line">apply(plugin = &quot;java-library&quot;)&#x27;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">  &quot;api&quot;(&quot;junit:junit:4.12&quot;)</span><br><span class="line">  &quot;implementation&quot;(&quot;junit:junit:4.12&quot;)</span><br><span class="line">  &quot;testImplementation&quot;(&quot;junit:junit:4.12&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">configurations &#123;</span><br><span class="line">  &quot;implementation&quot; &#123;</span><br><span class="line">    resolutinStrategy.failOnVersionConflict()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// settings.gradle.kts</span><br><span class="line">pluginManagement &#123;</span><br><span class="line">  repositories &#123;</span><br><span class="line">    google()</span><br><span class="line">    gradlePluginPortal()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  resolutionStrategy &#123;</span><br><span class="line">    eachPlugin &#123;</span><br><span class="line">      if (requested.id.namespace == &#x27;com.android&#x27;) &#123;</span><br><span class="line">        useModule(&#x27;com.android.tools.build:gradle:$&#123;requested.version&#125;&#x27;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// build.gradle.kts</span><br><span class="line">val check by tasks.existing</span><br><span class="line">val myTask1 by tasks.registering</span><br><span class="line"></span><br><span class="line">val compileJava by tasks.existing(JavaCompile::class)</span><br><span class="line">val myCopy1 by tasks.registering(Copy::class)</span><br><span class="line"></span><br><span class="line">va; assemble by tasks.existing &#123;</span><br><span class="line">  dependsOn(myTask1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val myTask2 by tasks.registering &#123;</span><br><span class="line">  description = &quot;some meaningful words&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val test by tasks.existing(Test::class) &#123;</span><br><span class="line">  testLogging.showStackTrace = true</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val myCopy2 by tasks.registering(Copy::class) &#123;</span><br><span class="line">  from(&quot;source&quot;)</span><br><span class="line">  into(&quot;destination&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="升级-Gradle-Wrapper"><a href="#升级-Gradle-Wrapper" class="headerlink" title="升级 Gradle Wrapper"></a>升级 <code>Gradle Wrapper</code></h3><p>如果已经有基于<code>gradlew wrapper</code>的项目,可以通过运行<code>wrapper</code>任务来指定需要的<code>gradle</code>版本.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew wrapper --gradle-version=5.3 --distribution-type=bin</span><br></pre></td></tr></table></figure>
+
+<p>当然没必要使用<code>gradle wrapper</code>来安装<code>gradle</code>.调用<code>gradlew</code>或<code>gradlew.bat</code>将会下载并缓存指定版本的 Gradle.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew taska</span><br></pre></td></tr></table></figure>
+
+<h3 id="CLI-自动补全"><a href="#CLI-自动补全" class="headerlink" title="CLI 自动补全"></a>CLI 自动补全</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install gradle-completion</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$fpath</span> | grep <span class="string">&quot;/usr/local/share/zsh/site-functions&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="设计-gradle-插件"><a href="#设计-gradle-插件" class="headerlink" title="设计 gradle 插件"></a>设计 gradle 插件</h3><p>对 gradle 新手来说，实现 gradle 插件可能是一个坑:组织管理插件逻辑，测试、调试插件代码等.可以在<a target="_blank" rel="noopener" href="https://gradle.org/guides">此</a>获取到更多的信息.</p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>通过指定 subproject 的路径，可以将本地任何路径下的代码导入工程中，供本地开发调试。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include <span class="string">&#x27;:lib&#x27;</span></span><br><span class="line">project(<span class="string">&#x27;:lib&#x27;</span>).projectDir = <span class="keyword">new</span> File(<span class="string">&#x27;xxx/xxx/lib&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="com-android-application-插件"><a href="#com-android-application-插件" class="headerlink" title="com.android.application 插件"></a>com.android.application 插件</h3><ul>
+<li><code>applicationVariants</code></li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  AppExtension 继承自 BaseExtension 唯一扩展的成员变量，它的参数类型是 DefaultDomainObjectSet,这是不同 buildType 及 Flavor 的集合,applicationVariants 最长的是它的 all 方法，如修改 apk 名字</span></span><br><span class="line"><span class="keyword">def</span> buildTime() &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Date().format(<span class="string">&quot;yyyy-MM-dd&quot;</span>,TimeZone.getTimeZone(<span class="string">&quot;UTC&quot;</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">  applicationVariants.all &#123; variant -&gt;</span><br><span class="line">    variant.outputs.each &#123; output -&gt;</span><br><span class="line">      <span class="keyword">def</span> outputFile = output.outputFile</span><br><span class="line">      <span class="keyword">if</span> (outputFile != <span class="literal">null</span> &amp;&amp; outputFile.name.endsWith(<span class="string">&#x27;.apk&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">def</span> fileName = <span class="string">&quot;$&#123;variant.buildType.name&#125;-$&#123;variant.versionName&#125;-$&#123;buildTime()&#125;.apk&quot;</span></span><br><span class="line">        output.outputFile = <span class="keyword">new</span> File(output.outputFile.parent,fileName)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>defaultConfig</code></li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">defaultConfig &#123;</span><br><span class="line">    applicationId <span class="string">&#x27;**.**.**&#x27;</span></span><br><span class="line">    applicationIdSuffix <span class="string">&#x27;.two&#x27;</span> <span class="comment">//applicationId的后缀，可以用在想同时安装运行两个Flavor包的时候，比如同时安装debug包和Release包做一些对比。</span></span><br><span class="line">    minSdkVersion <span class="number">14</span></span><br><span class="line">    minSdkVersion <span class="number">14</span></span><br><span class="line">    targetSdkVersion <span class="number">28</span></span><br><span class="line">    versionCode <span class="number">1</span></span><br><span class="line">    versionName <span class="string">&#x27;1.0&#x27;</span></span><br><span class="line">    versionNameSuffix <span class="string">&#x27;.0&#x27;</span> <span class="comment">// versionName后缀</span></span><br><span class="line">    consumerProguardFiles <span class="string">&#x27;proguard-rules.pro&#x27;</span> <span class="comment">//用于Library中，可以将混淆文件输出到aar中，供Application混淆时使用。</span></span><br><span class="line">    dimension <span class="string">&#x27;api&#x27;</span></span><br><span class="line">    <span class="comment">//给渠道一个分组加维度的概念，比如你现在有三个渠道包，分成免费和收费两种类型，</span></span><br><span class="line">    <span class="comment">//可以添加一个dimension, 打渠道包的时候会自动打出6个包，而不需要添加6个渠道，</span></span><br><span class="line">    <span class="comment">// 详细的说明可见 https://developer.android.com/studio/build/build-variants.html#flavor-dimensions。</span></span><br><span class="line">    externalNativeBuild &#123; <span class="comment">//ndk的配置，AS2.2之后推荐切换到cmake的方式进行编译。</span></span><br><span class="line">        cnamke &#123;</span><br><span class="line">            cppFlags <span class="string">&#x27;-frtti --fexceptions&#x27;</span></span><br><span class="line">            arguments <span class="string">&#x27;-DANDROID_ARM_NEON=TRUE&#x27;</span></span><br><span class="line">            buildStagingDirectory <span class="string">&#x27;./outputs/cmake&#x27;</span></span><br><span class="line">            path <span class="string">&#x27;CMakeLists.txt&#x27;</span></span><br><span class="line">            version <span class="string">&#x27;3.7.1&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">        ndkBuild &#123;</span><br><span class="line">          path <span class="string">&#x27;Android.mk&#x27;</span></span><br><span class="line">          buildStagingDirectory <span class="string">&#x27;./outputs/ndk-build&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    javaCompileOptions &#123;</span><br><span class="line">      annotationProcessorOptions &#123; <span class="comment">// 注解的配置</span></span><br><span class="line">        includeCompileClasspath <span class="literal">true</span> <span class="comment">// 使用注解功能</span></span><br><span class="line">        arguments = [ <span class="attr">eventBusIndex :</span> <span class="string">&#x27;org.greenrobot.eventbusperf.MyEventBusIndex&#x27;</span> ] <span class="comment">// AbstractProcessor 中可以读取到该参数</span></span><br><span class="line">        classNames</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    manifestPlaceholders = [<span class="attr">key:</span> <span class="string">&#x27;value&#x27;</span>] <span class="comment">// manifest 占位符，定义参数给 manifest 调用，如不同的渠道id</span></span><br><span class="line">    multiDexEnabled <span class="literal">true</span> <span class="comment">// 启用 multiDex</span></span><br><span class="line">    multiDexKeepFile file(<span class="string">&#x27;multiDexKeep.txt&#x27;</span>) <span class="comment">// 手动拆包，将具体的类放在主 dex</span></span><br><span class="line">    mutliDexKeepProguard file(<span class="string">&#x27;multiDexKeep.pro&#x27;</span>) <span class="comment">// 支持 proguard 语法，进行一些模糊匹配.</span></span><br><span class="line"></span><br><span class="line">    ndk &#123;</span><br><span class="line">      abiFilterss <span class="string">&#x27;x86&#x27;</span>,<span class="string">&#x27;x86_64&#x27;</span>,<span class="string">&#x27;armeabi&#x27;</span> <span class="comment">// 只保留特定的 abi 输出到 apk</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    proguardFiles getDefaultProguardFile(<span class="string">&#x27;proguard-android.txt&#x27;</span>), <span class="string">&#x27;proguard-rules.pro&#x27;</span> <span class="comment">// 混淆文件的列表，如默认的 android 混淆文件及本地的 proguard 文件，切记不要遗漏 android 混淆文件，否则导致一些默认安卓组件无法找到</span></span><br><span class="line"></span><br><span class="line">    signingConfig &#123;</span><br><span class="line">      storeFile file(<span class="string">&#x27;debug.keystore&#x27;</span>) <span class="comment">// 签名文件路径</span></span><br><span class="line">      storePassword <span class="string">&#x27;android&#x27;</span> <span class="comment">// 签名文件密码</span></span><br><span class="line">      keyAlias <span class="string">&#x27;androiddebugkey&#x27;</span> <span class="comment">// 别名</span></span><br><span class="line">      keyPassword <span class="string">&#x27;android&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    buildConfigField(<span class="string">&#x27;boolean&#x27;</span>,<span class="string">&#x27;IS_RELEASE&#x27;</span>,<span class="string">&#x27;false&#x27;</span>) <span class="comment">// 在代码中可以通过 BuildConfig.IS_RELEASE 调用。默认 false</span></span><br><span class="line">    resValue(<span class="string">&#x27;string&#x27;</span>,<span class="string">&#x27;appname&#x27;</span>,<span class="string">&#x27;demo&#x27;</span>) <span class="comment">// 在 res/value 中添加 &lt;string name=&quot;appname&quot; translatable=&quot;false&quot;&gt;demo&lt;/string&gt;</span></span><br><span class="line">    resConfigs <span class="string">&#x27;cn&#x27;</span>,<span class="string">&#x27;hdpi&#x27;</span> <span class="comment">// 指定特定资源，可以结合 productFlavors 实现不同渠道的最小的 apk 包.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>productFlavors</code>: 渠道包的列表，可覆盖 defaultConfig 的参数配置,形成自己的风味</li>
+<li><code>flavorDimensionList</code>: 添加纬度的定义</li>
+<li><code>resourcePrefix</code>: 在模块化开发中给每个模块指定一个特定的资源前缀，避免多模块使用相同的文件名后合并冲突，在 build.gradle 指定此配置后，AS 会检查不合法的资源命名并报错</li>
+<li><code>buildTypes</code>: 默认有 debug 和 release。</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">debug &#123;</span><br><span class="line">  applicationIdSuffix <span class="string">&#x27;.debug&#x27;</span></span><br><span class="line">  versionNameSuffix <span class="string">&#x27;.1&#x27;</span></span><br><span class="line">  debugable <span class="literal">true</span> <span class="comment">// 生成的 apk 是否可调试，debug -&gt; true,release -&gt; false</span></span><br><span class="line">  jniDebuggable <span class="literal">true</span> <span class="comment">// 是否可以调试 NDK 代码，使用 lldb 进行 c/c++ 代码调试</span></span><br><span class="line">  crunchPngs <span class="literal">true</span> <span class="comment">// 是否开启 png 优化，会对 png 图片做一次最优压缩，影响编译速度, debug -&gt; false,release -&gt; true</span></span><br><span class="line">  embedMicroApp <span class="literal">true</span> <span class="comment">// Android Wear 支持</span></span><br><span class="line">  minifyEnabled <span class="literal">true</span> <span class="comment">// 是否开启混淆</span></span><br><span class="line">  renderscriptDebuggable <span class="literal">false</span> <span class="comment">// 是否开启渲染脚本</span></span><br><span class="line">  renderscriptOptimLevel <span class="number">5</span> <span class="comment">// 渲染脚本等级 默认 5</span></span><br><span class="line">  zipAlignEnabled <span class="literal">true</span> <span class="comment">// 是否 zip 对齐优化，默认 true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>ndkDirectory</code>: 也可在 local.properties 中配置 ndk.dir=/Users/shuttle/Library/Android/sdk</li>
+<li><code>sdkDirectory</code>: ..</li>
+<li><code>aaptOptions</code>: 资源打包工具</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">aaptOptions &#123;</span><br><span class="line">  additionalParameters <span class="string">&#x27;--rename-manifest-package&#x27;</span>,<span class="string">&#x27;cct.cn.gradle.lsn13&#x27;</span>,<span class="string">&#x27;-S&#x27;</span>,<span class="string">&#x27;src/main/res2&#x27;</span>,<span class="string">&#x27;--auto-add-overlay&#x27;</span> <span class="comment">// appt 执行时的额外参数</span></span><br><span class="line">  cruncherEnabled <span class="literal">true</span> <span class="comment">// 对 png 进行优化检查</span></span><br><span class="line">  ignoreAssets <span class="string">&#x27;*.jpg&#x27;</span> <span class="comment">// 对 res 目录下的资源文件进行排除，把 res 文件下的所有 .jpg 文件打包到 apk 中</span></span><br><span class="line">  noCompress <span class="string">&#x27;.jpg&#x27;</span> <span class="comment">// 对所有 jpg 文件不压缩</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>adbExecutable</code>: adb 路径</li>
+<li><code>adbOptions</code></li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">adbOptions &#123;</span><br><span class="line">  installOptions <span class="string">&#x27;-r&#x27;</span>,<span class="string">&#x27;-d&#x27;</span> <span class="comment">// 调用 adb install 命令时默认传递的参数</span></span><br><span class="line">  timeOutInMs <span class="number">1000</span> <span class="comment">// 执行 adb 命令的超时时间</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>compileOptions</code></li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">compileOptions &#123;</span><br><span class="line">  encoding <span class="string">&#x27;UTF-8&#x27;</span> <span class="comment">// java 源文件的编码格式，默认 utf8</span></span><br><span class="line">  incrmental <span class="literal">true</span> <span class="comment">// java编译是否使用 gradle 增量编译</span></span><br><span class="line">  sourceCompatibility JavaVersion.VERSION_1_7 <span class="comment">// java 源文件编译的 jdk 版本</span></span><br><span class="line">  targetCompatibility JavaVersion.VERSION_1_7 <span class="comment">// 编译出的 class 版本</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>dataBinding</code></li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dataBinding &#123;</span><br><span class="line">  enabled = <span class="literal">true</span></span><br><span class="line">  version = <span class="string">&quot;1.0&quot;</span></span><br><span class="line">  addDefaultAdapters = <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>defaultPublishConfig</code>: 指定发布的渠道及 BuildType 类型。在 Library 中使用,默认 Release.</li>
+<li><code>signingConfigs</code>: 签名配置列表，供不同渠道和 buildType 使用.</li>
+<li><code>lintOptions</code></li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">lintOptions &#123;</span><br><span class="line">  quiet <span class="literal">true</span> <span class="comment">// true -&gt; 不报告分析的进度</span></span><br><span class="line">  abortOnError <span class="literal">false</span> <span class="comment">// true -&gt; 发现错误时终止 gradle</span></span><br><span class="line">  ignoreWarnings <span class="literal">true</span> <span class="comment">// true -&gt; 只报告错误</span></span><br><span class="line">  absolutePaths <span class="literal">true</span> <span class="comment">// true -&gt; 当有错误时显示文件的全路径或绝对路径</span></span><br><span class="line">  checkAllWarnings <span class="literal">true</span> <span class="comment">// true -&gt; 检查所有问题，包括默认不检查问题</span></span><br><span class="line">  warningsAsErrors <span class="literal">true</span> <span class="comment">// true -&gt; 将所有警告视为错误</span></span><br><span class="line">  disable <span class="string">&#x27;TypeographyFractions&#x27;</span>,<span class="string">&#x27;TypographyQUotes&#x27;</span> <span class="comment">// 不检查给定问题 id</span></span><br><span class="line">  enable <span class="string">&#x27;RtlHardCoded&#x27;</span>,<span class="string">&#x27;RtlCompat&#x27;</span>,<span class="string">&#x27;RtlEnabled&#x27;</span> <span class="comment">// 检查给定问题 id</span></span><br><span class="line">  check <span class="string">&#x27;NewApi&#x27;</span>,<span class="string">&#x27;InlinedApi&#x27;</span> <span class="comment">// 仅 检查给定问题 id</span></span><br><span class="line">  noLines <span class="literal">true</span> <span class="comment">// 如果为 true,则在错误报告的输出中不包含源代码行</span></span><br><span class="line">  showAll <span class="literal">true</span> <span class="comment">// true -&gt; 对一个错误的问题显示它所在的所有地方，而不会截短列表等等。</span></span><br><span class="line">  lintConfig file(<span class="string">&#x27;default-lint.xml&#x27;</span>) <span class="comment">// 重置 lint 配置(使用默认的严重性等设置)</span></span><br><span class="line">  textReport <span class="literal">true</span> <span class="comment">// true -&gt; 生成一个问题的纯文本报告(default -&gt; false)</span></span><br><span class="line">  textOuput <span class="string">&#x27;stdout&#x27;</span> <span class="comment">// 默认写入输出结果的位置，可能是一个文件或 stdout</span></span><br><span class="line">  xmlReport <span class="literal">false</span> <span class="comment">// true -&gt; 生成 xml 报告，jenkins 可以使用</span></span><br><span class="line">  xmlOutput file(<span class="string">&quot;lint-report.xml&quot;</span>) <span class="comment">// 写入报告的文件，默认 line-results.xml</span></span><br><span class="line">  htmlReport <span class="literal">true</span> <span class="comment">// html 报告</span></span><br><span class="line">  htmlOutput file(<span class="string">&#x27;lint-report.html&#x27;</span>) <span class="comment">// 写入报告的路径，可选(默认为构建目录下的 lint-results.html)</span></span><br><span class="line">  checkReleaseBuilds <span class="literal">true</span> <span class="comment">// true -&gt; 将使所有 release 构建都以 issus 的严重性级别为 fatal (serverity=false)的设置来运行 lint,且如果发现了致命(fatal)的问题,将会中止构建(由上面提到的 abortOnError 控制)</span></span><br><span class="line">  fatal <span class="string">&#x27;NewApi&#x27;</span>,<span class="string">&#x27;InlineApi&#x27;</span> <span class="comment">// 设置给定问题的严重级别(serverity)为 fatal（即将会在 release 构建期间检查,即使 lint 要检查的问题没有包含在代码中）</span></span><br><span class="line">  error <span class="string">&#x27;Wakelock&#x27;</span>,<span class="string">&#x27;TextViewEdits&#x27;</span> <span class="comment">// 设置给定问题的严重级别为 error</span></span><br><span class="line">  warning <span class="string">&#x27;ResourceAsColor&#x27;</span> <span class="comment">// 设置给定问题的严重级别为 warning</span></span><br><span class="line">  ignore <span class="string">&#x27;TypographyQUotes&#x27;</span> <span class="comment">// 设置给定问题的严重级别(serverity)为 ignore (和不检查该问题一样)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>dexOptions</code>: 热修复差分包</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dexOptions &#123;</span><br><span class="line">  additionalParameters <span class="string">&#x27;--minimal-main-dex&#x27;</span>,<span class="string">&#x27;--set-max-idx-number=10000&#x27;</span> <span class="comment">// dx 命令附加参数</span></span><br><span class="line">  javaMaxHeapSize <span class="string">&#x27;2048m&#x27;</span> <span class="comment">// 执行 dx 时 Java 虚拟机可用的最大内存大小</span></span><br><span class="line">  jumboMode <span class="literal">true</span> <span class="comment">// 开启大模式，所有的 class 打到一个 dex 中,可以忽略 65535 方法数的限制, 大于14版本可用</span></span><br><span class="line">  keepRuntimeAnnotatedClasses <span class="literal">true</span> <span class="comment">// 在 dex 中是否保留 Runtime 注解,默认 true</span></span><br><span class="line">  maxProcessCount <span class="number">4</span> <span class="comment">// dex 中的进程数,默认 4</span></span><br><span class="line">  threadCount <span class="number">4</span> <span class="comment">// 默认线程数</span></span><br><span class="line">  preDexLibraries <span class="literal">true</span> <span class="comment">// 对 library 预编译，提高编译效率，但 clean 时较慢，默认 true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>packagingOptions</code></li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">packagingOptions &#123;</span><br><span class="line">  pickFirsts = [<span class="string">&#x27;META-INF/LICENSE&#x27;</span>] <span class="comment">// 当有重复文件时，打包会报错。此配置会使用第一个匹配的文件打包进入 apk</span></span><br><span class="line">  merge <span class="string">&#x27;META-INF/LICENSE&#x27;</span> <span class="comment">// 重复文件会合并打包</span></span><br><span class="line">  exclue <span class="string">&#x27;META-INF/LICENSE&#x27;</span> <span class="comment">// 打包时排除匹配文件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>sourceSets</code></li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">sourceSets &#123;</span><br><span class="line">  main &#123;</span><br><span class="line">    res.srcDirs <span class="string">&#x27;src/main/res&#x27;</span></span><br><span class="line">    jniLibs.srcDirs = [<span class="string">&#x27;libs&#x27;</span>]</span><br><span class="line">    aidl.srcDirs <span class="string">&#x27;src/main/aidl&#x27;</span></span><br><span class="line">    assets.srcDirs <span class="string">&#x27;src/main/assets&#x27;</span></span><br><span class="line">    java.srcDirs <span class="string">&#x27;src/main/java&#x27;</span></span><br><span class="line">    jni.srcDirs <span class="string">&#x27;src/main/jni&#x27;</span></span><br><span class="line">    renderscript.srcDirs <span class="string">&#x27;src/main/renderscript&#x27;</span></span><br><span class="line">    resources.srcDirs <span class="string">&#x27;src/main/resources&#x27;</span></span><br><span class="line">    manifest.srcFile <span class="string">&#x27;src/main/AndroidManifest.xml&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 除了 main,也可给不同的渠道指定不同的配置</span></span><br><span class="line">  free &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>splits</code>: google play 按 CPU/屏幕像素密度打包</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">splits &#123;</span><br><span class="line">  abi &#123;</span><br><span class="line">    enable <span class="literal">true</span> <span class="comment">// 开启 abi 分包</span></span><br><span class="line">    universalApk <span class="literal">true</span> <span class="comment">// 是否创建一个包含所有有效动态库的 apk</span></span><br><span class="line">    reset() <span class="comment">// 清空 defaultConfig 配置</span></span><br><span class="line">    include <span class="string">&#x27;x86&#x27;</span>,<span class="string">&#x27;armeabi&#x27;</span> <span class="comment">// 和 defaultConfig 做和集</span></span><br><span class="line">    eclude <span class="string">&#x27;mips&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  density &#123;</span><br><span class="line">    enable <span class="literal">true</span> <span class="comment">// 开启 density 分包</span></span><br><span class="line">    reset() <span class="comment">// 清空默认</span></span><br><span class="line">    include  <span class="string">&#x27;xhdpi&#x27;</span>,<span class="string">&#x27;xxhdpi&#x27;</span> <span class="comment">// 和集</span></span><br><span class="line">    exclude <span class="string">&#x27;mdpi&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  language &#123;</span><br><span class="line">    enable <span class="literal">true</span></span><br><span class="line">    include <span class="string">&#x27;en&#x27;</span>,<span class="string">&#x27;cn&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>variantFilter</code>: 过滤通过 flavor 和 buildType 构建的 apk</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">variantFilter &#123; variant -&gt;</span><br><span class="line">  <span class="keyword">def</span> buildTypeName = variant.buildType.name</span><br><span class="line">  <span class="keyword">def</span> flavorName = variant.flavors.name</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (flavorName.contains(<span class="string">&quot;360&quot;</span>) &amp;&amp; buildTypeName.contains(<span class="string">&quot;debug&quot;</span>)) &#123;</span><br><span class="line">    <span class="comment">// 不生成匹配的 apk</span></span><br><span class="line">    setIgnore(<span class="literal">true</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>com.android.library</code></li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">android.libraryVariants.all &#123; variant -&gt;</span><br><span class="line">  <span class="keyword">def</span> mergedFlavor = variant.getMergedFlavor()</span><br><span class="line">  mergedFlavor.manifestPlaceholers = [<span class="attr">hostName:</span><span class="string">&#x27;www.example.com&#x27;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/kotlin/" rel="tag"># kotlin</a>
+              <a href="/tags/gradle/" rel="tag"># gradle</a>
+              <a href="/tags/%E6%9E%84%E5%BB%BA/" rel="tag"># 构建</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/17/git-%E7%AC%94%E8%AE%B0/" rel="prev" title="git 笔记">
+      <i class="fa fa-chevron-left"></i> git 笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/28/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/" rel="next" title="常用命令记录">
+      常用命令记录 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle-%E5%8D%87%E7%BA%A7%E6%97%A5%E5%BF%97"><span class="nav-number">1.</span> <span class="nav-text">Gradle 升级日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle-%E7%BC%96%E8%AF%91%E8%AF%AD%E8%A8%80%E6%8C%87%E5%8D%97"><span class="nav-number">2.</span> <span class="nav-text">Gradle 编译语言指南</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#gradle-%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E7%9A%84%E8%AF%AD%E8%A8%80%E6%88%96-DSL-%E6%9D%A5%E6%89%A7%E8%A1%8C%E7%BC%96%E8%AF%91%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.1.</span> <span class="nav-text">gradle 可以使用不同的语言或 DSL 来执行编译任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.2.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#build-script-%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">build script 结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.4.</span> <span class="nav-text">核心类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#type-safe-model-accessors"><span class="nav-number">2.5.</span> <span class="nav-text">type-safe model accessors</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3-type-safe-accessors-%E4%B8%8D%E5%8F%AF%E7%94%A8%E6%97%B6%E8%A6%81%E6%89%A7%E8%A1%8C%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">2.6.</span> <span class="nav-text">了解 type-safe accessors 不可用时要执行的操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A7%E7%89%A9%E9%85%8D%E7%BD%AE"><span class="nav-number">2.7.</span> <span class="nav-text">产物配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7-Gradle-Wrapper"><span class="nav-number">3.</span> <span class="nav-text">升级 Gradle Wrapper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CLI-%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8"><span class="nav-number">4.</span> <span class="nav-text">CLI 自动补全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1-gradle-%E6%8F%92%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">设计 gradle 插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">6.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#com-android-application-%E6%8F%92%E4%BB%B6"><span class="nav-number">7.</span> <span class="nav-text">com.android.application 插件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="HumphreyDan"
+      src="http://picbed.dang8080.cn/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">HumphreyDan</p>
+  <div class="site-description" itemprop="description">donot dedicate your life to ignorance,mediocrity,vulgarity.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ShuttleSpace" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ShuttleSpace" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:dang8080@qq.com" title="E-Mail → mailto:dang8080@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HumphreyDan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

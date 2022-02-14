@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="http://fonts.gmirror.org/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shuttlespace.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="详细介绍请移步: 官网,中文镜像,清华源">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Termux 原理探究">
+<meta property="og:url" content="https://shuttlespace.github.io/2020/03/31/Termux-%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/">
+<meta property="og:site_name" content="HumphreyIO">
+<meta property="og:description" content="详细介绍请移步: 官网,中文镜像,清华源">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-03-31T02:02:22.000Z">
+<meta property="article:modified_time" content="2022-01-16T03:04:27.662Z">
+<meta property="article:author" content="HumphreyDan">
+<meta property="article:tag" content="Android,Java,Kotlin,JS,Rust,Electron">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://shuttlespace.github.io/2020/03/31/Termux-%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Termux 原理探究 | HumphreyIO</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">HumphreyIO</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">云青青兮欲雨, 水澹澹兮生烟</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://shuttlespace.github.io/2020/03/31/Termux-%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://picbed.dang8080.cn/avatar.jpeg">
+      <meta itemprop="name" content="HumphreyDan">
+      <meta itemprop="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HumphreyIO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Termux 原理探究
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-03-31 10:02:22" itemprop="dateCreated datePublished" datetime="2020-03-31T10:02:22+08:00">2020-03-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-16 11:04:27" itemprop="dateModified" datetime="2022-01-16T11:04:27+08:00">2022-01-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>详细介绍请移步: <a target="_blank" rel="noopener" href="https://termux.com/">官网</a>,<a target="_blank" rel="noopener" href="http://www.termux.cn/">中文镜像</a>,<a target="_blank" rel="noopener" href="https://mirror.tuna.tsinghua.edu.cn/help/termux/">清华源</a></p>
+<span id="more"></span>
+<h3 id="源码探究"><a href="#源码探究" class="headerlink" title="源码探究"></a>源码探究</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">create_subprocess</span><span class="params">(JNIEnv* env,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">char</span> <span class="keyword">const</span>* cmd,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">char</span> <span class="keyword">const</span>* cwd,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">char</span>* <span class="keyword">const</span> argv[],</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">char</span>** envp,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">int</span>* pProcessId,</span></span></span><br><span class="line"><span class="params"><span class="function">        jint rows,</span></span></span><br><span class="line"><span class="params"><span class="function">        jint columns)</span></span></span><br></pre></td></tr></table></figure>
+<p>此方法即为 termux 的核心,通过该方法将用户输入的命令和当前工作的文件夹传入打开的终端去执行.</p>
+<p>1、打开伪终端</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ptm = <span class="built_in">open</span>(<span class="string">&quot;/dev/ptmx&quot;</span>, O_RDWR | O_CLOEXEC);</span><br><span class="line"><span class="keyword">if</span> (ptm &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="built_in">throw_runtime_exception</span>(env, <span class="string">&quot;Cannot open /dev/ptmx&quot;</span>);</span><br><span class="line"><span class="comment">// UNIX98 的伪终端模式.</span></span><br><span class="line"><span class="comment">// pts(pseudo-terminal slave)/ptmx(pseudo-terminal master) 结合使用即可实现 pty(pseudo-tty).</span></span><br><span class="line"><span class="comment">// pts/ptmx 是成堆的逻辑终端设备(对 master 的操作会映射到 slave 上).</span></span><br></pre></td></tr></table></figure>
+
+<p>2、初始化设置</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LACKS_PTSNAME_R</span></span><br><span class="line">    <span class="keyword">char</span>* devname;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="keyword">char</span> devname[<span class="number">64</span>];</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="comment">// grantpt 在伪终端 slave 设备可被使用之前设置权限,使应用程序可以访问它.</span></span><br><span class="line">    <span class="comment">// 把设备节点的 userid 设置为调用者的实际 userid, groupid 为一非指定值,通常可以是访问该终端设备的组.</span></span><br><span class="line">    <span class="comment">// 将权限设为: 对单个所有者是读写,对组所有者是写(0620).</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// unlockpt 用于准予对伪终端 slave 设备的访问,从而允许应用打开该设备.</span></span><br><span class="line">    <span class="comment">// 可以阻止其他进程打开该设备,使得建立该设备的应用程序有机会在使用master、slave 设备之前正确的初始化这些设备.</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">grantpt</span>(ptm) || <span class="built_in">unlockpt</span>(ptm) ||</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LACKS_PTSNAME_R </span></span><br><span class="line">            <span class="comment">// 在给定伪终端 master 的设备文件符时,找到对应 slave 设备的路径名.</span></span><br><span class="line">            <span class="comment">// 如果成功,会在一个静态存储区存放设备名称并返回其地址,否则 NULL.</span></span><br><span class="line">            <span class="comment">// include &lt;stdlib.h&gt;</span></span><br><span class="line">            <span class="comment">// 返回指针不能被调用进程释放.</span></span><br><span class="line">            (devname = <span class="built_in">ptsname</span>(ptm)) == <span class="literal">NULL</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>       </span></span><br><span class="line">            <span class="comment">// 可重入版本.</span></span><br><span class="line">            <span class="built_in">ptsname_r</span>(ptm, devname, <span class="built_in"><span class="keyword">sizeof</span></span>(devname))</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">       ) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">throw_runtime_exception</span>(env, <span class="string">&quot;Cannot grantpt()/unlockpt()/ptsname_r() on /dev/ptmx&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Enable UTF-8 mode and disable flow control to prevent Ctrl+S from locking up the display.</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">termios</span> <span class="title">tios</span>;</span></span><br><span class="line"><span class="comment">// 返回 ptm 对应伪终端的属性.</span></span><br><span class="line"><span class="built_in">tcgetattr</span>(ptm, &amp;tios);</span><br><span class="line"><span class="comment">// tcgetattr(STDIN_FILENO,&amp;ts); STDIN_FILENO 值为1,表示标准输入的文件喵输入.</span></span><br><span class="line">tios.c_iflag |= IUTF8;</span><br><span class="line">tios.c_iflag &amp;= ~(IXON | IXOFF); <span class="comment">// 关闭输入时对 XON/XOFF流进行控制</span></span><br><span class="line"><span class="built_in">tcsetattr</span>(ptm, TCSANOW, &amp;tios); </span><br><span class="line"><span class="comment">// TCSANOW: 立即生效</span></span><br><span class="line"><span class="comment">// TCSADRAIN: 在所有写入 fd 的输出被传输后生效.建议在修改输出参数时使用.</span></span><br><span class="line"><span class="comment">// TCSAFLUSH: 在所有写入 fd 应用对象的输出都被传输后生效,所有已接受但未读入的输入都在改变生效前被丢弃</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置初始化窗口大小</span></span><br><span class="line"><span class="comment">// include &lt;termios.h&gt;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">winsize</span> <span class="title">sz</span> =</span> &#123; .ws_row = (<span class="keyword">unsigned</span> <span class="keyword">short</span>) rows, .ws_col = (<span class="keyword">unsigned</span> <span class="keyword">short</span>) columns &#125;;</span><br><span class="line"><span class="built_in">ioctl</span>(ptm, TIOCSWINSZ, &amp;sz); <span class="comment">// 获取 winsize 值</span></span><br><span class="line"><span class="comment">// ioctl TIOCSWINSZ 命令也可将此结构的新值存放到内核中。如果此新值和存放在内核中的当前值不同,则向前台进程组发送 SIGWINCH 信号.</span></span><br><span class="line"><span class="comment">// ioctl(STDIN_FILENO,TIOCGWINSZ,&amp;wz);</span></span><br></pre></td></tr></table></figure>
+
+<p>3、创建新进程</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pid_t</span> pid = fork();</span><br><span class="line"><span class="keyword">if</span> (pid &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">throw_runtime_exception</span>(env, <span class="string">&quot;Fork failed&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (pid &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// 当前进程</span></span><br><span class="line">    *pProcessId = (<span class="keyword">int</span>) pid;</span><br><span class="line">    <span class="keyword">return</span> ptm;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// Clear signals which the Android java process may have blocked:</span></span><br><span class="line">    <span class="keyword">sigset_t</span> signals_to_unblock;</span><br><span class="line">    <span class="built_in">sigfillset</span>(&amp;signals_to_unblock); <span class="comment">// 初始化 signals_to_unblock,然后将所有的信号加入此信号集.</span></span><br><span class="line">    <span class="built_in">sigprocmask</span>(SIG_UNBLOCK, &amp;signals_to_unblock, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// SIG_BLOCK: 将参数二中的信号添加到信号屏蔽字中</span></span><br><span class="line">    <span class="comment">// SIG_SETMASK: 将信号屏蔽字设置为参数二中信号</span></span><br><span class="line">    <span class="comment">// SIG_UNBLOCK: 从信号屏蔽字中删除参数二中的信号.</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">close</span>(ptm);</span><br><span class="line">    <span class="built_in">setsid</span>();</span><br><span class="line">    <span class="comment">// 子进程从父进程继承了: SessionID, process GroupID 和打开的终端</span></span><br><span class="line">    <span class="comment">// setsid 帮助子进程脱离父进程继承的属性.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> pts = <span class="built_in">open</span>(devname, O_RDWR); <span class="comment">// 打开伪终端 slave 设备.</span></span><br><span class="line">    <span class="keyword">if</span> (pts &lt; <span class="number">0</span>) <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">dup2</span>(pts, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">dup2</span>(pts, <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">dup2</span>(pts, <span class="number">2</span>);</span><br><span class="line">    <span class="comment">// 一般一个进程会有3个文件描述符存在(0,1,2)0 -&gt; 进程的标准输入,1 -&gt; 进程的标准输出,2 -&gt; 进程的标准错误输出.</span></span><br><span class="line">    <span class="comment">// int dup(int oldfd); </span></span><br><span class="line">    <span class="comment">// 内核在进程创建一个新的文件描述符,此描述符是当前可用文件描述符的最小数值,指向 oldfd 所拥有的文件表项.</span></span><br><span class="line">    <span class="comment">// int dup2(int oldfd,int newfd); </span></span><br><span class="line">    <span class="comment">// 使用newfd 指定新描述符的数值,如果 newfd 已经打开,先将其关闭.如果 newfd 等于 oldfd,则返回 newfd,不关闭它.</span></span><br><span class="line"></span><br><span class="line">    DIR* self_dir = <span class="built_in">opendir</span>(<span class="string">&quot;/proc/self/fd&quot;</span>); <span class="comment">// 当前进程打开的文件</span></span><br><span class="line">    <span class="keyword">if</span> (self_dir != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> self_dir_fd = <span class="built_in">dirfd</span>(self_dir); <span class="comment">// 把 DIR* 转为文件描述符</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">dirent</span>* <span class="title">entry</span>;</span></span><br><span class="line">        <span class="keyword">while</span> ((entry = <span class="built_in">readdir</span>(self_dir)) != <span class="literal">NULL</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> fd = <span class="built_in">atoi</span>(entry-&gt;d_name);</span><br><span class="line">            <span class="keyword">if</span>(fd &gt; <span class="number">2</span> &amp;&amp; fd != self_dir_fd) <span class="built_in">close</span>(fd); <span class="comment">// 关闭打开的文件</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">closedir</span>(self_dir);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">clearenv</span>(); <span class="comment">// 删除环境表中所有的环境变量</span></span><br><span class="line">    <span class="comment">// getenv() 按环境变量的名称取得环境变量的值</span></span><br><span class="line">    <span class="keyword">if</span> (envp) <span class="keyword">for</span> (; *envp; ++envp) <span class="built_in">putenv</span>(*envp); <span class="comment">// 将传进来的环境变量设为当前环境变量</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">chdir</span>(cwd) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">char</span>* error_message;</span><br><span class="line">        <span class="comment">// No need to free asprintf()-allocated memory since doing execvp() or exit() below.</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">asprintf</span>(&amp;error_message, <span class="string">&quot;chdir(\&quot;%s\&quot;)&quot;</span>, cwd) == <span class="number">-1</span>) error_message = <span class="string">&quot;chdir()&quot;</span>;</span><br><span class="line">        <span class="built_in">perror</span>(error_message);</span><br><span class="line">        <span class="built_in">fflush</span>(stderr);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 从 PATH 环境变量所值的目录中查找符合参数 cmd 的文件名,找到后便执行该文件,然后将第二个参数 argv 传给此文件.</span></span><br><span class="line">    <span class="comment">// 成功无返回，失败返回 -1,失败原因存于 errno 中.</span></span><br><span class="line">    <span class="built_in">execvp</span>(cmd, argv);</span><br><span class="line">    <span class="comment">// Show terminal output about failing exec() call:</span></span><br><span class="line">    <span class="keyword">char</span>* error_message;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">asprintf</span>(&amp;error_message, <span class="string">&quot;exec(\&quot;%s\&quot;)&quot;</span>, cmd) == <span class="number">-1</span>) error_message = <span class="string">&quot;exec()&quot;</span>;</span><br><span class="line">    <span class="built_in">perror</span>(error_message);</span><br><span class="line">    _exit(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为 termux 的主界面是一个 psuedo terminal,所以第一步先建立伪终端设备,然后创建当前进程的子进程去执行命令.因此,termux 能访问的就只能 termux app 私有文件目录及 SD 卡公开目录(需要特殊命令支持)</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/18/Flutter-desktop-support/" rel="prev" title="Flutter desktop support">
+      <i class="fa fa-chevron-left"></i> Flutter desktop support
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/25/libgit2-android%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/" rel="next" title="libgit2 android交叉编译">
+      libgit2 android交叉编译 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E6%8E%A2%E7%A9%B6"><span class="nav-number">1.</span> <span class="nav-text">源码探究</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="HumphreyDan"
+      src="http://picbed.dang8080.cn/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">HumphreyDan</p>
+  <div class="site-description" itemprop="description">donot dedicate your life to ignorance,mediocrity,vulgarity.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ShuttleSpace" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ShuttleSpace" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:dang8080@qq.com" title="E-Mail → mailto:dang8080@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HumphreyDan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

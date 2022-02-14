@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="http://fonts.gmirror.org/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shuttlespace.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Flutter engineFlutter Engine 不创建或管理线程,相应的由 embedder 创建管理、message loops. embedder 提供了 task runner 来执行任务. Dart VM 会有自己的线程池.而 Flutter engine 和 embedder 都无法访问到线程池的线程.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dart-flutter engine">
+<meta property="og:url" content="https://shuttlespace.github.io/2019/12/20/dart-flutter-engine/">
+<meta property="og:site_name" content="HumphreyIO">
+<meta property="og:description" content="Flutter engineFlutter Engine 不创建或管理线程,相应的由 embedder 创建管理、message loops. embedder 提供了 task runner 来执行任务. Dart VM 会有自己的线程池.而 Flutter engine 和 embedder 都无法访问到线程池的线程.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-12-20T02:39:11.000Z">
+<meta property="article:modified_time" content="2022-01-16T03:04:27.662Z">
+<meta property="article:author" content="HumphreyDan">
+<meta property="article:tag" content="Android,Java,Kotlin,JS,Rust,Electron">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://shuttlespace.github.io/2019/12/20/dart-flutter-engine/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>dart-flutter engine | HumphreyIO</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">HumphreyIO</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">云青青兮欲雨, 水澹澹兮生烟</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://shuttlespace.github.io/2019/12/20/dart-flutter-engine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://picbed.dang8080.cn/avatar.jpeg">
+      <meta itemprop="name" content="HumphreyDan">
+      <meta itemprop="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HumphreyIO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dart-flutter engine
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-12-20 10:39:11" itemprop="dateCreated datePublished" datetime="2019-12-20T10:39:11+08:00">2019-12-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-16 11:04:27" itemprop="dateModified" datetime="2022-01-16T11:04:27+08:00">2022-01-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Flutter-engine"><a href="#Flutter-engine" class="headerlink" title="Flutter engine"></a>Flutter engine</h1><p>Flutter Engine 不创建或管理线程,相应的由 embedder 创建管理、message loops.</p>
+<p>embedder 提供了 task runner 来执行任务.</p>
+<p>Dart VM 会有自己的线程池.而 Flutter engine 和 embedder 都无法访问到线程池的线程.</p>
+<span id="more"></span>
+
+<h3 id="Task-Runner-Configuration"><a href="#Task-Runner-Configuration" class="headerlink" title="Task Runner Configuration"></a>Task Runner Configuration</h3><p>Flutter engine 会向 embedder 申请4个 task runner 引用. engine 不在乎引用是不是同一个 task runner,或者多个 task runner 运行在同一个线程中.<br>为了优化性能, embedder 应该为每个 task runner 分配一个单独的线程.虽然 engine 不关心 task runner 运行的线程情况,但是在 engine 的整个生命周期中线程配置应该保持一致.也就是如果 embedder 为task runner 分配了一个单独的线程,那么直到 engine 销毁,这个 task runner 都只能在这个线程运行.<br>常用的 task runners:</p>
+<ul>
+<li>Platform Task Runner</li>
+<li>UI Task Runner</li>
+<li>GPU Task Runner</li>
+<li>IO Task Runner</li>
+</ul>
+<h3 id="Platform-Task-Runner"><a href="#Platform-Task-Runner" class="headerlink" title="Platform Task Runner"></a>Platform Task Runner</h3><p>此 task runner 运行的线程被 embedder 认为是主线程.</p>
+<p>此线程执行的 task runner 都是由 embedder 分配的.engine 指派的 task runner 是无意义的.多个 Flutter engine 可以在基于不同线程上运行的 platform task runner 启动.Flutter Content Handler 在 Fuchsia 中就是此原理.每个 Flutter 应用所在的进程会创建一个新的 Flutter engine,同时每个 engine 都会创建一个新的 platform thread.</p>
+<p>和 Flutter engine 的任何交互操作必须在 platform thread 中执行.而在其他线程中和 engine 交互, debug 构建中触发断言,release 构建中是非线程安全的.Flutter engine 中的很多组件都是非线程安全的.一旦 engine 配置运行后,只要 embedder API 的访问是在 platform thread 中执行的,embedder 就不必指派 task runner 去配置 engine.</p>
+<p>此 task runner 除了在 engine 启动后负责 embedder 和 engine 交互外,同时会执行 platform messages.这是因为只有在 platform 的主线程访问 platform APIs 才是安全的.插件不必将他们的调用重新分配到主线程上.如果插件管理自己的 worker 线程,那么插件在响应结果被提交到 engine 由 Dart 处理前应该将其入队到 platform 线程中.和 engine 的交互必须在 platform 线程执行.</p>
+<p>即使 platform 线程被阻塞了很长时间,Flutter rendering pipeline也不会被阻塞.platform 对此线程上的耗时操作进行了诸多限制.所以建议任何耗时操作在将执行结果返回并被入队到 platform 线程之前应该在独立的线程中执行(不是上面讨论的4种线程).如果不这么做可能导致 platform 指定的 watchdog 终结应用.诸如 android、ios 也使用 platform 线程传递用户输入时间.阻塞 platform 线程将导致操作被丢弃.</p>
+<h3 id="UI-Task-Runner"><a href="#UI-Task-Runner" class="headerlink" title="UI Task Runner"></a>UI Task Runner</h3><p>engine 在 root isolate 通过 UI Task Runner 执行所有的 Dart 代码.root isolate 和 Flutter 绑定才能执行.此 isolate 运行应用程序的 main dart code.engine 绑定此 isolate 提交执行 frames. Flutter 的每一帧:</p>
+<ul>
+<li>root isolate 告诉 engine 要渲染哪一帧</li>
+<li>engine 会询问 platform 在下一次 vsync 时是否需要 be notified.</li>
+<li>platform 等待下一 vsync.</li>
+<li>在 vsync, engine 会唤醒 dart code执行如下操作:<ul>
+<li>更新动画插值器</li>
+<li>在 build phase 重建应用的 widget.</li>
+<li>布局新构建的 widget,将其绘制到层里的 tree 中立即提交给 engine.此处实际没有栅格化.</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/20/dart-build-tool/" rel="prev" title="dart-build tool">
+      <i class="fa fa-chevron-left"></i> dart-build tool
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/14/Kotlin-Native/" rel="next" title="Kotlin/Native">
+      Kotlin/Native <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter-engine"><span class="nav-number">1.</span> <span class="nav-text">Flutter engine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Task-Runner-Configuration"><span class="nav-number">1.0.1.</span> <span class="nav-text">Task Runner Configuration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Platform-Task-Runner"><span class="nav-number">1.0.2.</span> <span class="nav-text">Platform Task Runner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI-Task-Runner"><span class="nav-number">1.0.3.</span> <span class="nav-text">UI Task Runner</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="HumphreyDan"
+      src="http://picbed.dang8080.cn/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">HumphreyDan</p>
+  <div class="site-description" itemprop="description">donot dedicate your life to ignorance,mediocrity,vulgarity.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ShuttleSpace" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ShuttleSpace" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:dang8080@qq.com" title="E-Mail → mailto:dang8080@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HumphreyDan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
