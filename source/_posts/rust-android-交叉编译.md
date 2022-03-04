@@ -48,7 +48,7 @@ fn main() {
         .header("deps/libgit2/include/git2.h")
         .clang_arg(format!("-I{}", git2_header_path))
         .clang_arg(format!("--sysroot={}/toolchains/llvm/prebuilt/darwin-x86_64/sysroot", env::var("ANDROID_NDK")))
-        .clang_arg("--target=armv7-linux-androideabi")
+        .clang_arg("--target=armv7-linux-androideabi") // 指定 arm 平台的编译，否则编译出来的 header 有问题
         .disable_header_comment()
         .generate_comments(false)
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
@@ -118,10 +118,47 @@ name = "tano"
 crate-type = ["staticlib", "cdylib"]
 ```
 
+6、开始编译
 
-### ndk r20+ 后，移除了 gcc, 而 rust 在交叉编译时会报 `unable to find library -lgcc`
+如果直接运行 `cargo b --target x86_64-linux-android` 会报错 `unable to find library -lgcc`, 原因是 NDK r20+ 后移除了 gcc 库, 代替为 unwind 库。此时需要做特殊处理.
 
-根据 cargo-apk 项目里的方案
+6.1 gcc 修复
 
-1、新建文件 `libgcc.a`, 其内容为 `INPUT(-lunwind)`
-2、执行 `cargo rustc --target sx86_64-linux-android-- -L /Users/shuttle/Project/Android/Ide/git2-sys/deps/gcc`
+```
+- deps
+  - gcc
+    libgcc.a
+
+```
+新建 `libgcc.a` 文件，内容为 `INPUT(-lunwind)`
+
+6.2 命令行编译 
+
+`cargo rustc --target x86_64-linux-android -- -L /Users/shuttle/Project/Android/Ide/git2-sys/deps/gcc`
+
+此时可以通过 -L 来配置执行
+
+6.3 build.rs 配置
+
+如果不想每次都在命令行后指定 -L 参数，可以使用 build.rs 来编译
+
+```toml
+[package]
+...
+build = "build.rs"
+```
+
+```rust
+fn main() {
+  println!("cargo:rustc-link-search=native=./deps/libgit2/lib/android_x86-64");
+  println!("cargo:rustc-link-search=native=./deps/openssl/lib/android_x86-64");
+
+  println!("cargo:rustc-link-lib=dylib=git2");
+  println!("cargo:rustc-link-lib=dylib=crypto");
+  println!("cargo:rustc-link-lib=dylib=ssl");
+
+  println!("cargo:rustc-flags=-L./deps/gcc");
+}
+```
+
+接下来执行 `cargo b --target x86_64-linux-android` 即可
