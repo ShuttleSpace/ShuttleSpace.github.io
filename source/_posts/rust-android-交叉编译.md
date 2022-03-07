@@ -62,7 +62,7 @@ fn main() {
 }
 ```
 
-4、运行 cargo build 即可在 src 目录下生成 lib.rs binding 文件了
+4、运行 cargo build 即可在 src 目录下生成 `lib.rs` binding 文件了
 
 # 用 rust 生成 jni 动态库
 
@@ -150,8 +150,17 @@ build = "build.rs"
 
 ```rust
 fn main() {
-  println!("cargo:rustc-link-search=native=./deps/libgit2/lib/android_x86-64");
-  println!("cargo:rustc-link-search=native=./deps/openssl/lib/android_x86-64");
+    // CARGO_CFG_TARGET_OS
+  let TARGET = env::var("TARGET").unwrap();
+  let target = if TARGET.contains("x86_64-linux-android") {
+    "android_x86-64"
+  } else if TARGET.contains("aarch64-linux-android") {
+    "android_arm64"
+  } else {
+    ""
+  };
+  println!("cargo:rustc-link-search=native=./deps/libgit2/lib/{}", target);
+  println!("cargo:rustc-link-search=native=./deps/openssl/lib/{}", target);
 
   println!("cargo:rustc-link-lib=dylib=git2");
   println!("cargo:rustc-link-lib=dylib=crypto");
@@ -161,4 +170,116 @@ fn main() {
 }
 ```
 
-接下来执行 `cargo b --target x86_64-linux-android` 即可
+7.1、接下来执行 `cargo b --target x86_64-linux-android` 即可
+7.2、也可以配置 Makefile.toml 使用 cargo-make 工具简化命令行运行输入
+
+首先安装 cargo-make 工具, `cargo install cargo-make`
+
+```toml
+[tasks.a_arm64]
+command = "cargo"
+args = ["b", "--target", "aarch64-linux-android"]
+
+[tasks.a_x64]
+command = "cargo"
+args = ["b", "--target", "x86_64-linux-android"]
+```
+
+然后执行 `cargo make a_arm64` 或者 `makers a_arm64` 即可
+
+# rust jni 代码（动态加载方式）
+
+```rust
+use core::panic;
+use jni::{
+    descriptors::Desc,
+    objects::{GlobalRef, JClass, JMethodID},
+    strings::JNIString,
+    sys::{jclass, jint, JNI_VERSION_1_6},
+    JNIEnv, JavaVM, NativeMethod,
+};
+use std::ffi::CString;
+use std::sync::Once;
+use std::{os::raw::c_void, panic::catch_unwind};
+
+const INVAL_JNI_VERSION: jint = 0;
+static INIT: Once = Once::new();
+
+// JNI 动态加载的入口
+
+#[allow(non_snake_case)]
+#[no_mangle]
+pub extern "system" fn JNI_OnLoad(vm: JavaVM, _: *mut c_void) -> jint {
+    let env = vm.get_env().expect("Cannot get reference to the JNIEnv");
+    catch_unwind(|| {
+        prepare(&env);
+        JNI_VERSION_1_6
+    })
+    .unwrap_or(INVAL_JNI_VERSION)
+    // 如果使用 JNI_VERSION_1_8 会报错
+}
+
+pub(crate) fn prepare(env: &JNIEnv) {
+    INIT.call_once(|| unsafe {
+        // 在这里动态注册就行，不用写那么多冗余函数
+        let host_jclass: GlobalRef = get_class(env, "io/shuttle/coder/MainActivity").unwrap();
+        let native_methods = [NativeMethod {
+            name: "hello".into(),
+            sig: "()Ljava/lang/String;".into(),
+            fn_ptr: hello as *const c_void as *mut c_void,
+        }];
+        env.register_native_methods(&host_jclass, &native_methods);
+    });
+}
+// 类方法
+fn hello(env: JNIEnv, _: JClass) -> jclass {
+    let output = env
+        .new_string("from rust string!!!")
+        .expect("Couldn't create java string!");
+    output.into_inner()
+}
+// 静态方法
+// env: JNIEnv, object: JObject
+
+fn get_class(env: &JNIEnv, class: &str) -> Option<GlobalRef> {
+    let class = env
+        .find_class(class)
+        .unwrap_or_else(|_| panic!("Class not found: {}", class));
+    Some(env.new_global_ref(class).unwrap())
+}
+
+fn get_method_id(env: &JNIEnv, class: &str, name: &str, sig: &str) -> Option<JMethodID<'static>> {
+    let method_id = env
+        .get_method_id(class, name, sig)
+        .map(|mid| mid.into_inner().into())
+        .unwrap_or_else(|_| {
+            panic!(
+                "Method {} with signature {} of class {} not found",
+                name, sig, class
+            )
+        });
+    Some(method_id)
+}
+```
+
+##### 生成 kotlin 文件 jni 头文件的函数签名方式
+
+```sh
+➜  Coder ./gradlew -v 
+
+------------------------------------------------------------
+Gradle 7.4
+------------------------------------------------------------
+
+Build time:   2022-02-08 09:58:38 UTC
+Revision:     f0d9291c04b90b59445041eaa75b2ee744162586
+
+Kotlin:       1.5.31
+Groovy:       3.0.9
+Ant:          Apache Ant(TM) version 1.10.11 compiled on July 10 2021
+JVM:          17.0.1 (Homebrew 17.0.1+0)
+OS:           Mac OS X 12.2.1 x86_64
+```
+进入 `build/tmp/kotlin-classes/debug/io/shuttle/coder` 目录, 可以看到其下有两个 class 文件 `MainActivity` 和 `MainActivityKt.class`
+
+执行 `javap -s p MainActivity` 就可以看到对应的 jni 函数签名了.
