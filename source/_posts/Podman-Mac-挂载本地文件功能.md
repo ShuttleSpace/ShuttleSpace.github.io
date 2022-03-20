@@ -44,4 +44,27 @@ ssh -i ~/.ssh/podman-machine-default -R 10000:$(hostname):22 -p <PORT> core@loca
 sshfs -p 10000 $USER@127.0.0.1:/Users /mnt/Users
 ```
 
+### 其他方案
+```
+podman machine
+
+Current solution requires modifying the path, since the root directory is read-only on CoreOS:
+
+podman machine init -v /foo:/mnt/foo
+
+podman --remote run -v /mnt/foo:/foo
+
+This breaks compatibility with local version, that would do podman run -v /foo:/foo (no /mnt)
+
+other systems
+
+No issues with mounting, since the root directory can be modified to create the mountpoint dir:
+
+podman machine init -v /foo:/foo --volume-driver=sshfs
+
+podman --remote run -v /foo:/foo
+
+This means one can use the same command remote as local, when using something like Fedora.
+```
 > https://dalethestirling.github.io/Macos-volumes-with-Podman/
+> https://github.com/containers/podman/issues/8016#issuecomment-995242552
