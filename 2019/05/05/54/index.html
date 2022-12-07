@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/favicon-32x32-next.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="http://fonts.gmirror.org/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shuttlespace.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="bactching">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GraphQL-Batching">
+<meta property="og:url" content="https://shuttlespace.github.io/2019/05/05/54/">
+<meta property="og:site_name" content="HumphreyIO">
+<meta property="og:description" content="bactching">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-05-05T15:38:54.000Z">
+<meta property="article:modified_time" content="2022-01-16T03:04:27.652Z">
+<meta property="article:author" content="HumphreyDan">
+<meta property="article:tag" content="Android,Java,Kotlin,JS,Rust,Electron">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://shuttlespace.github.io/2019/05/05/54/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+<script type="text/javascript" src="/js/love.js"></script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('please input your password.') !== ''){
+                alert('wrong password!!!');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  <title>GraphQL-Batching | HumphreyIO</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">HumphreyIO</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">云青青兮欲雨, 水澹澹兮生烟</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/ShuttleSpace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://shuttlespace.github.io/2019/05/05/54/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://picbed.dang8080.cn/avatar.jpeg">
+      <meta itemprop="name" content="HumphreyDan">
+      <meta itemprop="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HumphreyIO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GraphQL-Batching
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-05 23:38:54" itemprop="dateCreated datePublished" datetime="2019-05-05T23:38:54+08:00">2019-05-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-16 11:04:27" itemprop="dateModified" datetime="2022-01-16T11:04:27+08:00">2022-01-16</time>
+              </span>
+
+          
+            <span id="/2019/05/05/54/" class="post-meta-item leancloud_visitors" data-flag-title="GraphQL-Batching" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2019/05/05/54/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/05/05/54/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>8.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>8 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>bactching</p>
+<span id="more"></span>
+<h2 id="批处理"><a href="#批处理" class="headerlink" title="批处理"></a>批处理</h2><h3 id="使用-Dataloader"><a href="#使用-Dataloader" class="headerlink" title="使用 Dataloader"></a>使用 Dataloader</h3><p>如果你正在使用 graphql,那么你可能遇到数据图查询.这可以通过本地数据图加载轻松实现.<br>使用 <code>java-dataloader</code> 将帮助你更高效的处理数据图条目的缓存和批量请求.如果 dataloader 已经发现了一个之前的数据条目,它将会缓存数据并且直接返回不再发起请求.<br>假设我们需要查询一个英雄和他们朋友的名字及他们朋友的朋友的名字.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    hero &#123;</span><br><span class="line">        name &#123;</span><br><span class="line">            friends &#123;</span><br><span class="line">                name &#123;</span><br><span class="line">                    friends &#123;</span><br><span class="line">                        name</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个查询的结果如下.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">&quot;hero&quot;</span>: &#123;</span><br><span class="line">		<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;R2-D2&quot;</span>,</span><br><span class="line">		<span class="attr">&quot;friends&quot;</span>: [</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Luke Skywalker&quot;</span>,</span><br><span class="line">				<span class="attr">&quot;friends&quot;</span>: [</span><br><span class="line">					&#123;</span><br><span class="line">						<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;HanSolo&quot;</span></span><br><span class="line">					&#125;,</span><br><span class="line">					&#123;</span><br><span class="line">						<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Leia Organa&quot;</span></span><br><span class="line">					&#125;,</span><br><span class="line">					&#123;</span><br><span class="line">						<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;C-3P0&quot;</span></span><br><span class="line">					&#125;,</span><br><span class="line">					&#123;</span><br><span class="line">						<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;R2-D2&quot;</span></span><br><span class="line">					&#125;</span><br><span class="line">				]</span><br><span class="line">			&#125;,</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Han Solo&quot;</span>,</span><br><span class="line">				<span class="attr">&quot;friends&quot;</span>: [</span><br><span class="line">					&#123; <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Luke Skywalker&quot;</span> &#125;,</span><br><span class="line">					&#123; <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Leia Organa&quot;</span> &#125;,</span><br><span class="line">					&#123; <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;R2-D2&quot;</span> &#125;</span><br><span class="line">				]</span><br><span class="line">			&#125;,</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Leia Organa&quot;</span>,</span><br><span class="line">				<span class="attr">&quot;friends&quot;</span>: [</span><br><span class="line">					&#123; <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Luke Skywalker&quot;</span> &#125;,</span><br><span class="line">					&#123; <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Han Solo&quot;</span> &#125;,</span><br><span class="line">					&#123; <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;C-3PO&quot;</span> &#125;,</span><br><span class="line">					&#123; <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;R2-D2&quot;</span> &#125;</span><br><span class="line">				]</span><br><span class="line">			&#125;</span><br><span class="line">		]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最差的办法是每次调用 <code>DataFetcher</code>获取 person 对象.<br>本例中将发起 15 次网络请求.即使很多人有共同的朋友.使用 <code>dataloader</code>你可以使 graphql 查询变得更高效.<br>当 graphql 降序查询每个层级时(hero -&gt; friends -&gt; friends),dataloader 调用 promise 传递 person 对象.在每个层级中调用 <code>dataloader.dispatch()</code> 批量发起部分查询请求.加上缓存(默认使用),之前的 person 将被返回.<br>上例中只涉及到 5 个独立的 people,合理的使用缓存和批量请求将只有 3 个批量加载函数被调用,3 个网络请求或数据库查询总比 15 个要好.<br>如果你使用了 <code>java.util.concurrent.CompletableFuture.supplyAsync()</code>,那么你可以通过异步调用使查询变得更高效.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  batch loader 可能被调用多次，因为它的无状态性，所以适合作为单例使用</span></span><br><span class="line">BatchLoader&lt;String,Object&gt; characterBatchLoader = <span class="keyword">new</span> BatchLoader&lt;String,Object&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> CompletableStage&lt;List&lt;Object&gt;&gt; load(List&lt;String&gt; keys) &#123;</span><br><span class="line">        <span class="comment">// 使用 supplyAsync() 最大化并行执行</span></span><br><span class="line">        <span class="keyword">return</span> CompletableFuture.supplyAsync(() -&gt; getCharacterDataViaBatchHTTPApi(keys));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这个 data laoder 获取关联的人物，把他们放入 graphql schema</span></span><br><span class="line">DataFetcher heroDataFetcher = <span class="keyword">new</span> DataFetcher() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(DataFetchingEnvironment environment)</span> </span>&#123;</span><br><span class="line">        DataLoader&lt;String,Object&gt; dataloader = environment.getDataLoader(<span class="string">&quot;character&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> dataloader.load(<span class="string">&quot;2001&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">DataFetcher friendsDataFetcher = <span class="keyword">new</span> DataFetcher() &#123;</span><br><span class="line">     <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(DataFetchingEnvironment environment)</span> </span>&#123;</span><br><span class="line">        StarWarsCharacter starWarsCharacter = environment.getSource();</span><br><span class="line">        List&lt;String&gt; friendsIds = starWarsCharacter.getFriendIds();</span><br><span class="line">        DataLoader&lt;String,Object&gt; dataloader = environment.getDataLoader(<span class="string">&quot;character&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> dataloader.loadMany(friendsIds);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">DataLoaderDispatcherInstrumentationOptions options = DataLoaderDispatcherInstrumentationOptions.newOptions().includeStatistics(<span class="keyword">true</span>);</span><br><span class="line">DataLoaderDispatcherInstrumentation dispatcherInstrumentation = <span class="keyword">new</span> DataLoaderDispatcherInstrumentation(options);</span><br><span class="line">GraphQL graphql = GraphQL.newGraphQL(buildSchema())</span><br><span class="line">    .instrumentation(dispatcherInstrumentation)</span><br><span class="line">    .build();</span><br><span class="line"><span class="comment">// 因为 data loader 是有状态的,所以每次请求都会被执行</span></span><br><span class="line">DataLoader&lt;String,Object&gt; characterDataLoader = DataLoader.newDataLoader(characterBatchLoader);</span><br><span class="line">DataLoaderRegistry registry = <span class="keyword">new</span> DataLoaderRegistry();</span><br><span class="line">registry.register(<span class="string">&quot;character&quot;</span>,characterDataLoader);</span><br><span class="line"></span><br><span class="line">ExecutionInput executionInput = newExecutionInput()</span><br><span class="line">    .query(getQuery())</span><br><span class="line">    .dataLoaderRegistry(registry)</span><br><span class="line">    .build();</span><br><span class="line">ExecutionResult executionResult = graphql.execute(executionInput);</span><br></pre></td></tr></table></figure>
+
+<p>本例中因为我们需要微调 <code>DataLoaderDispatcherInstrumentation</code>选项,所以手动添加.如果不要的话,默认会自动添加的.</p>
+<h3 id="仅适用于-AsyncExecutionStrategy-的-Data-Loader"><a href="#仅适用于-AsyncExecutionStrategy-的-Data-Loader" class="headerlink" title="仅适用于 AsyncExecutionStrategy 的 Data Loader"></a>仅适用于 AsyncExecutionStrategy 的 Data Loader</h3><p>这是因为此执行策略知道在最佳时机分发你的 load 调用.它通过深度追踪你有多少个突出的属性及他们是否是列表值等实现.<br>其他策略如 <code>ExecutorServiceExecutionStrategy</code>无法实现这个功能,因为如果 data loader 代码检测到你没有使用 <code>AsyncExecitionStrategy</code>,那么当碰到每个属性时,它将简单的分发 data loader.你可能会得到值的 <code>caching</code>,但你绝对拿不到他们的 <code>batching</code>.</p>
+<h3 id="Data-Loader-的每一个请求"><a href="#Data-Loader-的每一个请求" class="headerlink" title="Data Loader 的每一个请求"></a>Data Loader 的每一个请求</h3><p>如果你正在为 web 请求提供服务,那么可以为用户请求指定数据.如果你有用户指定的数据,你可能不会缓存用户 a 的数据,然后在后续的请求中把它传递给用户 b.<br>你的 DataLoader 实例的范围是很重要的.你可能想每个 web 请求创建一个 dataloader 以确保数据只对特定的 web 请求缓存.同时确保 <code>dispatch</code>调用不影响其他的 graphql 执行.<br>DataLoader 默认行为类似缓存.如果发现之前存在某个 key 对应的值,那么会自动返回它.<br>如果你的数据可以跨 web 请求分享,那么你可能需要改变你的 data loader 缓存实现,这样他们就能通过如 memcached 或 redis 这样的缓存层进行数据分享.<br>下例中仍然每个请求创建一个 data loader,然而缓存层允许数据分享.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">CacheMap&lt;String,Object&gt; crossRequestCacheMap = <span class="keyword">new</span> CacheMap&lt;String,Object&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">containsKey</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> redisIntegration.containsKey(key);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> redisIntegration.getValue(key);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CacheMap&lt;String,Object&gt; <span class="title">set</span><span class="params">(String key,Object value)</span> </span>&#123;</span><br><span class="line">        redisIntegration.setValue(key,value);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CacheMap&lt;String,Object&gt; <span class="title">delete</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        redisIntegration.clearKey(key);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CacheMap&lt;String,Object&gt; <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        redisIntegration.clearAll();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">DataLoaderOptions options = DataLoaderOptions.newOptions().setCacheMap(crossRequestCacheMap);</span><br><span class="line">DataLoader&lt;String,Object&gt; dataloader = DataLoader.newDataLoader(batchLoader,options);</span><br></pre></td></tr></table></figure>
+
+<h3 id="只能异步调用的批量加载功能"><a href="#只能异步调用的批量加载功能" class="headerlink" title="只能异步调用的批量加载功能"></a>只能异步调用的批量加载功能</h3><p>此 dataloader 代码模式整合所有明显的 data loader 调用到一个更有效的批量加载调用.<br>graphql-java 追踪已发起的明显的 data loader 调用,然后在最合适的时机(即所有的 graphql 属性已经校验成功并分发)在后台调用<code>dispatch</code>.<br>然而有些情况下将导致你的 data loader 调用永不会完成,这中情况必须避免.这种情况包括在异步线程调用 <code>DataLoader</code>.<br>下面的 🌰 不会成功(将永远无法完成).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">BatchLoader&lt;String,Object&gt; batchLoader = <span class="keyword">new</span> BatchLoader&lt;String,Object&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> CompletionStage&lt;List&lt;Object&gt;&gt; load(List&lt;String&gt; keys) &#123;</span><br><span class="line">        <span class="keyword">return</span> CompletableFuture.completedFuture(getTheseCharacters(keys));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">DataLoader&lt;String,Object&gt; characterDataLoader = DataLoader.newDataLoader(batchLoader);</span><br><span class="line"></span><br><span class="line">DataFetcher dataFetcherThatCallsTheDataLoader = <span class="keyword">new</span> DataFetcher() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(DataFetchingEnvironment environment)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 千万要避免这样做</span></span><br><span class="line">        <span class="keyword">return</span> CompletableFuture.supplyAsync(() -&gt; &#123;</span><br><span class="line">            String argId = environment.getArgument(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">            DataLoader&lt;String,Object&gt; characterLoader = environment.getDataLoader(<span class="string">&quot;characterLoader&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> characterLoader.load(argId);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的 🌰 中,<code>characterDataLoader.load(argId)</code> 可以在另外一个线程的未来某个时刻被调用. graphql-java 引擎不知道何时是最佳时机去分发明显的 <code>DataLoader</code> 调用,因此这个 data loader 可能永远不会如期执行,也不会有结果返回.<br>请记住,data loader 调用仅仅是一个保证,后面会将明显的调用批量调用在合适的时机获取结果.最佳时机是 graphql 属性树已经校验过,且所有的属性值已经被分发.<br>下面的 🌰 依然是异步代码,但是把它放在 <code>BatchLoader</code> 里.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">BatchLoader&lt;String,Object&gt; batchLoader = <span class="keyword">new</span> BatchLoader&lt;String,Object&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> CompletionStage&lt;List&lt;Object&gt;&gt; load(List&lt;String&gt; keys) &#123;</span><br><span class="line">        <span class="keyword">return</span> CompletableFuture.supplyAsync(() -&gt; getThreseCharacters(keys));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">DataLoader&lt;String,Object&gt; characterDataLoader = DataLoader.newDataLoader(batchLoader);</span><br><span class="line"></span><br><span class="line">DataFetcher dataFetcherThatCallsTheDataLoader = <span class="keyword">new</span> DataFetcher() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(DataFetchingEnvironment environment)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这是阔以滴</span></span><br><span class="line">        String argId = environment.getArgument(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">        DataLoader&lt;String,Object&gt; characterLoader = environment.getDataLoader(<span class="string">&quot;characterLoader&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> characterLoader.load(argId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的 🌰 <code>characterDataLoader.load(argId)</code> 会立即返回.这将会把 data 请求入队列,z 当所有的 graphql 属性都分发后再执行.<br>然后当 <code>DataLoader</code> 被分发后,他的 <code>BatchLoader</code> 函数被调用.这个代码可以异步执行,所以你可以有多个批量加载函数,他们可以同时执行.在上例中 <code>CompletableFuture.supplyAsync(() -&gt; getTheseCharacters(keys));</code> 将再另一个线程中返回 <code>getTheseCharacters()</code> 方法.</p>
+<h3 id="向你的-data-loader-传递-context"><a href="#向你的-data-loader-传递-context" class="headerlink" title="向你的 data loader 传递 context"></a>向你的 data loader 传递 context</h3><p>data load 库支持传递两个类型的 context 到 batch loader.第一个是每个 dataloader 一个全局的 context 对象,第二个是一个 loaded key 一个 context 对象的 map.<br>这允许你传递下游需要的额外信息.dataloader key 用在缓存结果,而 context 对象可以用在调用中.<br>在下面的 🌰 中,我们有一个全局的安全 context 对象,提供了一个调用 token,同时可以传递 graphql 原对象到每个 <code>dataLoader.load()</code> 调用中.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">BatchLoaderWithContext&lt;String,Object&gt; batchLoaderWithCtx = <span class="keyword">new</span> BatchLoaderWithContext&lt;String,Object&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> CompletionStage&lt;List&lt;Object&gt;&gt; load(List&lt;String&gt; keys,BatchLoaderEnvironment loaderContext) &#123;</span><br><span class="line">        <span class="comment">// 获取全局 context 对象</span></span><br><span class="line">        SecurityContext sercurityCtx = loaderContext.getContext();</span><br><span class="line">        <span class="comment">// 每个键都有一个 context 对象集</span></span><br><span class="line">        Map&lt;Object,Object&gt; keysToSOurceObjects = loaderContext.getKeyContexts();</span><br><span class="line">        <span class="keyword">return</span> CompletableFuture.supplyAsync(() -&gt; getTheseCharacters(securityCtx.getToken(),keys,keysToSourceObjects));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">SecurityContext securityCtx = SecurityContext.newSecurityContext();</span><br><span class="line">BatchLoaderContextProvider contextProvider = <span class="keyword">new</span> BatchLoaderContextProvider() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object getÇontext() &#123;</span><br><span class="line">        <span class="keyword">return</span> securityCtx;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">DataLoaderOptions loaderOptions = DataLoaderOptions.newOptions().setBatchLoaderContextProvider(contextProvider);</span><br><span class="line">DataLoader&lt;String,Object&gt; characterDataLoader = DataLoader.newDataLoader(batchLoaderWithCtx,loaderOptions);</span><br><span class="line"></span><br><span class="line">DataFetcher dataFetcherCallsTheDataLoader = <span class="keyword">new</span> DataFetcher() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(DataFetchingEnvironment environment)</span> </span>&#123;</span><br><span class="line">        String argId = environment.getArgument(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">        Object source = environment.getSource();</span><br><span class="line">        <span class="keyword">return</span> characterDataLoader.load(argId,source);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">要不看点别的吧?💗</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/04/10/" rel="bookmark">Flutter-Column</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/05/47/" rel="bookmark">Flutter-Image</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/04/18/" rel="bookmark">Flutter-Row</a></div>
+    </li>
+  </ul>
+<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>再接再厉哦！-------------</div>
+    
+</div>
+
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/05/05/08/" rel="prev" title="GraphQL-Scalars">
+      <i class="fa fa-chevron-left"></i> GraphQL-Scalars
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/06/04/00/" rel="next" title="flutter 学习笔记">
+      flutter 学习笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%B9%E5%A4%84%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">批处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Dataloader"><span class="nav-number">1.1.</span> <span class="nav-text">使用 Dataloader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%85%E9%80%82%E7%94%A8%E4%BA%8E-AsyncExecutionStrategy-%E7%9A%84-Data-Loader"><span class="nav-number">1.2.</span> <span class="nav-text">仅适用于 AsyncExecutionStrategy 的 Data Loader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Loader-%E7%9A%84%E6%AF%8F%E4%B8%80%E4%B8%AA%E8%AF%B7%E6%B1%82"><span class="nav-number">1.3.</span> <span class="nav-text">Data Loader 的每一个请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AA%E8%83%BD%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8%E7%9A%84%E6%89%B9%E9%87%8F%E5%8A%A0%E8%BD%BD%E5%8A%9F%E8%83%BD"><span class="nav-number">1.4.</span> <span class="nav-text">只能异步调用的批量加载功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%91%E4%BD%A0%E7%9A%84-data-loader-%E4%BC%A0%E9%80%92-context"><span class="nav-number">1.5.</span> <span class="nav-text">向你的 data loader 传递 context</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="HumphreyDan"
+      src="http://picbed.dang8080.cn/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">HumphreyDan</p>
+  <div class="site-description" itemprop="description">donot dedicate your life to ignorance,mediocrity,vulgarity.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ShuttleSpace" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ShuttleSpace" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:dang8080@qq.com" title="E-Mail → mailto:dang8080@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HumphreyIO</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">173k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">2:37</span>
+</div><div>
+<!--添加网站运行时间-->
+<span>小破站已经在风雨中度过了</span>
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    function createtime() {
+        const startTime = '09/27/2018 00:12:55',
+            start = new Date(startTime)
+        let mill = new Date() - start,
+            seconds = Math.floor(mill / 1000),
+            mins = Math.floor(seconds / 60),
+            hours = Math.floor(mins / 60),
+            days = Math.floor(hours / 24)
+        const time = {
+            seconds: seconds - mins * 60,
+            mins: mins - hours * 60,
+            hours: hours - days * 24,
+        }
+        for (const k in time) {
+            time[k] = `${time[k]}`.padStart(2, '0')
+        }
+        document.getElementById("timeDate").innerHTML = ` ${days} 天`
+        document.getElementById("times").innerHTML = ` ${time.hours} 小时 ${time.mins} 分 ${time.seconds} 秒`
+    }
+    setInterval(createtime, 500)
+</script>
+</div>
+<div>
+    <!--添加总阅读次数-->
+    <div>
+        <span>本站总访问量</span>
+        <span id="site_total_read_count">Loading...</span>
+    </div>
+    <script>
+        async function sleep(ms = 1000) {
+            return await new Promise(resolve => {
+                const timer = setTimeout(() => {
+                    clearTimeout(timer)
+                    return resolve()
+                }, ms)
+            })
+        }
+        async function site_read_count() {
+            const className = 'Counter',
+                query = new AV.Query(className)
+            return query.find()
+                .then(_ => _.map(i => i.attributes.time))
+                .then(_ => _.reduce((a, b) => a + b))
+        }
+        new Promise(resolve => {
+            const timer = setInterval(() => {
+                if (typeof AV !== "undefined") {
+                    clearInterval(timer)
+                    return resolve()
+                }
+            }, 250)
+        })
+            .then(() => site_read_count())
+            .then(_ => {
+                const s = ` ${_} 次`
+                document.getElementById("site_total_read_count").innerHTML = s
+            })
+            .catch(e => console.error(e.message))
+    </script>
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : true,
+      appId      : 'WS6xwQjL3YsDPCdcRTqtpdhg-gzGzoHsz',
+      appKey     : 'NgSfNQLxbzWKBuQROhn56aP5',
+      placeholder: "Just go go go!!!",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

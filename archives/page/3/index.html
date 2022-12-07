@@ -5,19 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 6.0.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/favicon-32x32-next.ico" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
 <link rel="stylesheet" href="http://fonts.gmirror.org/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"shuttlespace.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"shuttlespace.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
@@ -42,6 +43,17 @@
     isPost : false,
     lang   : 'zh-Hans'
   };
+</script>
+<script type="text/javascript" src="/js/love.js"></script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('please input your password.') !== ''){
+                alert('wrong password!!!');
+                history.back();
+            }
+        }
+    })();
 </script>
 
   <title>Archive | HumphreyIO</title>
@@ -153,21 +165,18 @@
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
+  <div class="search-input-container"></div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
 </div>
 
+      
     </div>
   </div>
 
@@ -179,6 +188,10 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/ShuttleSpace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 
 
     <main class="main">
@@ -196,13 +209,33 @@
     <div class="posts-collapse">
       <div class="collection-title">
         
-        <span class="collection-header">Nice! 55 posts in total. Keep on posting.</span>
+        <span class="collection-header">Nice! 56 posts in total. Keep on posting.</span>
       </div>
 
       
     <div class="collection-year">
       <span class="collection-header">2019</span>
     </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2019-06-04T23:25:10+08:00"
+              content="2019-06-04">
+          06-04
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2019/06/04/10/" itemprop="url">
+            <span itemprop="name">Flutter-Column</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
 
   <article itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
@@ -216,7 +249,7 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/06/04/Flutter-Row/" itemprop="url">
+          <a class="post-title-link" href="/2019/06/04/18/" itemprop="url">
             <span itemprop="name">Flutter-Row</span>
           </a>
       </div>
@@ -236,7 +269,7 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/06/04/flutter-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url">
+          <a class="post-title-link" href="/2019/06/04/00/" itemprop="url">
             <span itemprop="name">flutter 学习笔记</span>
           </a>
       </div>
@@ -256,7 +289,7 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/05/05/GraphQL-Batching/" itemprop="url">
+          <a class="post-title-link" href="/2019/05/05/54/" itemprop="url">
             <span itemprop="name">GraphQL-Batching</span>
           </a>
       </div>
@@ -276,7 +309,7 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/05/05/GraphQL-Scalars/" itemprop="url">
+          <a class="post-title-link" href="/2019/05/05/08/" itemprop="url">
             <span itemprop="name">GraphQL-Scalars</span>
           </a>
       </div>
@@ -296,7 +329,7 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/05/05/GraphQL-Data-mapping/" itemprop="url">
+          <a class="post-title-link" href="/2019/05/05/31/" itemprop="url">
             <span itemprop="name">GraphQL-Data mapping</span>
           </a>
       </div>
@@ -316,7 +349,7 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/05/04/GraphQL-Execution/" itemprop="url">
+          <a class="post-title-link" href="/2019/05/04/19/" itemprop="url">
             <span itemprop="name">GraphQL-Execution</span>
           </a>
       </div>
@@ -336,7 +369,7 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/04/27/GraphQL-DataFetcher/" itemprop="url">
+          <a class="post-title-link" href="/2019/04/27/22/" itemprop="url">
             <span itemprop="name">GraphQL-DataFetcher</span>
           </a>
       </div>
@@ -356,7 +389,7 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/04/12/%E7%A7%BB%E5%8A%A8%E4%BC%98%E5%85%88%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E7%BD%91%E9%A1%B5%E8%AE%BE%E8%AE%A1/" itemprop="url">
+          <a class="post-title-link" href="/2019/04/12/33/" itemprop="url">
             <span itemprop="name">移动优先的响应式网页设计</span>
           </a>
       </div>
@@ -376,28 +409,8 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2019/03/28/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/" itemprop="url">
+          <a class="post-title-link" href="/2019/03/28/30/" itemprop="url">
             <span itemprop="name">常用命令记录</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-03-28T13:00:38+08:00"
-              content="2019-03-28">
-          03-28
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2019/03/28/gradle/" itemprop="url">
-            <span itemprop="name">gradle</span>
           </a>
       </div>
 
@@ -481,7 +494,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -522,15 +535,91 @@
 
 <div class="copyright">
   
-  &copy; 
+  &copy; 2018 – 
   <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">HumphreyDan</span>
+  <span class="author" itemprop="copyrightHolder">HumphreyIO</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">173k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">2:37</span>
+</div><div>
+<!--添加网站运行时间-->
+<span>小破站已经在风雨中度过了</span>
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    function createtime() {
+        const startTime = '09/27/2018 00:12:55',
+            start = new Date(startTime)
+        let mill = new Date() - start,
+            seconds = Math.floor(mill / 1000),
+            mins = Math.floor(seconds / 60),
+            hours = Math.floor(mins / 60),
+            days = Math.floor(hours / 24)
+        const time = {
+            seconds: seconds - mins * 60,
+            mins: mins - hours * 60,
+            hours: hours - days * 24,
+        }
+        for (const k in time) {
+            time[k] = `${time[k]}`.padStart(2, '0')
+        }
+        document.getElementById("timeDate").innerHTML = ` ${days} 天`
+        document.getElementById("times").innerHTML = ` ${time.hours} 小时 ${time.mins} 分 ${time.seconds} 秒`
+    }
+    setInterval(createtime, 500)
+</script>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
-  </div>
+<div>
+    <!--添加总阅读次数-->
+    <div>
+        <span>本站总访问量</span>
+        <span id="site_total_read_count">Loading...</span>
+    </div>
+    <script>
+        async function sleep(ms = 1000) {
+            return await new Promise(resolve => {
+                const timer = setTimeout(() => {
+                    clearTimeout(timer)
+                    return resolve()
+                }, ms)
+            })
+        }
+        async function site_read_count() {
+            const className = 'Counter',
+                query = new AV.Query(className)
+            return query.find()
+                .then(_ => _.map(i => i.attributes.time))
+                .then(_ => _.reduce((a, b) => a + b))
+        }
+        new Promise(resolve => {
+            const timer = setInterval(() => {
+                if (typeof AV !== "undefined") {
+                    clearInterval(timer)
+                    return resolve()
+                }
+            }, 250)
+        })
+            .then(() => site_read_count())
+            .then(_ => {
+                const s = ` ${_} 次`
+                document.getElementById("site_total_read_count").innerHTML = s
+            })
+            .catch(e => console.error(e.message))
+    </script>
+</div>
+
 
         
 
@@ -547,6 +636,11 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -560,6 +654,67 @@
 
 <script src="/js/next-boot.js"></script>
 
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
 
 
 
@@ -569,7 +724,9 @@
 
 
   
-<script src="/js/local-search.js"></script>
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
 
@@ -580,12 +737,77 @@
 
 
 
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
 
 
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
+
+    <div id="pjax">
   
 
   
 
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : true,
+      appId      : 'WS6xwQjL3YsDPCdcRTqtpdhg-gzGzoHsz',
+      appKey     : 'NgSfNQLxbzWKBuQROhn56aP5',
+      placeholder: "Just go go go!!!",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
 </body>
 </html>

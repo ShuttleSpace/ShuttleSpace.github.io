@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/favicon-32x32-next.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="http://fonts.gmirror.org/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shuttlespace.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="What every JavaScript developer should know about Unicode 原文dmitripavlutin.com&#x2F;what-every-javascript-developer-should-know-about-unicode 本文起源于一个忏悔：我对 Unicode 已经恐惧很久了。当实际工作中需要 Unicode 知识时，我一般仅针对问题搜索答案，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="每个JS开发者都应该知道的 Unicode">
+<meta property="og:url" content="https://shuttlespace.github.io/2022/02/14/02/">
+<meta property="og:site_name" content="HumphreyIO">
+<meta property="og:description" content="What every JavaScript developer should know about Unicode 原文dmitripavlutin.com&#x2F;what-every-javascript-developer-should-know-about-unicode 本文起源于一个忏悔：我对 Unicode 已经恐惧很久了。当实际工作中需要 Unicode 知识时，我一般仅针对问题搜索答案，">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-02-14T01:47:02.020Z">
+<meta property="article:modified_time" content="2022-02-14T02:24:02.862Z">
+<meta property="article:author" content="HumphreyDan">
+<meta property="article:tag" content="翻译,JS,Unicode">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://shuttlespace.github.io/2022/02/14/02/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+<script type="text/javascript" src="/js/love.js"></script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('please input your password.') !== ''){
+                alert('wrong password!!!');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  <title>每个JS开发者都应该知道的 Unicode | HumphreyIO</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">HumphreyIO</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">云青青兮欲雨, 水澹澹兮生烟</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/ShuttleSpace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://shuttlespace.github.io/2022/02/14/02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://picbed.dang8080.cn/avatar.jpeg">
+      <meta itemprop="name" content="HumphreyDan">
+      <meta itemprop="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HumphreyIO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          每个JS开发者都应该知道的 Unicode
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-14 09:47:02 / Modified: 10:24:02" itemprop="dateCreated datePublished" datetime="2022-02-14T09:47:02+08:00">2022-02-14</time>
+            </span>
+
+          
+            <span id="/2022/02/14/02/" class="post-meta-item leancloud_visitors" data-flag-title="每个JS开发者都应该知道的 Unicode" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2022/02/14/02/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/02/14/02/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>16k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>14 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote><p>What every JavaScript developer should know about Unicode</p>
+<footer><strong>原文</strong><cite><a target="_blank" rel="noopener" href="https://dmitripavlutin.com/what-every-javascript-developer-should-know-about-unicode/">dmitripavlutin.com/what-every-javascript-developer-should-know-about-unicode</a></cite></footer></blockquote>
+<p>本文起源于一个忏悔：我对 Unicode 已经恐惧很久了。当实际工作中需要 Unicode 知识时，我一般仅针对问题搜索答案，而不会对其原理进行深入探究。</p>
+<p>我一直在回避这件事，直到我遇到了一个需要深入理解 Unicode 原理的问题。此刻没有现成的解决方案可用了。</p>
+<p>在付出大量努力（阅读一大堆文章）后，我才发现，其实 Unicode 也没那么难懂。好吧。。。有些文章确实需要至少3遍之后才能理解。</p>
+<p>如果你在理解 Unicode 方面也有同样的困惑，那么此刻正是时候！真的不难！首先准备好可口的🍵或者咖啡。接下来，就一起进入抽象、字符、astrals和代理的世界吧。</p>
+<p>本文将阐述 Unicode 的基本原理及其创建的必要性。然后介绍 JavaScript 如何使用 Unicode, 以及开发中可能遇到的问题。同时也会学习如何使用最新的 ECMAScript 2015 特性解决一部分难题。</p>
+<p>准备好了吗？</p>
+<span id="more"></span>
+
+<p>[toc]</p>
+<h2 id="1、Unicode-缘起"><a href="#1、Unicode-缘起" class="headerlink" title="1、Unicode 缘起"></a>1、Unicode 缘起</h2><p>我们先从一个简单的问题开始。你是如何阅读理解本文的？原因很简单，因为你知道每个字母的意思和由一组字母组成的单词的意思。</p>
+<p>那么你为什么能理解这些字母呢？原因也很简单，因为你（读者）和我（作者）在英语字符（意思）和图形符号（显示在屏幕上的符号）之间的联系达成了共识。</p>
+<p>计算机也是同样的道理。不同之处在于计算机是不理解字母的意思的。对于计算机而言，字母就是一列二进制位。</p>
+<p>想象一下, 用户1通过网络向用户2发送了一条 <code>hello</code> 的消息。</p>
+<p>用户1的计算机是不知道这些字母的含义。所以它把 <code>hello</code> 转换为数字序列<code>0x68 0x65 0x6C 0x6F</code>,此处每个字母都对应一个数字: <code>h</code> 对应 <code>0x68</code>，<code>e</code> 对应 <code>0x65</code>等。这些数字最终会被传送给用户2的电脑。</p>
+<p>用户2的电脑收到这堆数字序列，然后它使用相同的数字字母对照将数字转换为字母信息。最终显示出正确的消息: <code>hello</code>。</p>
+<p>两台电脑间关于数字与字符之间达成的对照协议就是 Unicode 标准化的内容。</p>
+<p>从 Unicode 的角度来看，<code>h</code> 是名为 <code>H</code> 的小写拉丁抽象字符。此字符的对应数字为 <code>0x68</code>，也就是经常用 <code>U+0068</code> 来表示的码点。</p>
+<p>Unicode 存在的意义就是提供一系列的抽象字符（字符集）且为每个字符分配一个独一无二的码点（编码字符集）。</p>
+<h2 id="2、Unicode-基本术语"><a href="#2、Unicode-基本术语" class="headerlink" title="2、Unicode 基本术语"></a>2、Unicode 基本术语</h2><p><code>www.unicode.org</code> 网站提到:</p>
+<blockquote>
+<p><code>Unicode</code> 为每个字符提供了一个独一无二的数字，无论是在哪个平台上，无论是何种程序，无论使用何种语言，这个数字都是独一无二的。</p>
+</blockquote>
+<p>Unicode 是一个通用字符集，覆盖了市面上大部分可用的文字写作系统，为每一个字符都赋予了一个独一无二的数字（码点）。<br><a target="_blank" rel="noopener" href="https://dmitripavlutin.com/3e07eef08e75e952b9b3fee7fd3ac454/unicode-logo.svg"></a></p>
+<p>Unicode 包含了包括今天常见的语言、标点符号、音标、数学符号、技术符号、箭头、表情等等在内的字符。</p>
+<p>Unicode 1.0 发布于 1991 年十月，拥有 7161 个字符。发布于 2021 年九月的 14.0 版支持 144697 个字符。</p>
+<p>Unicode 的普适性及开放性解决了之前因为大量不同字符集和编码集之间带来的问题。</p>
+<p>之前创建一个支持所有字符集和编码集的应用是很复杂的。</p>
+<blockquote>
+<p>如果你觉得 Unicode 很难，那么不使用 Unicode 编程则是难上加难</p>
+</blockquote>
+<p>我现在都记得选择任意字符集和编码集读取文件问题就像买彩票一样，全凭运气。</p>
+<h3 id="2-1-字符集和码点"><a href="#2-1-字符集和码点" class="headerlink" title="2.1 字符集和码点"></a>2.1 字符集和码点</h3><blockquote>
+<p><strong>抽象字符</strong>(或者字符)是用于组织、控制或表示文本数据的信息单元</p>
+</blockquote>
+<p>Unicode 把字符作为一个抽象术语来处理的。每一个抽象字符都有对应的名称，如 <code>LATIN SMALL LETTER A</code>, 此字符的呈现形式(字形)是 <code>a</code>.</p>
+<blockquote>
+<p><strong>码点</strong>是分配给单个字符的数字.</p>
+</blockquote>
+<p>码点是介于 <code>U+0000</code> - <code>U+10FFFF</code> 之间的数字.</p>
+<p><code>U+&lt;hex&gt;</code> 是码点的格式，<code>U+</code> 作为前缀，意为<strong>U</strong>nicode；<code>&lt;hex&gt;</code>是十六进制表示的数字。例如 <code>U+0041</code> 和 <code>U+2603</code> 都是码点。</p>
+<p>总之记住一点，码点就是一个简单的数字。也是一个数组里面元素的索引。</p>
+<p>神奇之处在于 Unicode 把码点和字符关联了起来。比如 <code>U+0041</code> 对应名为 <code>LATIN CAPITAL LETTER A</code> 的字符(即 <code>A</code>), 而 <code>U+2603</code> 对应名为 <code>SNOWMAN</code> 的字符(即 <code>☃</code>)。</p>
+<p><strong>不是所有的码点都有对应的字符.</strong> <code>1,114,112</code>是合规的码点(在 <code>U+0000</code> - <code>U+10FFFF</code>之间), 但只有 <code>144,697</code>(即 2021 年九月)有对应的字符.</p>
+<h3 id="2-2-Unicode-位面-planes"><a href="#2-2-Unicode-位面-planes" class="headerlink" title="2.2 Unicode 位面(planes)"></a>2.2 Unicode 位面(planes)</h3><blockquote>
+<p><strong>Plane</strong>是从 <code>U+n0000</code> - <code>U+nFFFF</code>，范围 65536（或 1000016） 的连续 Unicode 码点，其中 <code>n</code> 取值范围为 0 - 16.</p>
+</blockquote>
+<p>整个 Unicode 码点被分为 17 个位面.</p>
+<ul>
+<li><code>Plane 0</code> 包括 <code>U+0000</code> - <code>U+FFFF</code> 之间的码点</li>
+<li><code>Plane 1</code> 包括 <code>U+1000</code> - <code>U+1FFF</code> 之间的码点</li>
+<li>……</li>
+<li><code>Plane 16</code> 包括 <code>U+100000</code> - <code>U+10FFFF</code> 之间的码点</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://dmitripavlutin.com/static/a0793621ff979b9a80b9a6b0a600e663/bca77/unicode-planes.png"></a></p>
+<h4 id="基础多语言位面"><a href="#基础多语言位面" class="headerlink" title="基础多语言位面"></a>基础多语言位面</h4><p>Plane 0 是最特殊的一个，被称为<strong>基础多语言位面</strong>或者简称<strong>BMP</strong>。它包含了当前大多数的现代语言（如基本拉丁语、斯拉夫语、希腊语等等）和大量的符号。</p>
+<p>如上所述，BMP 的码点范围在 <code>U+0000</code> - <code>U+FFFF</code> 之间，最多可以有4位十六进制数字。</p>
+<p>开发者经常需要和 BMP 中的字符打交道。</p>
+<p>比如以下 BMP 中的字符:</p>
+<ul>
+<li>e 是码点为 U+0065 的 <code>LATIN SMALL LETTER E</code> 字符</li>
+<li>| 是码点为 U+007C 的 <code>VERTICAL BAR</code> 字符</li>
+<li>■ 是码点为 U+25A0 的 <code>BLACK SQUARE</code> 字符</li>
+<li>☂ 是码点为 U+2602 的 <code>UMBRELLA</code> 字符</li>
+</ul>
+<h4 id="星型位面"><a href="#星型位面" class="headerlink" title="星型位面"></a>星型位面</h4><p>BMP 之外的其他 16 个位面被称为<strong>星型位面</strong>或<strong>增补位面</strong></p>
+<p>星型位面里的码点也被称为<strong>星型码点</strong>，这些码点的范围在 <code>U+10000</code> - <code>U+10FFFF</code> 之间</p>
+<p>一个星型码点可以有 5 位或 6 位16进制数字，如: <code>U+ddddd</code> 或 <code>U+dddddd</code></p>
+<p>以下是星型位面中的字符:</p>
+<ul>
+<li>𝄞 是码点为 U+1D11E 的 <code>MUSICAL SYMBOL G CLEF</code> 字符</li>
+<li>𝐁 是码点为 U+1D401 的 <code>MATHEMATICAL BOLD CAPITAL B</code> 字符</li>
+<li>🀵 是码点为 U+1F035 的 <code>DOMINO TITLE HORIZONTAL-00-04</code> 字符</li>
+<li>😀 是码点为 U+1F600 的 <code>GRINNING FACE</code> 字符</li>
+</ul>
+<h4 id="码元"><a href="#码元" class="headerlink" title="码元"></a>码元</h4><p>到现在为止，Unicode 字符，码点，位面都是抽象概念。</p>
+<p>接下来看看在物理层面，硬件上是如何实现 Unicode 的。</p>
+<p>计算机在内存中是不使用码点或抽象字符的。它需要一种物理方式来展示 Unicode 码点：码元。</p>
+<blockquote>
+<p><strong>码元</strong>是一个位序列，用于在给定编码表单中对每个字符进行编码</p>
+</blockquote>
+<p>字符编码就是如何将抽象的码点转为物理位的方式即码元。换言之，字符编码把码点转换为独一无为的代码单元序列。</p>
+<p>比较流行的编码是 <code>UTF-8</code>,<code>UTF-16</code>和<code>UTF-32</code></p>
+<p>大多数 JS 引擎使用 <code>UTF-16</code> 编码，那么我们就来研究下 <code>UTF-16</code>.</p>
+<p>UTF-16（全名：16 位 Unicode 转换格式）是一种变长编码：</p>
+<ul>
+<li>来自 BMP 的码点使用一个16位的码元编码</li>
+<li>来自星型位面的码点使用两个16位的码元分别编码</li>
+</ul>
+<p>这就是全部的理论干货。以下是示例：</p>
+<p>假设你需要把 <code> LATIN SMALL LETTER A</code> 字符 <code>a</code> 保存到硬盘里。Unicode 会告诉你它对应的码点是 <code>U+0061</code></p>
+<p>接下来，我们需要询问 UTF-16， <code>U+0061</code> 怎么转换。编码规范明确指出来自 BMP 的码点只取它的 16 进制数字 <code>U+0061</code>, 然后保存到一个 16 位码元中: <code>0x0061</code>.</p>
+<p>如上可见，BMP 中的码点刚好适合一个16位码元。</p>
+<h4 id="代理对"><a href="#代理对" class="headerlink" title="代理对"></a>代理对</h4><p>现在我们来研究一个比较复杂的案例. 假设你需要编码 <code>GRINNING FACE</code> 字符 😀。从星型位面得到它的码点 <code>U+1F600</code>.</p>
+<p>因为星型码点需要 21 位（因为最大的 0x10FFFF 转为2进制是 21 位）才能保存信息,那么 UTF-16 表示你需要两个 16 位的码元。码点 <code>U+1F600</code> 被分成了代理对：<code>0xD83D</code> (高代理码元)和 <code>0xDE00</code>（低代理码元）。</p>
+<blockquote>
+<p><strong>代理对</strong>用两个16位码元组成的码元序列来表示一个抽象字符。代理对的第一个值被称为<strong>高代理码元</strong>，第二个值被称为<strong>低代理码元</strong></p>
+</blockquote>
+<p>一个星型码点需要2个码元-即代理对。比如把 <code>U+1F600</code>（<code>😀</code>）编码为 UTF-16，它的代理对即为 <code>0xD83D 0xDE00</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;\uD83D\uDE00&#x27;</span>); <span class="comment">// =&gt; &#x27;😀&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>高代理码元取值范围为 <code>0xD800</code> - <code>0xDBFF</code>. 低代理码元取值范围为 <code>0xDC00</code> - <code>0xDFFF</code></p>
+<p>星型码点和代理对之间的转换算法如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSurrogatePair</span>(<span class="params">astralCodePoint</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> highSurrogate = </span><br><span class="line">     <span class="built_in">Math</span>.floor((astralCodePoint - <span class="number">0x10000</span>) / <span class="number">0x400</span>) + <span class="number">0xD800</span>;</span><br><span class="line">  <span class="keyword">let</span> lowSurrogate = (astralCodePoint - <span class="number">0x10000</span>) % <span class="number">0x400</span> + <span class="number">0xDC00</span>;</span><br><span class="line">  <span class="keyword">return</span> [highSurrogate, lowSurrogate];</span><br><span class="line">&#125;</span><br><span class="line">getSurrogatePair(<span class="number">0x1F600</span>); <span class="comment">// =&gt; [0xD83D, 0xDE00]</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getAstralCodePoint</span>(<span class="params">highSurrogate, lowSurrogate</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (highSurrogate - <span class="number">0xD800</span>) * <span class="number">0x400</span> </span><br><span class="line">      + lowSurrogate - <span class="number">0xDC00</span> + <span class="number">0x10000</span>;</span><br><span class="line">&#125;</span><br><span class="line">getAstralCodePoint(<span class="number">0xD83D</span>, <span class="number">0xDE00</span>); <span class="comment">// =&gt; 0x1F600</span></span><br></pre></td></tr></table></figure>
+
+<p>代理对使用起来不太方便。当在 JS 中使用字符串时，就需要特殊处理。</p>
+<p>尽管如此，UTF-16的内存是很高效。常用的字符中，99% 都来自 BMP，也就是需要一个码元，所以比较节省内存空间。</p>
+<h4 id="2-5-组合标记"><a href="#2-5-组合标记" class="headerlink" title="2.5 组合标记"></a>2.5 组合标记</h4><blockquote>
+<p>字素或符号是在特定书写系统上下文中最小独特的书写单位。</p>
+</blockquote>
+<p>字素是用户如何理解字符的方式。屏幕上实际展示的字符被称为字形。</p>
+<p>大多数情况下，一个单独的 Unicode 字符即展示为一个字素。如 <code>U+0066</code> 即展示为英文 <code>f</code>.</p>
+<p>当然也包含一个字素包括一系列字符的情况。</p>
+<p>如 <code>å</code> 就是丹麦语书写系统中的一个单独字素。它是由 <code>LATIN SMALL LETTER A</code> <code>U+0061</code> (渲染为 <code>a</code>) 和 <code>COMBINING RING ABOVE</code> <code>U+030A</code>(渲染为 <code>◌̊</code>) 的特殊字符组合而成的。‘</p>
+<p><code>U+030A</code> 修改了前面字符的展示，所以被称为组合标记。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;\u0061\u030A&#x27;</span>); <span class="comment">// =&gt; &#x27;å&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;\u0061&#x27;</span>);       <span class="comment">// =&gt; &#x27;a&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>组合标记</strong>是一个应用到前置字符上，生成新字素的一个字符。</p>
+</blockquote>
+<p>组合标记包括重音符号、变音符号、希伯来语点、阿拉伯语元音符号和印度语 matras 等字符。</p>
+<p>组合标记通常不单独使用。应该避免单独使用他们。</p>
+<p>和代理对一样，组合标记在 JS 中也是比较难用的。</p>
+<p>组合标记字符序列（基本字符+组合标记）一般被用户识别为单独的符号（如 <code>\u0061\u031A</code> 就是 <code>å</code>）.但是开发者就得考虑把2个码点 <code>U+0061</code>和 <code>U+030A</code> 才能组合成 <code>å</code></p>
+<p><a target="_blank" rel="noopener" href="https://dmitripavlutin.com/static/16d7bd44cac07b727121315ae7db1ab6/03f31/unicode-terms.webp"></a></p>
+<h3 id="JavaScript-中的-Unicode"><a href="#JavaScript-中的-Unicode" class="headerlink" title="JavaScript 中的 Unicode"></a>JavaScript 中的 Unicode</h3><p>ES2015 语言规范提到：源码是使用 Unicode(5.1 及之后的版本) 表示的。源码文本就是一系列范围在 <code>U+0000</code> - <code>U+10FFFF</code> 之间的码点。而源码文本存储或彼此交换的方式没有在 ECMAScript 规范中说明，通常是使用 UTF-8 来编码的（web 领域最通用的编码格式）</p>
+<p>而我推荐把源码文本以 <code>Basic Latin Unicode block</code> (或 ASCII) 格式进行保存。ASCII 范围之外的字符应该被转义。这样就能避免一些编码方面出现的问题。</p>
+<p>在语言层面，ECMAScript 中明确定义了 JavaScript 中的字符串。</p>
+<blockquote>
+<p>String 类型是所有有序序列的集合，这些序列包含零个或多个 16 位无符号整数值（”元素”），最大长度为 253-1 个元素。String 类型通常用于表示正在运行的 ECMAScript 程序中的文本数据，在这种情况下，String 中的每个元素都被视为 UTF-16 代码单元值。</p>
+</blockquote>
+<p>string 的每个元素都被引擎解析为一个码元。字符串渲染时没有强制要求使用哪个码元来展示。比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;cafe\u0301&#x27;</span>); <span class="comment">// =&gt; &#x27;café&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;café&#x27;</span>);       <span class="comment">// =&gt; &#x27;café&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>cafe\u0301</code> 和 <code>café</code> 字面上看来码元是不同的，但是都被渲染为 <code>café</code> 符号.</p>
+<blockquote>
+<p><strong>字符串长度</strong>就是其内元素（如16位值）的个数。ECMAScript 把字符串的每个元素都解析为单个的 UTF-16 码元</p>
+</blockquote>
+<p>从上面的代理对和组合标记可知，某些符号需要2个或更多的码元来展示。所以当使用索引访问字符或者计算字符个数时就需要特别小心了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> smile = <span class="string">&#x27;\uD83D\uDE00&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(smile);        <span class="comment">// =&gt; &#x27;😀&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(smile.length); <span class="comment">// =&gt; 2</span></span><br><span class="line"><span class="keyword">const</span> letter = <span class="string">&#x27;e\u0301&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(letter);        <span class="comment">// =&gt; &#x27;é&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(letter.length); <span class="comment">// =&gt; 2</span></span><br></pre></td></tr></table></figure>
+
+<p><code>smile</code> 字符串包含2个码元：<code>\uD83D</code>（高代理）和 <code>\uDE00</code>（低代理）。因为字符串是码元序列，所以 <code>smile.length</code> 就是2.即使 <code>smile</code>渲染出来只有一个符号 <code>😀</code></p>
+<p><code>letter</code> 字符串也是同样的道理。组合标记 <code>U+0301</code> 会应用到前面的字符，然后只渲染一个符号 <code>é</code>. 因为 <code>letter</code> 包含2个码元，所以 <code>letter.length</code> 就是2.</p>
+<p>我的建议：<strong>总是把 JavaScript 中的字符串看作一系列码元</strong>，这样屏幕上渲染出来的字符串就不能明确说出包含了哪些码元。</p>
+<p>星型符号和组合标记需要2个或更多的码元来编码，但是一般是把他们作为一个单独的字素来处理的。如果一个字符串有代理对或者组合标记，如果不遵循这些规则，那么在计算字符串长度或通过索引访问字符时就会出现这样或那样的困惑。</p>
+<p>大多数的 JavaScript 字符串方法都是非 Unicode 敏感的方法。如果你的字符串包含了 Unicode 字符，当使用 <code>myString.slice()</code> 或 <code>myString.substring()</code> 等方法时就需要谨慎了。</p>
+<h4 id="3-1-转义序列"><a href="#3-1-转义序列" class="headerlink" title="3.1 转义序列"></a>3.1 转义序列</h4><p>字符串中的转义序列是用来表示基于码点数字的码元的。JavaScript 中有 3 中转义类型，其中一个就是 ECMAScript 中提出的。</p>
+<p><b>16进制转义序列</b></p>
+<p><strong>16进制转义序列</strong>简称为: <code>\x&lt;hex&gt;</code>, 前缀 <code>\x</code> 后面跟着2个固定长度的16进制数字。如 <code>\x30</code>(符号 <code>0</code>) 或者 <code>\x5B</code> (符号 <code>[</code>)</p>
+<p>字符串中的16进制转义序列或者正则表达式看起来是这样的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">&#x27;\x4A\x61vaScript&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str);                    <span class="comment">// =&gt; &#x27;JavaScript&#x27;</span></span><br><span class="line"><span class="keyword">const</span> reg = <span class="regexp">/\x4A\x61va.*/</span>;</span><br><span class="line"><span class="built_in">console</span>.log(reg.test(<span class="string">&#x27;JavaScript&#x27;</span>)); <span class="comment">// =&gt; true</span></span><br></pre></td></tr></table></figure>
+<p>16进制转义序列可以转义有限范围内的码点：<code>U+00</code> - <code>U+FF</code> 因为它只允许有2个数字。但是16进制转义是很好用的，因为它表示起来比较短，节省空间。</p>
+<p><b>Unicode 转义序列</b></p>
+<p>如果你想转义整个 BMP 中的码点，那么就使用<strong>Unicode 转义序列</strong> 吧。转义格式为 <code>\u&lt;hex&gt;</code>, 前缀<code>\u</code> 后面跟着4个固定长度的16进制数字。如 <code>\u0051</code>（符号 <code>Q</code>） 或 <code>\u222B</code> (符号 <code>∫</code>)</p>
+<p>下面是一些 unicode 转义序列示例:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">&#x27;I\u0020learn \u0055nicode&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str);                 <span class="comment">// =&gt; &#x27;I learn Unicode&#x27;</span></span><br><span class="line"><span class="keyword">const</span> reg = <span class="regexp">/\u0055ni.*/</span>;</span><br><span class="line"><span class="built_in">console</span>.log(reg.test(<span class="string">&#x27;Unicode&#x27;</span>)); <span class="comment">// =&gt; true</span></span><br></pre></td></tr></table></figure>
+
+<p>Unicode 转义序列可以转义有限范围内的码点：<code>U+0000</code> - <code>U+FFFF</code> (包括所有的 BMP 码点，因为4位数字的局限)。这已经足够应付大多数情况了。</p>
+<p>为了阐述 JavaScript 如何表示星型符号，你需要把 unicode 转义序列合并起显示（高代理和低代理）创建一个代理对</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">&#x27;My face \uD83D\uDE00&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str); <span class="comment">// =&gt; &#x27;My face 😀&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>\uD83D\uDE00</code> 就是用2个转义序列创建的代理对。</p>
+<p><strong>码点转义序列</strong></p>
+<p>ECMAScript 2015 提供了整个 Unicode 空间的码点转义序列: <code>U+00000</code> - <code>U+10FFFF</code>， 如 BMP 和星型位面。</p>
+<p><code>\u&lt;hex&gt;</code> 被称为<strong>码点转义序列</strong>, <code>&lt;hex&gt;</code> 是长度在 1-6 之间的可变16进制数字。</p>
+<p>例如 <code>\u&#123;7A&#125;</code> (符号 <code>z</code>) 或者 <code>\u&#123;1F639&#125;</code> （符号 <code>😹</code>）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">&#x27;Funny cat \u&#123;1F639&#125;&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str);                      <span class="comment">// =&gt; &#x27;Funny cat 😹&#x27;</span></span><br><span class="line"><span class="keyword">const</span> reg = <span class="regexp">/\u&#123;1F639&#125;/u</span>;</span><br><span class="line"><span class="built_in">console</span>.log(reg.test(<span class="string">&#x27;Funny cat 😹&#x27;</span>)); <span class="comment">// =&gt; true</span></span><br></pre></td></tr></table></figure>
+
+<p>正则表达式 <code>\u&#123;1F639&#125;/u</code> 有一个特殊的标识 <code>u</code>，它可以开启 Unicode 特性(如下<a target="_blank" rel="noopener" href="https://dmitripavlutin.com/what-every-javascript-developer-should-know-about-unicode/#35regularexpressionmatch">正则表达式所述</a>)</p>
+<p>我同意码点转义可以避免代理对展示星型符号的弊端。例如使用码点转义 名为 <code>SMILING FACE WITH HALO</code> 的码点 <code>U+1F607</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> niceEmoticon = <span class="string">&#x27;\u&#123;1F607&#125;&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(niceEmoticon);   <span class="comment">// =&gt; &#x27;😇&#x27;</span></span><br><span class="line"><span class="keyword">const</span> spNiceEmoticon = <span class="string">&#x27;\uD83D\uDE07&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(spNiceEmoticon); <span class="comment">// =&gt; &#x27;😇&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(niceEmoticon === spNiceEmoticon); <span class="comment">// =&gt; true</span></span><br></pre></td></tr></table></figure>
+
+<p>变量 <code>niceEmoticon</code> 代表的字面值的码点转义 <code>\u&#123;1F607&#125;</code> 表示的就是一个星型码点 <code>U+1F607</code></p>
+<p>实际上，码点转义在底层会创建一个代理对（2个码元）。<code>spNiceEmoticon</code> （使用 unicode 转义 <code>\uD83D\uDE07</code> 表示的代理对）等同于 &#96;niceEmotion</p>
+<p><a target="_blank" rel="noopener" href="https://dmitripavlutin.com/static/6b44fa7c2642601d0bf68ddf688e808d/fb018/unicode-escape-sequence.webp"></a></p>
+<p>使用字符串创建 <code>RegExp</code> 正则表达式时，必须使用 <code>\\</code> 来代替 <code>\</code>  表示转义字符。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> reg1 = <span class="regexp">/\x4A \u0020 \u&#123;1F639&#125;/</span>;</span><br><span class="line"><span class="keyword">const</span> reg2 = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">&#x27;\\x4A \\u0020 \\u&#123;1F639&#125;&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(reg1.source === reg2.source); <span class="comment">// =&gt; true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-字符串比较"><a href="#3-2-字符串比较" class="headerlink" title="3.2 字符串比较"></a>3.2 字符串比较</h4><p>JavaScript 中的字符串都是码元序列。在比较字符串时，应该预料到，彼此字符串之间的码元数先相等。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> firstStr = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> secondStr = <span class="string">&#x27;\u0068ell\u006F&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(firstStr === secondStr); <span class="comment">// =&gt; true</span></span><br></pre></td></tr></table></figure>
+
+<p><code>firstStr</code> 和 <code>secondStr</code> 的码元是相等的，所以他们俩相等。</p>
+<p>但是当你比较两个渲染结果看起来相等，但是码元不一致的字符串时，结果就可能不一样了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str1 = <span class="string">&#x27;ça va bien&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> str2 = <span class="string">&#x27;c\u0327a va bien&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str1);          <span class="comment">// =&gt; &#x27;ça va bien&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(str2);          <span class="comment">// =&gt; &#x27;ça va bien&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(str1 === str2); <span class="comment">// =&gt; false</span></span><br></pre></td></tr></table></figure>
+
+<p><code>str1</code> 和 <code>str2</code> 的渲染结果看起来是一样的，但是拥有不同的码元。这是因为字素 <code>ç</code> 有两种构成方式：</p>
+<ul>
+<li>使用 <code>U+00E7</code> <code>LATIN SMALL LETTER C WITH CEDILLA</code> 构成</li>
+<li>使用 <code>U+0063</code> <code>LATIN SMALL LETTER C</code> 加上组合标记 <code>U+0327</code> <code>COMBINING CEDILLA</code> 构成.</li>
+</ul>
+<p>如何处理这种情况下的字符串比较？答案是字符串标准化。</p>
+<p><strong>标准化</strong></p>
+<blockquote>
+<p><strong>规范化</strong>是字符串转换为规范表示形式，以确保规范等效（和&#x2F;或兼容性等效）字符串具有唯一的表示形式。</p>
+</blockquote>
+<p>换言之，如果一个字符串有复杂的构造结构：如组合字符串序列或其他混合结构，那么<i>标准化</i>成规范格式就可以。标准化字符串可以无缝的比较或者实现文本搜索等操作。</p>
+<p><a target="_blank" rel="noopener" href="http://unicode.org/reports/tr15/">Unicode Standard Annex #15</a> 有关于标准化处理的详细描述。</p>
+<p>在 ECMAScript 2015 Javascipt 中字符串的标准化处理通过 <code>myString.normalize([normForm])</code> 来实现。<code>normForm</code> 是可选的参数(默认 <code>NFC</code>), 接受以下几个选项</p>
+<ul>
+<li><code>NFC</code>: Normalization Form Canonical Composition</li>
+<li><code>NFD</code>: Normalization Form Canonical Decomposition</li>
+<li><code>NFKC</code>: Normalization Form Compatibility Composition</li>
+<li><code>NFKD</code>: Normalization Form Compatibility Decomposition</li>
+</ul>
+<p>下面让我们通过标准化字符串来实现字符串的比较</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str1 = <span class="string">&#x27;ça va bien&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> str2 = <span class="string">&#x27;c\u0327a va bien&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str1.normalize() === str2.normalize()); <span class="comment">// =&gt; true</span></span><br><span class="line"><span class="built_in">console</span>.log(str1 === str2);                         <span class="comment">// =&gt; false</span></span><br></pre></td></tr></table></figure>
+
+<p>当 <code>str2.normalize()</code> 被调用时，返回的是 <code>str2</code> 的规范化版本(<code>c\u0327</code> 被替换为 <code>ç</code>), 所以 <code>str1.normalize() === str2.normalize()</code>就符合预期了。</p>
+<p><code>str1</code> 不受 <code>normalize</code> 的影响，因为它本身就是规范化的表现形式。</p>
+<h4 id="3-3-字符串长度"><a href="#3-3-字符串长度" class="headerlink" title="3.3 字符串长度"></a>3.3 字符串长度</h4><p>通常使用 <code>myString.length</code> 来获取字符串的长度。此属性表明字符串所包含的码元的个数。</p>
+<p>如果字符串是来自 BMP 中的码点，那么实际获取的字符串长度和预期是符合的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> color = <span class="string">&#x27;Green&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(color.length); <span class="comment">// =&gt; 5</span></span><br></pre></td></tr></table></figure>
+<p><code>color</code> 中的每个码元都对应一个单独的字素。所以预期字符串长度是5.</p>
+<p><strong>长度和代理对</strong></p>
+<p>如果字符串包含了代理对，那么当展示星型码点时问题就变得棘手起来了。因为每个代理对包含2个码元（高位代理和低位代理），所以字符串的长度就比预期长。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">&#x27;cat\u&#123;1F639&#125;&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str);        <span class="comment">// =&gt; &#x27;cat😹&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(str.length); <span class="comment">// =&gt; 5</span></span><br></pre></td></tr></table></figure>
+<p>当 <code>str</code> 字符串渲染时，它其实是包含了4个符号的 <code>cat😹</code>。然而 <code>smile.length</code> 等于5，因为 <code>U+1F639</code> 由2个码元编码的星型码元（一个代理对）。</p>
+<p>遗憾的事，目前没有本地可用的高效修复方案。</p>
+<p>不过至少 ECMAScript 2015 引入了能够识别星型符号的算法。星型符号即使被2个码元编码，也是算作一个字符。</p>
+<p>Unicode 敏感的方法是字符串迭代器 <code>String.prototype[@@iterator]()</code>.可以通过组合扩散操作符<code>[...str]</code> 或 <code>Array.from(str)</code> 函数（都会消费字符串迭代器）来创建字符串。然后计算数组返回的符号数量。</p>
+<p>实际按照上面的方案操作时则会有轻微的性能损失。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">&#x27;cat\u&#123;1F639&#125;&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str);             <span class="comment">// =&gt; &#x27;cat😹&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log([...str]);        <span class="comment">// =&gt; [&#x27;c&#x27;, &#x27;a&#x27;, &#x27;t&#x27;, &#x27;😹&#x27;]</span></span><br><span class="line"><span class="built_in">console</span>.log([...str].length); <span class="comment">// =&gt; 4</span></span><br></pre></td></tr></table></figure>
+<p><code>[...str]</code> 创建了包含4个符号的数组。代理对编码 <code>CAT FACE WITH TEARS OF JOY 😹</code> <code>U+1F639</code> 时会保证其完整，因为字符串迭代器是 Unicode 敏感的。</p>
+<p><strong>长度和组合标记</strong></p>
+<p>那组合字符串序列时会怎样呢？因为每个组合标记都是一个码元，此时也会遇到相同的问题。</p>
+<p>标准化字符串就可以解决这个问题。如果幸运的话，组合字符序列就会以单字符对待。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> drink = <span class="string">&#x27;cafe\u0301&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(drink);                    <span class="comment">// =&gt; &#x27;café&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(drink.length);             <span class="comment">// =&gt; 5</span></span><br><span class="line"><span class="built_in">console</span>.log(drink.normalize())         <span class="comment">// =&gt; &#x27;café&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(drink.normalize().length); <span class="comment">// =&gt; 4</span></span><br></pre></td></tr></table></figure>
+
+<p><code>drink</code> 字符串包含了5个码元（所以 <code>drink.length</code> 就是5），即使它渲染出来是4个符号。</p>
+<p>当标准化 <code>drink</code> 时，组合字符序列<code>e\u0301</code>只有一个规范化格式 <code>é</code>.所以 <code>drink.normalize().length</code> 就是包含4个符号。</p>
+<p>不幸的是，标准化不是万能钥匙。长组合字符序列不总是只有一个规划化符号</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> drink = <span class="string">&#x27;cafe\u0327\u0301&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(drink);                    <span class="comment">// =&gt; &#x27;cafȩ́&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(drink.length);             <span class="comment">// =&gt; 6</span></span><br><span class="line"><span class="built_in">console</span>.log(drink.normalize());        <span class="comment">// =&gt; &#x27;cafȩ́&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(drink.normalize().length); <span class="comment">// =&gt; 5</span></span><br></pre></td></tr></table></figure>
+
+<p><code>drink</code> 有6个码元，所以<code>drink.length</code> 等于6.然而 <code>drink</code> 有4个符号。</p>
+<p><code>drink.normalize()</code> 会把组合序列 <code>e\u0327\u0301</code> 转换为包含2个字符 <code>ȩ\u0301</code> 的规范化格式（只一处一个组合标记）。</p>
+<p>然而 <code>drink.normalize().length</code> 等于5，依然和显示的符号数不相符。</p>
+<h4 id="3-4-字符位置"><a href="#3-4-字符位置" class="headerlink" title="3.4 字符位置"></a>3.4 字符位置</h4><p>因为字符串是一个码元序列，使用索引访问字符串同样会出现问题。</p>
+<p>当字符串仅包含 BMP 字符时，通过索引访问字符串就是正确的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str[<span class="number">0</span>]); <span class="comment">// =&gt; &#x27;h&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(str[<span class="number">4</span>]); <span class="comment">// =&gt; &#x27;o&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>每个符号都被编码为一个单独的码元，所以索引访问就是正确的。</p>
+<p><strong>字符位置和代理对</strong></p>
+<p>当字符串包含星型符号时情况就不一样了。</p>
+<p>一个星型符号用2个码元编码（一个代理对）。所以通过索引访问字符串的字符时可能获取到的就是一个单独的高代理或者低代理，这就是无效的符号。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">onst omega = <span class="string">&#x27;\u&#123;1D6C0&#125; is omega&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(omega);        <span class="comment">// =&gt; &#x27;𝛀 is omega&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(omega[<span class="number">0</span>]);     <span class="comment">// =&gt; &#x27;&#x27; (unprintable symbol)</span></span><br><span class="line"><span class="built_in">console</span>.log(omega[<span class="number">1</span>]);     <span class="comment">// =&gt; &#x27;&#x27; (unprintable symbol)</span></span><br></pre></td></tr></table></figure>
+
+<p>因为 <code>MATHEMATICAL BOLD CAPITAL OMEGA </code> <code>U+1D6C0</code> 是一个星型字符，它是用2个码元的一个代理对编码的。</p>
+<p><code>omega[0]</code> 访问高位代理码元，<code>omega[1]</code> 访问低位代理码元，这就会打破代理对。</p>
+<p>有两种方式可以正确的访问字符串的星型符号。</p>
+<ul>
+<li>使用 Unicode 敏感的字符串迭代器，生成符号数组 <code>[...str][index]</code></li>
+<li>使用 <code>number = myString.codePointAt(index)</code> 获取码点数字，然后使用 <code>String.fromCodePoint(number)</code> 将数字转换为符号(推荐)</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> omega = <span class="string">&#x27;\u&#123;1D6C0&#125; is omega&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(omega);                        <span class="comment">// =&gt; &#x27;𝛀 is omega&#x27;</span></span><br><span class="line"><span class="comment">// 方法1</span></span><br><span class="line"><span class="built_in">console</span>.log([...omega][<span class="number">0</span>]);                <span class="comment">// =&gt; &#x27;𝛀&#x27;</span></span><br><span class="line"><span class="comment">// 方法2</span></span><br><span class="line"><span class="keyword">const</span> number = omega.codePointAt(<span class="number">0</span>);</span><br><span class="line"><span class="built_in">console</span>.log(number.toString(<span class="number">16</span>));          <span class="comment">// =&gt; &#x27;1d6c0&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.fromCodePoint(number)); <span class="comment">// =&gt; &#x27;𝛀&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>[...omega]</code> 返回 <code>omega</code> 字符串包含的符号数组。代理对计算是正确的，所以访问的第一个字符 <code>[...smile][0]</code> 就是<code>𝛀</code></p>
+<p><code>omega.codePointAt(0)</code> 方法调用是 Unicode 敏感的，所以它返回的 <code>omega</code> 字符串的第一个字符的星型码点数字 <code>0x1D6C0</code>。而 <code>String.fromCodePoint(number)</code> 则根据码点返回对应的符号 <code>𝛀</code></p>
+<p><strong>字符串位置和组合标记</strong></p>
+<p>使用索引访问包含组合标记的字符串也会出现上述问题。</p>
+<p>通过索引访问字符串返回的是码元。但是组合标记序列应该被作为整体读取，不能被拆分成单独的码元。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> drink = <span class="string">&#x27;cafe\u0301&#x27;</span>;  </span><br><span class="line"><span class="built_in">console</span>.log(drink);        <span class="comment">// =&gt; &#x27;café&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(drink.length); <span class="comment">// =&gt; 5</span></span><br><span class="line"><span class="built_in">console</span>.log(drink[<span class="number">3</span>]);     <span class="comment">// =&gt; &#x27;e&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(drink[<span class="number">4</span>]);     <span class="comment">// =&gt; ◌́</span></span><br></pre></td></tr></table></figure>
+
+<p><code>drink[3]</code> 只能访问基础字符 <code>e</code>, 不包括 <code>COMBINING ACUTE ACCENT</code> <code>U+0301</code> 组合标记(<code>◌́</code>). 而 <code>drink[4]</code> 返回的则是单独的组合标记 <code>◌́</code></p>
+<p>这种情况下试试字符串标准化。组合字符序列 <code>U+0065</code> <code>LATIN SMALL LETTER E</code> + <code>U+0301</code> <code>COMBINING ACUTE ACCENT</code> 的规范化格式就是 <code>U+00E9</code> <code>LATIN SMALL LETTER E WITH ACUTE é</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> drink = <span class="string">&#x27;cafe\u0301&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(drink.normalize());        <span class="comment">// =&gt; &#x27;café&#x27;  </span></span><br><span class="line"><span class="built_in">console</span>.log(drink.normalize().length); <span class="comment">// =&gt; 4  </span></span><br><span class="line"><span class="built_in">console</span>.log(drink.normalize()[<span class="number">3</span>]);     <span class="comment">// =&gt; &#x27;é&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>不幸的是，不是所有的组合字符序列都只有一个单独符号的规范化格式。所以标准化方案不是通用的。</p>
+<p>幸运的是，在大多数欧洲&#x2F;北美语言中，这种方法是可行的。</p>
+<h4 id="3-5-正则表达式匹配"><a href="#3-5-正则表达式匹配" class="headerlink" title="3.5 正则表达式匹配"></a>3.5 正则表达式匹配</h4><p>正则表达式和字符串一样，也是按码元区分的。和上述场景类似，当使用正则表达式处理代理对和组合字符序列时也有同样的问题。</p>
+<p>BMP 字符匹配是正常的，因为它只需要一个码元就能表示一个字符。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> greetings = <span class="string">&#x27;Hi!&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> regex = <span class="regexp">/^.&#123;3&#125;$/</span>;</span><br><span class="line"><span class="built_in">console</span>.log(regex.test(greetings)); <span class="comment">// =&gt; true</span></span><br></pre></td></tr></table></figure>
+<p><code>greetings</code> 有3个符号，被编码成3个码元。正则表达式 <code>/.&#123;3&#125;/</code> 预期匹配3个码元，刚好能匹配上 <code>grettings</code></p>
+<p>当匹配星型符号（被2个码元组合的代理对编码）时，问题就出来了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> smile = <span class="string">&#x27;😀&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> regex = <span class="regexp">/^.$/</span>;</span><br><span class="line"><span class="built_in">console</span>.log(regex.test(smile)); <span class="comment">// =&gt; false</span></span><br></pre></td></tr></table></figure>
+<p><code>smile</code> 包含了 <code>U+1F600 GRINNING FACE</code> 星型符号。<code>U+1F600</code> 用代理对 <code>0xD83D</code> + <code>0xDE00</code> 编码。而正则表达式 <code>/^.$/</code> 预期一个码元，所以匹配失败。</p>
+<p>当使用星型符号定义正则表达式时，JS 甚至会抛出错误。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> regex = <span class="regexp">/[😀-😎]/</span>;</span><br><span class="line"><span class="comment">// =&gt; SyntaxError: Invalid regular expression: /[😀-😎]/: </span></span><br><span class="line"><span class="comment">// Range out of order in character class</span></span><br></pre></td></tr></table></figure>
+<p>星型码点被编码为代理对。所以 js 使用码元 <code>/[\uD83D\uDE00-\uD83D\uDE0E]</code> 来表示正则表达式。每个码元都被认为是 pattern 中的一个单独元素，所以正则表达式会忽略代理对概念。</p>
+<p>正则表达式 <code>\uDE00-\uD83D</code> 是无效的，因为 <code>uDE00</code> 大于 <code>\uD83D</code>, 所以会生成错误。</p>
+<p><strong>正则表达式 u 标识</strong></p>
+<p>幸运的是，ECMAScript 2015 引入了一个有用的 <code>u</code> 标识，表明正则表达式是 Unicode 敏感的。这个标识可以保证能正确的处理星型符号。</p>
+<p>可以在正则表达式 <code>/u&#123;1F600&#125;/u</code> 中使用 unicode 转义序列。此转义方式比高低代理对 <code>/\uD83D\uDE00/</code> 占用空间要小。</p>
+<p>接下来看看应用 <code>u</code> 标识时，<code>.</code> 操作符（包括大量的 <code>?+* 和 &#123;3&#125; &#123;3,&#125; &#123;2,3&#125;</code>）来匹配星型符号</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> smile = <span class="string">&#x27;😀&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> regex = <span class="regexp">/^.$/u</span>;</span><br><span class="line"><span class="built_in">console</span>.log(regex.test(smile)); <span class="comment">// =&gt; true</span></span><br></pre></td></tr></table></figure>
+<p><code>/^.$/u</code> 因为添加了 <code>u</code> Unicode 敏感标识，所以可以匹配😊星型符号。</p>
+<p>在正则表达式构造时，添加 <code>u</code> 标识就可以正确处理了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> smile = <span class="string">&#x27;😀&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> regex = <span class="regexp">/[😀-😎]/u</span>;</span><br><span class="line"><span class="keyword">const</span> regexEscape = <span class="regexp">/[\u&#123;1F600&#125;-\u&#123;1F60E&#125;]/u</span>;</span><br><span class="line"><span class="keyword">const</span> regexSpEscape = <span class="regexp">/[\uD83D\uDE00-\uD83D\uDE0E]/u</span>;</span><br><span class="line"><span class="built_in">console</span>.log(regex.test(smile));         <span class="comment">// =&gt; true</span></span><br><span class="line"><span class="built_in">console</span>.log(regexEscape.test(smile));   <span class="comment">// =&gt; true</span></span><br><span class="line"><span class="built_in">console</span>.log(regexSpEscape.test(smile)); <span class="comment">// =&gt; true</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>正则表达式和组合标记</strong></p>
+<p>不过无论有没有 <code>u</code> 标识，正则表达式都把组合标记看作一个单独的码元</p>
+<p>如果需要匹配组合字符序列，那么必须得单独匹配基础字和和字符标记</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> drink = <span class="string">&#x27;cafe\u0301&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> regex1 = <span class="regexp">/^.&#123;4&#125;$/</span>;</span><br><span class="line"><span class="keyword">const</span> regex2 = <span class="regexp">/^.&#123;5&#125;$/</span>;</span><br><span class="line"><span class="built_in">console</span>.log(drink);              <span class="comment">// =&gt; &#x27;café&#x27;  </span></span><br><span class="line"><span class="built_in">console</span>.log(regex1.test(drink)); <span class="comment">// =&gt; false</span></span><br><span class="line"><span class="built_in">console</span>.log(regex2.test(drink)); <span class="comment">// =&gt; true</span></span><br></pre></td></tr></table></figure>
+<p>字符串最终渲染出来4个符号<code>café</code>，而正则表达式只有 <code>/^.&#123;5&#125;$/</code> 才能正确匹配出 <code>cafe\u0301</code> 字符序列</p>
+<h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h3><p>JS 中关于 Unicode 最重要的知识点应该是把字符串看作码元序列。</p>
+<p>只有当开发者把字符串以字符或符号来看待时才会出现问题，忽略掉了码元序列这个概念。</p>
+<p>当字符串包含代理对或组合字符序列时，以下场景就会出现困惑</p>
+<ul>
+<li>获取字符串长度</li>
+<li>字符串索引访问</li>
+<li>正则表达式匹配</li>
+</ul>
+<p>注意：大多数 js 字符串方法是非 Unicode 敏感的：比如 <code>myString.indexOf()</code>, <code>myString.slice()</code> 等</p>
+<p>ECMAScript 2015 引入了一个和字符串、正则表达式中的码点转义序列<code>\u&#123;1F600&#125;</code>类似的非常好的特性，即正则表达式 <code>u</code> 标识，可以对字符串开启 Unicode 敏感模式。匹配星型符号时就比较容易了。</p>
+<p>字符串迭代器<code>String.prototype[@@iterator]()</code> 就是 Unicode 敏感的。可以使用扩展操作符 <code>[...str]</code> 或 <code>Array.from(str)</code> 来创建符号数组，计算字符串长度，不需要打断代理对通过访问索引字符。注意，这些操作对性能有影响。</p>
+<p>如果需要更好的 Unicode 字符处理方案，可以试试 <a target="_blank" rel="noopener" href="https://github.com/bestiejs/punycode.js/">punycode</a> 或者<a target="_blank" rel="noopener" href="https://github.com/mathiasbynens/regenerate">生成</a> 特殊正则表达式。</p>
+<p>希望这篇文章能帮助你彻底掌握 Unicode.</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">要不看点别的吧?💗</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/04/10/" rel="bookmark">Flutter-Column</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/05/47/" rel="bookmark">Flutter-Image</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/04/18/" rel="bookmark">Flutter-Row</a></div>
+    </li>
+  </ul>
+<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>再接再厉哦！-------------</div>
+    
+</div>
+
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%BF%BB%E8%AF%91-JS-Unicode/" rel="tag"><i class="fa fa-tag"></i> 翻译,JS,Unicode</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/08/26/" rel="prev" title="libgit2 NDK cross-compile">
+      <i class="fa fa-chevron-left"></i> libgit2 NDK cross-compile
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/25/04/" rel="next" title="安卓中的viewModelScope">
+      安卓中的viewModelScope <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81Unicode-%E7%BC%98%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text">1、Unicode 缘起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81Unicode-%E5%9F%BA%E6%9C%AC%E6%9C%AF%E8%AF%AD"><span class="nav-number">2.</span> <span class="nav-text">2、Unicode 基本术语</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E7%A0%81%E7%82%B9"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 字符集和码点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Unicode-%E4%BD%8D%E9%9D%A2-planes"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Unicode 位面(planes)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E5%A4%9A%E8%AF%AD%E8%A8%80%E4%BD%8D%E9%9D%A2"><span class="nav-number">2.2.1.</span> <span class="nav-text">基础多语言位面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%98%9F%E5%9E%8B%E4%BD%8D%E9%9D%A2"><span class="nav-number">2.2.2.</span> <span class="nav-text">星型位面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A0%81%E5%85%83"><span class="nav-number">2.2.3.</span> <span class="nav-text">码元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E5%AF%B9"><span class="nav-number">2.2.4.</span> <span class="nav-text">代理对</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-%E7%BB%84%E5%90%88%E6%A0%87%E8%AE%B0"><span class="nav-number">2.2.5.</span> <span class="nav-text">2.5 组合标记</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScript-%E4%B8%AD%E7%9A%84-Unicode"><span class="nav-number">2.3.</span> <span class="nav-text">JavaScript 中的 Unicode</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E8%BD%AC%E4%B9%89%E5%BA%8F%E5%88%97"><span class="nav-number">2.3.1.</span> <span class="nav-text">3.1 转义序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83"><span class="nav-number">2.3.2.</span> <span class="nav-text">3.2 字符串比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6"><span class="nav-number">2.3.3.</span> <span class="nav-text">3.3 字符串长度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-%E5%AD%97%E7%AC%A6%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.3.4.</span> <span class="nav-text">3.4 字符位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8D"><span class="nav-number">2.3.5.</span> <span class="nav-text">3.5 正则表达式匹配</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%80%BB%E7%BB%93"><span class="nav-number">2.4.</span> <span class="nav-text">4 总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="HumphreyDan"
+      src="http://picbed.dang8080.cn/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">HumphreyDan</p>
+  <div class="site-description" itemprop="description">donot dedicate your life to ignorance,mediocrity,vulgarity.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ShuttleSpace" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ShuttleSpace" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:dang8080@qq.com" title="E-Mail → mailto:dang8080@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HumphreyIO</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">173k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">2:37</span>
+</div><div>
+<!--添加网站运行时间-->
+<span>小破站已经在风雨中度过了</span>
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    function createtime() {
+        const startTime = '09/27/2018 00:12:55',
+            start = new Date(startTime)
+        let mill = new Date() - start,
+            seconds = Math.floor(mill / 1000),
+            mins = Math.floor(seconds / 60),
+            hours = Math.floor(mins / 60),
+            days = Math.floor(hours / 24)
+        const time = {
+            seconds: seconds - mins * 60,
+            mins: mins - hours * 60,
+            hours: hours - days * 24,
+        }
+        for (const k in time) {
+            time[k] = `${time[k]}`.padStart(2, '0')
+        }
+        document.getElementById("timeDate").innerHTML = ` ${days} 天`
+        document.getElementById("times").innerHTML = ` ${time.hours} 小时 ${time.mins} 分 ${time.seconds} 秒`
+    }
+    setInterval(createtime, 500)
+</script>
+</div>
+<div>
+    <!--添加总阅读次数-->
+    <div>
+        <span>本站总访问量</span>
+        <span id="site_total_read_count">Loading...</span>
+    </div>
+    <script>
+        async function sleep(ms = 1000) {
+            return await new Promise(resolve => {
+                const timer = setTimeout(() => {
+                    clearTimeout(timer)
+                    return resolve()
+                }, ms)
+            })
+        }
+        async function site_read_count() {
+            const className = 'Counter',
+                query = new AV.Query(className)
+            return query.find()
+                .then(_ => _.map(i => i.attributes.time))
+                .then(_ => _.reduce((a, b) => a + b))
+        }
+        new Promise(resolve => {
+            const timer = setInterval(() => {
+                if (typeof AV !== "undefined") {
+                    clearInterval(timer)
+                    return resolve()
+                }
+            }, 250)
+        })
+            .then(() => site_read_count())
+            .then(_ => {
+                const s = ` ${_} 次`
+                document.getElementById("site_total_read_count").innerHTML = s
+            })
+            .catch(e => console.error(e.message))
+    </script>
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : true,
+      appId      : 'WS6xwQjL3YsDPCdcRTqtpdhg-gzGzoHsz',
+      appKey     : 'NgSfNQLxbzWKBuQROhn56aP5',
+      placeholder: "Just go go go!!!",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/favicon-32x32-next.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="http://fonts.gmirror.org/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shuttlespace.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="execution">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GraphQL-Execution">
+<meta property="og:url" content="https://shuttlespace.github.io/2019/05/04/19/">
+<meta property="og:site_name" content="HumphreyIO">
+<meta property="og:description" content="execution">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-05-04T13:25:19.000Z">
+<meta property="article:modified_time" content="2022-01-16T03:04:27.653Z">
+<meta property="article:author" content="HumphreyDan">
+<meta property="article:tag" content="Android,Java,Kotlin,JS,Rust,Electron">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://shuttlespace.github.io/2019/05/04/19/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+<script type="text/javascript" src="/js/love.js"></script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('please input your password.') !== ''){
+                alert('wrong password!!!');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  <title>GraphQL-Execution | HumphreyIO</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">HumphreyIO</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">云青青兮欲雨, 水澹澹兮生烟</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/ShuttleSpace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://shuttlespace.github.io/2019/05/04/19/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://picbed.dang8080.cn/avatar.jpeg">
+      <meta itemprop="name" content="HumphreyDan">
+      <meta itemprop="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HumphreyIO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GraphQL-Execution
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-04 21:25:19" itemprop="dateCreated datePublished" datetime="2019-05-04T21:25:19+08:00">2019-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-16 11:04:27" itemprop="dateModified" datetime="2022-01-16T11:04:27+08:00">2022-01-16</time>
+              </span>
+
+          
+            <span id="/2019/05/04/19/" class="post-meta-item leancloud_visitors" data-flag-title="GraphQL-Execution" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2019/05/04/19/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/05/04/19/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>10k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>9 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>execution</p>
+<span id="more"></span>
+<h2 id="Execution"><a href="#Execution" class="headerlink" title="Execution"></a>Execution</h2><h3 id="Queries"><a href="#Queries" class="headerlink" title="Queries"></a>Queries</h3><p>对 schema 执行 query,使用合适的参数构建一个新的 GraphQL 对象,然后调用<code>execute()</code>.<br>query 的结果是包含查询数据或者（并且）一系列错误的<code>ExecutionResult</code> 对象.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GraphQLSchema schema = GraphQLSchema.newSchema().query(queryType).build();</span><br><span class="line">GraphQL graphQl = GraphQL.newGraphQL(schema).build();</span><br><span class="line">ExecutionInput executionInput = ExecutionInput.newExecutionInput().query(<span class="string">&quot;query &#123; hero &#123; name &#125;&#125;&quot;</span>);</span><br><span class="line">ExectionResult executionResult = graphQl.execute(executionInput);</span><br><span class="line">Object data = executionResult.getData();</span><br><span class="line">List&lt;GraphQLError&gt; errors = executionResult.getErrors();</span><br></pre></td></tr></table></figure>
+
+<p>更多复杂的查询示例请参考<a target="_blank" rel="noopener" href="https://github.com/graphql-java/graphql-java/blob/master/src/test/groovy/graphql/StarWarsQueryTest.groovy">StarWars query tests</a>;</p>
+<h3 id="Data-Fetchers"><a href="#Data-Fetchers" class="headerlink" title="Data Fetchers"></a>Data Fetchers</h3><p>每个 graphql 属性类型都有一个 <code>graphql.schema.DataFetcher</code> 与之关联.其他 graphql 实现通常把这个类型成为 <code>resolvers</code>.<br>通常可以使用<code>graphql.schema.PropertyDataFetcher</code>来检查 提供属性值的 Java POJO 对象.如果某个属性未指定 data fetcher,默认会使用这个.<br>然而你可能需要使用自定义的 data fetcehr 获取你的顶级域对象.可能涉及到数据库调用或通过 HTTP 请求其他系统.<br><code>graphql-java</code>不关心你是如何获取你的域对象,这是你需要关心的地方.同时也不关心用户访问数据授权.这些都应该放到你自己的逻辑处理层.<br>data fetcher 示例如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DataFetcher userDataFetcher = <span class="keyword">new</span> DataFetcher() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(DataFetchingEnvironment environment)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fetchUserFromDatabase(environment.getArgument(<span class="string">&quot;userId&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>每个 <code>DataFetcher</code>都会传递一个 <code>graphql.schema.DataFetchingEnvironment</code> 对象(包含了将要获取的属性,获取该属性所需提供的参数和其他信息如属性的父对象,query 根对象或 query 上下文对象).<br>上例中,<code>execution</code>将会在 data fetcher 返回结果后才继续执行.可以通过返回<code>CompletionStage</code> 对象使 <code>DataFetcher</code> 异步执行,详情请继续阅读.</p>
+<h3 id="当获取数据时发生异常"><a href="#当获取数据时发生异常" class="headerlink" title="当获取数据时发生异常"></a>当获取数据时发生异常</h3><p>如果在 data fetcher 调用中发生异常,那么默认执行策略将生成<code>graphql.ExceptionWhileDataFetching</code> 错误,然后添加到结果中的错误集中.切记 graphql 允许带错误的部分结果.<br>下面是标准的行为.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleDataFetcherExceptionHandler</span> <span class="keyword">implements</span> <span class="title">DataFetcherExceptionhandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger log = LoggerFactory.getLogger(SimpleDataFetcherExceptionHandler.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">accept</span><span class="params">(DataFetcherExceptionHandlerParameters handlerParameters)</span> </span>&#123;</span><br><span class="line">        Throwable exception = handlerParameters.getException();</span><br><span class="line">        SourceLocation sourceLocation = handlerParameters.getField().getSourceLocation();</span><br><span class="line">        ExecutionPath path = handlerParameters.getPath();</span><br><span class="line"></span><br><span class="line">        ExceptionWhileDataFetching error = <span class="keyword">new</span> ExceptionWhileDataFetching(path,exception,sourceLocation);</span><br><span class="line">        handlerParameters.getExecutionContext().addError(error);</span><br><span class="line">        log.warn(error.getMessage(),exception);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你抛出的是<code>GraphqlError</code>,那么它会从 exception 中转换 message 和自定义扩展属性到 <code>ExceptionWhileDataFetching</code>对象.此处允许你向调用者返回自定义的属性到 graphql error.<br>例如想象你的 data fetcher 将抛出这个异常.<code>foo</code> 和 <code>fizz</code> 属性将被添加到返回的 graphql error 中.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomRuntimeException</span> <span class="keyword">extends</span> <span class="title">RuntimeException</span> <span class="keyword">implements</span> <span class="title">GrapQLError</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">getExtension</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; customAttributes = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</span><br><span class="line">        customAttributes.put(<span class="string">&quot;foo&quot;</span>,<span class="string">&quot;bar&quot;</span>);</span><br><span class="line">        cutomAttributes.put(<span class="string">&quot;fizz&quot;</span>,<span class="string">&quot;whizz&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> customAttributes;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;SourceLocation&gt; <span class="title">getLocation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ErrorType <span class="title">getErrorType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ErrorType.DataFetchingException;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你可以通过创建自己的 <code>graphql.execution.DataFetcherExceptionHandler</code>异常处理代码改变此默认行为,给出你自己的执行策略.<br>例如上面的代码记录了基础异常和堆栈跟踪.有的人可能不喜欢在输出错误列表中看到这些.所以你可以使用这个机制改变这个行为.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DataFetcherExceptionHandler handler = <span class="keyword">new</span> DataFetcherExceptionHandler() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">accept</span><span class="params">(DataFetcherExceptionHandlerParameters handlerParameters)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">ExecutionStrategy executionStrategy = <span class="keyword">new</span> AsyncExecutionStrategy(handler);</span><br></pre></td></tr></table></figure>
+
+<h3 id="返回值和错误"><a href="#返回值和错误" class="headerlink" title="返回值和错误"></a>返回值和错误</h3><p>在<code>DataFetcher</code>实现中通过直接或者使用 <code>CompletableFuture</code> 实例包装异步执行返回 <code>graphql.execution.DataFetcherResult</code> 来实现同时返回数据和多个错误.当你的<code>DataFetcher</code> 需要从多个数据源或其他 GraphQL 资源获取数据时特别有用.<br>在这个 🌰 中,<code>DataFetcher</code> 从另一个 GraphQL 资源中获取 user 同时返回数据和错误.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">DataFetcher userDataFetcher = <span class="keyword">new</span> DataFetcher() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(DataFetchingEnvironment environment)</span> </span>&#123;</span><br><span class="line">        Map response = fetchUserFromRemoteGraphQLResource(environment.getArgument(<span class="string">&quot;userID&quot;</span>));</span><br><span class="line">        List&lt;GralhQLError&gt; errors = response.get(<span class="string">&quot;errors)</span></span><br><span class="line"><span class="string">                                            .stream()</span></span><br><span class="line"><span class="string">                                            .map(MyMapGraphQLError::new)</span></span><br><span class="line"><span class="string">                                            .collect(Collections.toList());</span></span><br><span class="line"><span class="string">        return new DataFetcherResult(response.get(&quot;</span>data<span class="string">&quot;),errors);</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="将结果序列化为-JSON"><a href="#将结果序列化为-JSON" class="headerlink" title="将结果序列化为 JSON"></a>将结果序列化为 JSON</h3><p>调用 graphql 最常见的方法是通过 HTTP,返回 JSON 响应.所以你需要将 <code>graphql.ExecutionResult</code> 转为 JSON.<br>最常用的实现是使用 Jackson 或 GSON 这样的 JSON 序列化库.然而它们解析数据的方式有它们自己的一套方式.例如 <code>nulls</code>对 graphql 结果是很重要的,所以你必须在设置 json mapper 时包含它.<br>为了保证你获取的 JSON 结果 100% 符合 graphql 的需求,你应该对结果调用<code>toSpecification</code>,然后将其作为 JSON 返回.<br>这将会确保返回的结果符合<a target="_blank" rel="noopener" href="http://facebook.github.io/graphql/#sec-Response">规范</a>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ExecutionResult executionResult = graphQL.execute(executinInput);</span><br><span class="line">Map&lt;String,Object&gt; toSpecificationResult = executionResult.toSpecification();</span><br><span class="line">sendAsJson(toSpecificationResult);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Mutations"><a href="#Mutations" class="headerlink" title="Mutations"></a>Mutations</h3><p><a target="_blank" rel="noopener" href="http://graphql.org/learn/queries/#mutations">在这儿</a>学习 mutations.<br>本质上你需要定义一个接收参数作为输入的 <code>GraphQLObjectType</code> .这些参数你可以通过 data fetcher 调用修改你的数据存储.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mutation CreateReviewForEpisode($ep: Episode!, $review: ReviewInput!) &#123;</span><br><span class="line">	createReview(episode: $ep, review: $review) &#123;</span><br><span class="line">		stars</span><br><span class="line">		commentary</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在执行 mutation 操作中需要传递参数,本例中是 <code>$ep</code> 和 <code>$review</code> 参数.<br>你可以像这样创建类型处理 mutation 操作.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">GraphQLInputObjectType episodeType = newInputObject()</span><br><span class="line">                .name(<span class="string">&quot;Episode&quot;</span>)</span><br><span class="line">                .field(newInputObjectField()</span><br><span class="line">                        .name(<span class="string">&quot;episodeNumber&quot;</span>)</span><br><span class="line">                        .type(Scalars.GraphQLInt))</span><br><span class="line">                .build();</span><br><span class="line"></span><br><span class="line">GraphQLInputObjectType reviewInputType = newInputObject()</span><br><span class="line">        .name(<span class="string">&quot;ReviewInput&quot;</span>)</span><br><span class="line">        .field(newInputObjectField()</span><br><span class="line">                .name(<span class="string">&quot;stars&quot;</span>)</span><br><span class="line">                .type(Scalars.GraphQLString)</span><br><span class="line">                .name(<span class="string">&quot;commentary&quot;</span>)</span><br><span class="line">                .type(Scalars.GraphQLString))</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line">GraphQLObjectType reviewType = newObject()</span><br><span class="line">        .name(<span class="string">&quot;Review&quot;</span>)</span><br><span class="line">        .field(newFieldDefinition()</span><br><span class="line">                .name(<span class="string">&quot;stars&quot;</span>)</span><br><span class="line">                .type(GraphQLString))</span><br><span class="line">        .field(newFieldDefinition()</span><br><span class="line">                .name(<span class="string">&quot;commentary&quot;</span>)</span><br><span class="line">                .type(GraphQLString))</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line">GraphQLObjectType createReviewForEpisodeMutation = newObject()</span><br><span class="line">        .name(<span class="string">&quot;CreateReviewForEpisodeMutation&quot;</span>)</span><br><span class="line">        .field(newFieldDefinition()</span><br><span class="line">                .name(<span class="string">&quot;createReview&quot;</span>)</span><br><span class="line">                .type(reviewType)</span><br><span class="line">                .argument(newArgument()</span><br><span class="line">                        .name(<span class="string">&quot;episode&quot;</span>)</span><br><span class="line">                        .type(episodeType)</span><br><span class="line">                )</span><br><span class="line">                .argument(newArgument()</span><br><span class="line">                        .name(<span class="string">&quot;review&quot;</span>)</span><br><span class="line">                        .type(reviewInputType)</span><br><span class="line">                )</span><br><span class="line">        )</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line">GraphQLCodeRegistry codeRegistry = newCodeRegistry()</span><br><span class="line">        .dataFetcher(</span><br><span class="line">                coordinates(<span class="string">&quot;CreateReviewForEpisodeMutation&quot;</span>, <span class="string">&quot;createReview&quot;</span>),</span><br><span class="line">                mutationDataFetcher()</span><br><span class="line">        )</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">GraphQLSchema schema = GraphQLSchema.newSchema()</span><br><span class="line">        .query(queryType)</span><br><span class="line">        .mutation(createReviewForEpisodeMutation)</span><br><span class="line">        .codeRegistry(codeRegistry)</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure>
+
+<p>请注意输入参数类型是 <code>GraphQLInputObjectType</code>.这是很重要的.输入类型只能是这种类型,绝不能使用输出类型如 <code>GraphQLObjectType</code>.标量类型既可以是输入类型也可以是输出类型.<br>这个 data fetcher 执行 mutation,返回一些有意义的输出值.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> DataFetcher <span class="title">mutationDataFetcher</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DataFetcher() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Review <span class="title">get</span><span class="params">(DataFetchingEnvironment environment)</span> </span>&#123;</span><br><span class="line">            Map&lt;String,Object&gt; episodeInputMap = environemnt.getArugment(<span class="string">&quot;episode&quot;</span>);</span><br><span class="line">            Map&lt;String,Object&gt; reviewInputMap = environment.getArugment(<span class="string">&quot;review&quot;</span>);</span><br><span class="line"></span><br><span class="line">            EpisodeInput episodeInput = EpisodeInput.fromMap(episodeInputMap);</span><br><span class="line">            ReviewInput reviewInput = ReviewInput.fromMap(reviewInputMap);</span><br><span class="line">            Review updatedReview = reviewStore().update(episodeInput, reviewInput);</span><br><span class="line">            <span class="keyword">return</span> updatedReview;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="异步执行"><a href="#异步执行" class="headerlink" title="异步执行"></a>异步执行</h3><p>graphql-java 执行查询时可以完全支持异步执行.你可以通过调用 <code>executeAsync()</code> 获取 <code>CompletableFuture</code>的结果.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GraphQL graphql = buildSchema();</span><br><span class="line">ExecutionInput executionInput = ExecutionInput.newExecutionInput().query(<span class="string">&quot;query &#123; hero &#123; name &#125;&#125;&quot;</span>).build();</span><br><span class="line">CompletableFuture&lt;ExecutionResult&gt; promise = graphql.executeAsync(executionInput);</span><br><span class="line">promise.thenAccept(executinoResult -&gt; &#123;</span><br><span class="line">    encodeResultToJsonAndSendResponse(executionResult);</span><br><span class="line">&#125;);</span><br><span class="line">promise.join();</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>CompletableFuture</code> 可以在执行完成时组合 action 和 function.最终调用 <code>join()</code> 等待执行完成.<br>graphql-java 使用异步执行的原理是通过 join 调用通过方法<code>execute()</code>.所以下面的代码效果是一样的.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ExecutionResult executionResult = graphql.execute(executionInput);</span><br><span class="line">CompletableFuture&lt;ExecutionResult&gt; promise = graphql.executeAsync(executionInput);</span><br><span class="line">ExecutionResult executionResult = promise.join();</span><br></pre></td></tr></table></figure>
+
+<p>如果 <code>graphql.schema.DataFetcher</code> 返回的是 <code>CompletableFuture&lt;T&gt;</code> 对象,那么这个结果将被组合进整个异步查询执行中.这意味着你可以并行发起多个属性查询请求.你使用的线程池策略取决于你的 data fetcher 代码.<br>下面的代码采用了标准的 <code>java.util.concurrent.ForkJoinPool.commonPool()</code> 线程执行器在另外一个线程提供数据.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DataFetcher userDataFetcher = <span class="keyword">new</span> DataFetcher() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(DataFetchingEnvironment environment)</span> </span>&#123;</span><br><span class="line">        CompletableFuture&lt;User&gt; userPromise = CompletableFuture.supplyAsync(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">return</span> fetchUserViaHttp(environment.getArgument(<span class="string">&quot;userId&quot;</span>));</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> userPromise;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码用 Java8 Lambdas 可以简略为:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DataFetcher userDataFetcher = environment -&gt; CompletableFuture.supplyAsync(() -&gt; fetchUserViaHttp(environment.getArgument(<span class="string">&quot;userId&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>graphql-java 引擎确保所有的 <code>CompletableFuture</code> 对象遵照 graphql 规范组合在一起提供执行结果.<br>这是 graphql-java 创建异步 data fetcher 的快捷方式.使用 <code>graphql.schema.AsyncDataFetcher.async(DataFetcher&lt;T&gt;)</code> 包装一个 DataFetcher.可以使用静态导入创建更易读的代码.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DataFetcher userDataFetcher = async(environment -&gt; fetchUserViaHttp(environment.getArgument(<span class="string">&quot;userId&quot;</span>)));</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行策略"><a href="#执行策略" class="headerlink" title="执行策略"></a>执行策略</h3><p>继承 <code>graphql.execution.ExecutionStrategy</code> 的类可以用于运行一个查询或修改. graphql-java 提供了大量不同的策略,如果你非常迫切,也可以使用自定义的.<br>当你创建 Graphql 对象时可以确定执行策略.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GraphQL.newGraphQL(schema)</span><br><span class="line">        .queryExecutionStrategy(<span class="keyword">new</span> AsyncExecutionStrategy())</span><br><span class="line">        .mutationExecutionStrategy(<span class="keyword">new</span> AsyncSerialExecutionStrategy())</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure>
+
+<p>实际上上面的代码和默认设置一致,大多数情况下是一个明智的策略选择.</p>
+<h3 id="异步执行策略"><a href="#异步执行策略" class="headerlink" title="异步执行策略"></a>异步执行策略</h3><p>默认的查询执行策略是 <code>graphql.execution.AsyncExecutionStrategy</code>,会把每一个属性作为 <code>CompletableFuture</code> 对象分发,并且不关心哪个最先完成.此策略是性能最佳的执行策略.<br>data fetchers 本身会返回 <code>CompletionStage</code> 值,这将导致完全异步的行为.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">query &#123;</span><br><span class="line">	hero &#123;</span><br><span class="line">		enemies &#123;</span><br><span class="line">			name</span><br><span class="line">		&#125;</span><br><span class="line">		friends &#123;</span><br><span class="line">			name</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>AsyncExecutionStrategy</code> 自由分发 <i>enemies</i> 属性和 <i>friends</i>属性.<i>enemies</i> 属性不必等待 <i>friends</i>属性返回.这是非常低效的.<br>无论如何,最终会将结果按顺序排列.查询结果将遵照 graphql 规范,返回结果对应 query 属性顺序.只有 data fetcher 的执行是随机顺序.</p>
+<h3 id="异步序列化执行策"><a href="#异步序列化执行策" class="headerlink" title="异步序列化执行策"></a>异步序列化执行策</h3><p>graphql 规范要求 mutation 必须按照 query 属性的顺序序列化执行.<br>所以 mutation 默认使用 <code>graphql.execution.AsyncSerialExecutionStrategy</code> 策略.它会保证在执行下一个和后面前当前的每个属性执行完毕.也可以在 mutation data fetcher 中返回 <code>CompletionStage</code> 对象,并且会按顺序在下一个 mutation 属性 data fetcher 被分发之前执行完毕.</p>
+<h3 id="订阅执行策略"><a href="#订阅执行策略" class="headerlink" title="订阅执行策略"></a>订阅执行策略</h3><p>graphql 允许对 graphql data 创建有状态的订阅.可以使用 <code>SubscriptionExecutionStrategy</code>实现,同时支持 reactive-stream API.<br><a target="_blank" rel="noopener" href="https://www.graphql-java.com/documentation/v12/subscriptions">查看</a>了解更多基于 graphql 服务的订阅支持.</p>
+<h3 id="查询缓存"><a href="#查询缓存" class="headerlink" title="查询缓存"></a>查询缓存</h3><p>在 graphql-java 引擎执行查询之前必须被解析和检验,并且这个处理过程可能有些耗时.<br>为了避免重复解析&#x2F;校验<code>GraphQL.Builder</code>允许<code>PreparsedDocumentProvider</code>实例复用<code>Document</code>实例.<br>注意 ⚠️,这只缓存解析的 <code>Document</code>,不缓存查询结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Cache&lt;String,PreparsedDocumentEntry&gt; cache = Caffeine.newBuilder().maximumSize(<span class="number">10_000</span>).build();</span><br><span class="line">GraphQL graphql = GraphQL.newGraphQL(StarWarsSchema.starWarsSchema)</span><br><span class="line">        .preparsedDocumentProvider(cache::get)</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这个缓存实例应该是线程安全共享的.</li>
+<li><code>PreparsedDocumentProvider</code> 是一个只有一个 get 方法的函数接口,我们可以传递一个方法引用到里面以匹配 builder 的签名.</li>
+</ul>
+<p>为了实现高缓存覆盖率,推荐属性参数通过变量传递而不是直接在 query 中定义.<br>下面的查询:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">query HelloTo &#123;</span><br><span class="line">	sayHello(to: &quot;ME&quot;) &#123;</span><br><span class="line">		greeting</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>应该这样写:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">query HelloTo($to: String!) &#123;</span><br><span class="line">	sayHello(to: $to) &#123;</span><br><span class="line">		greeting</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>和变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;to&quot;: &quot;Me&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在就可以不管提供的变量是什么而重用查询.</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">要不看点别的吧?💗</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/04/10/" rel="bookmark">Flutter-Column</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/05/47/" rel="bookmark">Flutter-Image</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/04/18/" rel="bookmark">Flutter-Row</a></div>
+    </li>
+  </ul>
+<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>再接再厉哦！-------------</div>
+    
+</div>
+
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/04/27/22/" rel="prev" title="GraphQL-DataFetcher">
+      <i class="fa fa-chevron-left"></i> GraphQL-DataFetcher
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/05/05/31/" rel="next" title="GraphQL-Data mapping">
+      GraphQL-Data mapping <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Execution"><span class="nav-number">1.</span> <span class="nav-text">Execution</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Queries"><span class="nav-number">1.1.</span> <span class="nav-text">Queries</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Fetchers"><span class="nav-number">1.2.</span> <span class="nav-text">Data Fetchers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%93%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E6%97%B6%E5%8F%91%E7%94%9F%E5%BC%82%E5%B8%B8"><span class="nav-number">1.3.</span> <span class="nav-text">当获取数据时发生异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC%E5%92%8C%E9%94%99%E8%AF%AF"><span class="nav-number">1.4.</span> <span class="nav-text">返回值和错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E7%BB%93%E6%9E%9C%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%BA-JSON"><span class="nav-number">1.5.</span> <span class="nav-text">将结果序列化为 JSON</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mutations"><span class="nav-number">1.6.</span> <span class="nav-text">Mutations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%89%A7%E8%A1%8C"><span class="nav-number">1.7.</span> <span class="nav-text">异步执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E7%AD%96%E7%95%A5"><span class="nav-number">1.8.</span> <span class="nav-text">执行策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%89%A7%E8%A1%8C%E7%AD%96%E7%95%A5"><span class="nav-number">1.9.</span> <span class="nav-text">异步执行策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E5%BA%8F%E5%88%97%E5%8C%96%E6%89%A7%E8%A1%8C%E7%AD%96"><span class="nav-number">1.10.</span> <span class="nav-text">异步序列化执行策</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A2%E9%98%85%E6%89%A7%E8%A1%8C%E7%AD%96%E7%95%A5"><span class="nav-number">1.11.</span> <span class="nav-text">订阅执行策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%BC%93%E5%AD%98"><span class="nav-number">1.12.</span> <span class="nav-text">查询缓存</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="HumphreyDan"
+      src="http://picbed.dang8080.cn/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">HumphreyDan</p>
+  <div class="site-description" itemprop="description">donot dedicate your life to ignorance,mediocrity,vulgarity.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ShuttleSpace" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ShuttleSpace" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:dang8080@qq.com" title="E-Mail → mailto:dang8080@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HumphreyIO</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">173k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">2:37</span>
+</div><div>
+<!--添加网站运行时间-->
+<span>小破站已经在风雨中度过了</span>
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    function createtime() {
+        const startTime = '09/27/2018 00:12:55',
+            start = new Date(startTime)
+        let mill = new Date() - start,
+            seconds = Math.floor(mill / 1000),
+            mins = Math.floor(seconds / 60),
+            hours = Math.floor(mins / 60),
+            days = Math.floor(hours / 24)
+        const time = {
+            seconds: seconds - mins * 60,
+            mins: mins - hours * 60,
+            hours: hours - days * 24,
+        }
+        for (const k in time) {
+            time[k] = `${time[k]}`.padStart(2, '0')
+        }
+        document.getElementById("timeDate").innerHTML = ` ${days} 天`
+        document.getElementById("times").innerHTML = ` ${time.hours} 小时 ${time.mins} 分 ${time.seconds} 秒`
+    }
+    setInterval(createtime, 500)
+</script>
+</div>
+<div>
+    <!--添加总阅读次数-->
+    <div>
+        <span>本站总访问量</span>
+        <span id="site_total_read_count">Loading...</span>
+    </div>
+    <script>
+        async function sleep(ms = 1000) {
+            return await new Promise(resolve => {
+                const timer = setTimeout(() => {
+                    clearTimeout(timer)
+                    return resolve()
+                }, ms)
+            })
+        }
+        async function site_read_count() {
+            const className = 'Counter',
+                query = new AV.Query(className)
+            return query.find()
+                .then(_ => _.map(i => i.attributes.time))
+                .then(_ => _.reduce((a, b) => a + b))
+        }
+        new Promise(resolve => {
+            const timer = setInterval(() => {
+                if (typeof AV !== "undefined") {
+                    clearInterval(timer)
+                    return resolve()
+                }
+            }, 250)
+        })
+            .then(() => site_read_count())
+            .then(_ => {
+                const s = ` ${_} 次`
+                document.getElementById("site_total_read_count").innerHTML = s
+            })
+            .catch(e => console.error(e.message))
+    </script>
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : true,
+      appId      : 'WS6xwQjL3YsDPCdcRTqtpdhg-gzGzoHsz',
+      appKey     : 'NgSfNQLxbzWKBuQROhn56aP5',
+      placeholder: "Just go go go!!!",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

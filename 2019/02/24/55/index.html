@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/favicon-32x32-next.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="http://fonts.gmirror.org/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shuttlespace.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="objectbox">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ObjectBox入门-1-简介">
+<meta property="og:url" content="https://shuttlespace.github.io/2019/02/24/55/">
+<meta property="og:site_name" content="HumphreyIO">
+<meta property="og:description" content="objectbox">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-02-24T06:58:55.000Z">
+<meta property="article:modified_time" content="2022-01-16T03:04:27.655Z">
+<meta property="article:author" content="HumphreyDan">
+<meta property="article:tag" content="ObjectBox">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://shuttlespace.github.io/2019/02/24/55/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+<script type="text/javascript" src="/js/love.js"></script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('please input your password.') !== ''){
+                alert('wrong password!!!');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  <title>ObjectBox入门-1-简介 | HumphreyIO</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">HumphreyIO</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">云青青兮欲雨, 水澹澹兮生烟</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/ShuttleSpace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://shuttlespace.github.io/2019/02/24/55/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://picbed.dang8080.cn/avatar.jpeg">
+      <meta itemprop="name" content="HumphreyDan">
+      <meta itemprop="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HumphreyIO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ObjectBox入门-1-简介
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-02-24 14:58:55" itemprop="dateCreated datePublished" datetime="2019-02-24T14:58:55+08:00">2019-02-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-16 11:04:27" itemprop="dateModified" datetime="2022-01-16T11:04:27+08:00">2022-01-16</time>
+              </span>
+
+          
+            <span id="/2019/02/24/55/" class="post-meta-item leancloud_visitors" data-flag-title="ObjectBox入门-1-简介" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2019/02/24/55/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/02/24/55/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>objectbox</p>
+<span id="more"></span>
+<h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><p>ObjectBox 定位是: 针对移动端和 IoT 超快的 <code>(superfast edge database)</code> 面向对象的数据库 .为小型设备提供了边缘计算能力，使得数据可以快速高效地在本地存储、处理、安全管理.ObjectBox 小于 <code>1MB</code>,最适合移动 APP、小型 IoT 设备及路由。并且 ObjectBox 也是第一个在边缘设备上兼容 ACID 的高性能的 NoSQL 数据库.所有的产品都是基于工程师思维开发的，所以可以使用最少的代码去实现想要的功能。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>比同类竟品快 10 倍以上。<a target="_blank" rel="noopener" href="https://github.com/objectbox/objectbox-performance">BenchMark</a></li>
+<li>跨平台。支持 Linux、Windows、Mac&#x2F;iOS、Android、Raspberry Pi、ARM 等嵌入式设备和容器。</li>
+<li>小于 1MB,特别针对小型设备设计和优化。</li>
+<li>易使用。</li>
+<li>支持 reactive.</li>
+<li>无缝结合 greenDAO.(同一家公司出品)</li>
+<li>更好地支持关系型数据. 提供了改变追踪(change tracking)，级联添加(cascading puts)，灵活的加载策略(eager,lazy)</li>
+<li>无需掌握 SQL:ObjectBox 设计简单，使用方便，不需要掌握 SQL 即可上手.</li>
+<li>支持 kotlin: 包括 data class.</li>
+</ul>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="Android-Java"><a href="#Android-Java" class="headerlink" title="Android(Java)"></a>Android(Java)</h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// root 目录 build.gradle</span></span><br><span class="line">buildscript &#123;</span><br><span class="line">    ext.objectboxVersion = <span class="string">&#x27;2.3.3&#x27;</span></span><br><span class="line">    repositories &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        <span class="comment">// Android Gradle plugin 最低版本为 3.0.0</span></span><br><span class="line">        classpath <span class="string">&#x27;com.android.tools.build:gradle:3.3.1&#x27;</span></span><br><span class="line">        classpath <span class="string">&quot;io.objectbox:objectbox-gradle-plugin:$objectboxVersion&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app 或其他 module build.gradle</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.android.application&#x27;</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;io.objectbox&#x27;</span> 放在最下面</span><br></pre></td></tr></table></figure>
+
+<h4 id="Android-Kotlin"><a href="#Android-Kotlin" class="headerlink" title="Android(Kotlin)"></a>Android(Kotlin)</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app 或其他 module build.gradle</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.android.application&#x27;</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;kotlin-android&#x27;</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;kotlin-kapt&#x27;</span> 如果使用 kotlin-android 插件，必须加 kotlin -kapt 插件</span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;io.objectbox&#x27;</span> 放在最下面</span><br></pre></td></tr></table></figure>
+
+<p>Sync gradle 即可自动添加 ObjectBox 依赖.</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>1、首先添加 ObjectBox 插件.<br>2、如果 ObjectBox 插件没有自动添加依赖库和注解处理器，请手动添加依赖。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Android(Java)</span></span><br><span class="line"><span class="comment">// /app/build.gradle</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">    compile <span class="string">&quot;io.objectbox:objectbox-androoid:$objectboxVersion&quot;</span></span><br><span class="line">    annotationProcessor <span class="string">&quot;io.objectbox:objectbox-processor:$objectboxVersion&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Android(kotlin)</span></span><br><span class="line"><span class="comment">// /app/build.gradle</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">    compile <span class="string">&quot;io.objectbox:objectbox-android:$objectboxVersion&quot;</span></span><br><span class="line">    kapt <span class="string">&quot;io.objectbox:objectbox-processor:$objectboxVersioni&quot;</span></span><br><span class="line">    <span class="comment">// 针对 kotlin 的扩展函数(可选)</span></span><br><span class="line">    compile <span class="string">&quot;io.objectbox:objectbox-kotlin:$objectboxVersion&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3、改变 Model 文件的路径</p>
+<p>ObjectBox Model 文件默认保存在 <code>module-name/objectbox-models/default.json</code>。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Android(Java)</span></span><br><span class="line"><span class="comment">// /app/build.gradle</span></span><br><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        javaCompileOptions &#123;</span><br><span class="line">            annotationProcessorOptions &#123;</span><br><span class="line">                arguments = [<span class="string">&quot;objectbox.modelPath&quot;</span>:<span class="string">&quot;$projectDir/schemas/objectbox.json&quot;</span>.toString()]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Android(Kotlin)</span></span><br><span class="line"><span class="comment">// /app/build.gradle</span></span><br><span class="line">kapt &#123;</span><br><span class="line">    arguments &#123;</span><br><span class="line">        arg(<span class="string">&quot;objectbox.modelPath&quot;</span>:<span class="string">&quot;$projectDir/schemas/objectbox.json&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4、改变 <code>MyObjectBox</code> 的包名</p>
+<p>MyObjectBox 类的包名默认和 entitiy 类的包名或其上一级报名一致。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Android(Java)</span></span><br><span class="line"><span class="comment">// /app/build.gradle</span></span><br><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        javaCompileOptions &#123;</span><br><span class="line">            annotationProcessorOptions &#123;</span><br><span class="line">                arguments = [<span class="string">&quot;objectbox.myObjectBoxPackage&quot;</span>:<span class="string">&quot;com.example.custom&quot;</span>]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Android(Kotlin)</span></span><br><span class="line"><span class="comment">// /app/build.gradle</span></span><br><span class="line">kapt &#123;</span><br><span class="line">    arguments &#123;</span><br><span class="line">        arg(<span class="string">&quot;objectbox.myObjectBoxPackage&quot;</span>, <span class="string">&quot;com.example.custom&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5、开启 Debug 模式</p>
+<p>在 &#x2F;app&#x2F;build.gradle 中添加必要的选项后，运行 <code>./gradlew --info</code> 即可查看 debug 输出</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Android(Java)</span></span><br><span class="line"><span class="comment">// /app/build.gradle</span></span><br><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        javaCompileOptions &#123;</span><br><span class="line">            annotationProcessorOptions &#123;</span><br><span class="line">                arguments = [<span class="string">&#x27;objectbox.debug&#x27;</span> : <span class="string">&#x27;true&#x27;</span>]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Android(Kotlin)</span></span><br><span class="line"><span class="comment">// /app/build.gradle</span></span><br><span class="line">kapt &#123;</span><br><span class="line">    arguments &#123;</span><br><span class="line">        arg(<span class="string">&quot;objectbox.debug&quot;</span>, <span class="literal">true</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>6、开启 DaoCompat 兼容模式</p>
+<p>从 greenDAO 迁移过来，生成和 greenDAO 相似的 API,使 ObjectBox 看起来就像 SQLite 一样。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /app[module]/build.gradle</span></span><br><span class="line">depdendencies &#123;</span><br><span class="line">    compile <span class="string">&quot;org.greenrobot:objectbox-daocompat:1.10&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后开启 DaoCompat 模式</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Android(Java)</span></span><br><span class="line"><span class="comment">// /app[module]/build.gradle</span></span><br><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        javaCOmpileOptions &#123;</span><br><span class="line">            annotationProcessorOptions &#123;</span><br><span class="line">                arguments = [<span class="string">&#x27;objectbox.daoCompat&#x27;</span>:<span class="string">&#x27;true&#x27;</span>]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Android(Kotlin)</span></span><br><span class="line"><span class="comment">// /app[module]/build.gradle</span></span><br><span class="line">kapt &#123;</span><br><span class="line">    arguments &#123;</span><br><span class="line">        arg(<span class="string">&quot;objectbox.daoCompat&quot;</span>:<span class="literal">true</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你计划从 greenDAO 迁移到 ObjectBox,那么你可能会保留原来的 greenDAO entity 类（复制这些类到另外的包中）然后按如下修改。</p>
+<ul>
+<li>首先改变注解。请注意：不是所有的 greenDAO 注解都支持无缝迁移到 ObjectBox,支持的如下：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// greenDAO</span></span><br><span class="line"><span class="keyword">import</span> org.greenrobot.greendao.annotation.Entity;</span><br><span class="line"><span class="keyword">import</span> org.greenrobot.greendao.annotation...</span><br><span class="line"></span><br><span class="line"><span class="comment">// ObjectBox</span></span><br><span class="line"><span class="keyword">import</span> io.objectbox.annotation.Entity;</span><br><span class="line"><span class="keyword">import</span> io.objectbox.annotation...</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ObjectBox 当前不支持 unique indexes,naming indexes,或者在多个属性间 indexes.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// greenDAO</span></span><br><span class="line"><span class="meta">@Entity(indexes = ...)</span></span><br><span class="line"><span class="meta">@Index(name = &quot;idx1&quot;, unique = true)</span> <span class="keyword">private</span> String name;</span><br><span class="line"><span class="meta">@Unqiue</span> <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ObjectBox</span></span><br><span class="line"><span class="meta">@Index</span> <span class="keyword">private</span> String name;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>自定义类型。修改父类,当然也可同时继承，这样该自定义类型就可同时在 greenDAO 和 ObjectBox 间使用</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// greenDAO</span></span><br><span class="line"><span class="keyword">import</span> org.greenrobot.greendao.converter.PropertyConverter;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ObjectBox</span></span><br><span class="line"><span class="keyword">import</span> io.objectbox.converter.PropertyConverter;</span><br></pre></td></tr></table></figure>
+
+<p>修改 @Convert 注解里的 columnType 改为 dbType</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// greenDAO</span></span><br><span class="line"><span class="meta">@Convert(converter = NoteTypeConverter.class, columnType = String.class)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ObjectBox</span></span><br><span class="line"><span class="meta">@Convert(converter = NoteTypeConverter.class, dbType = String.class)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>关系。ObjectBox 使用 <code>ToOne</code> 和 <code>ToMany</code>类型替代 greenDAO 的 <code>@ToOne</code> 和 <code>@ToMany</code> 注解。</li>
+<li>使用 BoxStore.<br>修改完 entity 后，设置 BoxStore 创建 DaoSession.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通常在 Application 类中</span></span><br><span class="line">boxStore = MyObjectBox.builder().androidContext(<span class="keyword">this</span>).build();</span><br><span class="line">daoCompatSession = <span class="keyword">new</span> DaoSession(boxStore);</span><br><span class="line"><span class="comment">// 在迁移完成后，你可能想移除这些迁移操作。</span></span><br><span class="line"><span class="comment">// 那么通过 greenDAO session 获取 entities,把他们转为 ObjectBox entities,</span></span><br><span class="line"><span class="comment">// 然后使用 DaoCompat session 插入。</span></span><br><span class="line">List&lt;com.example.app.daos.greendao.Note&gt; notes = daoSession.getNoteDao().loadAll();</span><br><span class="line">List&lt;Note&gt; convertedNotes = convertToObjectBoxNotes(notes);</span><br><span class="line">daoCompatSession.getNoteDao().insertInTx(convertedNotes);</span><br></pre></td></tr></table></figure>
+
+<p>默认没有设置 ID (即 id &#x3D;&#x3D; 0),ObjectBox 会为插入的数据生成一个新的 ID.如果想保留原来的 ID,请修改 <code>@Id(assignable = true)</code></p>
+<ul>
+<li>使用 DaoCompat DaoSession<br>在使用新 compat session 替换原来的 API 后，可以通过在 <code>Application</code> 类中的一个方法返回 <code>DaoSession</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> DaoSession <span class="title">getDaoSession</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// greenDAO</span></span><br><span class="line">    <span class="comment">// return daoSession;</span></span><br><span class="line">    <span class="comment">// ObjectBox</span></span><br><span class="line">    <span class="keyword">return</span> daoCompatSession;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>表面上 compat DaoSession 是 greenDAO DaoSession 的替代品，其实它内部是使用 BoxStore 代替了 greenDAO 数据库.<br>如果还使用了 greenDAO 的额外特性，比如 queries,那么还需如下修改:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// greenDAO</span></span><br><span class="line"><span class="keyword">import</span> org.greenrobot.greendao.query.Query;</span><br><span class="line"><span class="keyword">import</span> org.greenrobot.greendao...</span><br><span class="line"><span class="comment">// ObjectBox</span></span><br><span class="line"><span class="keyword">import</span> org.greenrobot.daocompat.query.Query;</span><br><span class="line"><span class="keyword">import</span> org.greenrobot.daocompat...</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>Queries<br>DaoCompat 支持以下的 Query 功能:<br>– <code>remove()</code> 替代 <code>DeleteQuery</code><br>– <code>count()</code> 替代 <code>CountQuery</code><br>– 不支持 <code>CursorQuery</code></p>
+</li>
+<li><p>DaoCompat 和 greenDAO 的不同<br>– 不支持 <code>NotNull</code><br>– 不支持 <code>Joins</code> 和 <code>原生 SQL 查询</code>.<br>– 不支持异步 sessions: <code>startAsyncSession()</code><br>– 不支持加密<br>– 仅支持简单的 <code>AbstractDaoTest</code> 和 <code>AbstractDaoBasicTest</code></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">要不看点别的吧?💗</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/02/26/22/" rel="bookmark">ObjectBox高级-6-元模型,IDs,UIDs</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/02/25/13/" rel="bookmark">ObjectBox入门-10-关联</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/04/10/" rel="bookmark">Flutter-Column</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/05/47/" rel="bookmark">Flutter-Image</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/04/18/" rel="bookmark">Flutter-Row</a></div>
+    </li>
+  </ul>
+<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>再接再厉哦！-------------</div>
+    
+</div>
+
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/ObjectBox/" rel="tag"><i class="fa fa-tag"></i> ObjectBox</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2019/02/24/15/" rel="next" title="ObjectBox入门-2-基本操作">
+      ObjectBox入门-2-基本操作 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E"><span class="nav-number">1.</span> <span class="nav-text">关于</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">优点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-Java"><span class="nav-number">2.1.</span> <span class="nav-text">Android(Java)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Android-Kotlin"><span class="nav-number">2.1.1.</span> <span class="nav-text">Android(Kotlin)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">配置</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="HumphreyDan"
+      src="http://picbed.dang8080.cn/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">HumphreyDan</p>
+  <div class="site-description" itemprop="description">donot dedicate your life to ignorance,mediocrity,vulgarity.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ShuttleSpace" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ShuttleSpace" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:dang8080@qq.com" title="E-Mail → mailto:dang8080@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HumphreyIO</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">173k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">2:37</span>
+</div><div>
+<!--添加网站运行时间-->
+<span>小破站已经在风雨中度过了</span>
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    function createtime() {
+        const startTime = '09/27/2018 00:12:55',
+            start = new Date(startTime)
+        let mill = new Date() - start,
+            seconds = Math.floor(mill / 1000),
+            mins = Math.floor(seconds / 60),
+            hours = Math.floor(mins / 60),
+            days = Math.floor(hours / 24)
+        const time = {
+            seconds: seconds - mins * 60,
+            mins: mins - hours * 60,
+            hours: hours - days * 24,
+        }
+        for (const k in time) {
+            time[k] = `${time[k]}`.padStart(2, '0')
+        }
+        document.getElementById("timeDate").innerHTML = ` ${days} 天`
+        document.getElementById("times").innerHTML = ` ${time.hours} 小时 ${time.mins} 分 ${time.seconds} 秒`
+    }
+    setInterval(createtime, 500)
+</script>
+</div>
+<div>
+    <!--添加总阅读次数-->
+    <div>
+        <span>本站总访问量</span>
+        <span id="site_total_read_count">Loading...</span>
+    </div>
+    <script>
+        async function sleep(ms = 1000) {
+            return await new Promise(resolve => {
+                const timer = setTimeout(() => {
+                    clearTimeout(timer)
+                    return resolve()
+                }, ms)
+            })
+        }
+        async function site_read_count() {
+            const className = 'Counter',
+                query = new AV.Query(className)
+            return query.find()
+                .then(_ => _.map(i => i.attributes.time))
+                .then(_ => _.reduce((a, b) => a + b))
+        }
+        new Promise(resolve => {
+            const timer = setInterval(() => {
+                if (typeof AV !== "undefined") {
+                    clearInterval(timer)
+                    return resolve()
+                }
+            }, 250)
+        })
+            .then(() => site_read_count())
+            .then(_ => {
+                const s = ` ${_} 次`
+                document.getElementById("site_total_read_count").innerHTML = s
+            })
+            .catch(e => console.error(e.message))
+    </script>
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : true,
+      appId      : 'WS6xwQjL3YsDPCdcRTqtpdhg-gzGzoHsz',
+      appKey     : 'NgSfNQLxbzWKBuQROhn56aP5',
+      placeholder: "Just go go go!!!",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>
