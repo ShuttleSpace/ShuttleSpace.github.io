@@ -107,3 +107,10 @@ deploy:
   type: git
   repo: git@github.com:ShuttleSpace/ShuttleSpace.github.io.git
   branch: gh-pages
+# search
+# https://github.com/next-theme/hexo-generator-searchdb
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: html
