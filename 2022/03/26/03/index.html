@@ -21,18 +21,20 @@
     var CONFIG = {"hostname":"shuttlespace.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="HumphreyIO">
-<meta property="og:url" content="https://shuttlespace.github.io/tags/Dart/">
+  <meta name="description" content="Exploring Strings in Rust">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rust 中的字符串">
+<meta property="og:url" content="https://shuttlespace.github.io/2022/03/26/03/">
 <meta property="og:site_name" content="HumphreyIO">
-<meta property="og:description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
+<meta property="og:description" content="Exploring Strings in Rust">
 <meta property="og:locale">
+<meta property="article:published_time" content="2022-03-26T02:34:03.000Z">
+<meta property="article:modified_time" content="2023-01-29T07:21:16.279Z">
 <meta property="article:author" content="HumphreyDan">
 <meta property="article:tag" content="Android,Java,Kotlin,JS,Rust,Electron">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://shuttlespace.github.io/tags/Dart/">
+<link rel="canonical" href="https://shuttlespace.github.io/2022/03/26/03/">
 
 
 <script id="page-configurations">
@@ -40,7 +42,7 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-Hans'
   };
 </script>
@@ -56,7 +58,7 @@
     })();
 </script>
 
-  <title>Tag: Dart | HumphreyIO</title>
+  <title>rust 中的字符串 | HumphreyIO</title>
   
 
 
@@ -202,57 +204,168 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://shuttlespace.github.io/2022/03/26/03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://picbed.dang8080.cn/avatar.jpeg">
+      <meta itemprop="name" content="HumphreyDan">
+      <meta itemprop="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HumphreyIO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          rust 中的字符串
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-26 10:34:03" itemprop="dateCreated datePublished" datetime="2022-03-26T10:34:03+08:00">2022-03-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-01-29 15:21:16" itemprop="dateModified" datetime="2023-01-29T15:21:16+08:00">2023-01-29</time>
+              </span>
+
+          
+            <span id="/2022/03/26/03/" class="post-meta-item leancloud_visitors" data-flag-title="rust 中的字符串" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
   
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">Dart
-          <small>Tag</small>
-        </h2>
-      </div>
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2022/03/26/03/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/26/03/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>886</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2019</span>
+        <blockquote>
+<p><a target="_blank" rel="noopener" href="https://betterprogramming.pub/strings-in-rust-28c08a2d3130">Exploring Strings in Rust</a></p>
+</blockquote>
+<span id="more"></span>
+
+<p>计算机如何存储解析字符序列的</p>
+<ul>
+<li>计算机按字节（8位）顺序存储</li>
+<li>字节可以代表任意对象。只不过我们可以把某些字节转化为人可理解的对象。这也就是 ASCII &#x2F; Unicode 码表的功能.</li>
+<li>字符串就是一系列可以通过码表进行解析的字节序列. 在 rust 中我们常用 <code>String</code>,<code>str</code>,<code>&amp;str</code>,<code>&amp;String</code>,<code>Box&lt;str&gt;</code>,<code>Box&lt;&amp;str&gt;</code> 等实现。</li>
+</ul>
+<p>C 语言中是这样处理字符串的.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> <span class="built_in">string</span>[] = <span class="string">&quot;banana&quot;</span>; <span class="comment">// c 在末尾添加 `\0`</span></span><br><span class="line"><span class="keyword">char</span> long_mostly_empty_string[<span class="number">42</span>] = <span class="string">&quot;banana&quot;</span>; <span class="comment">// c 在末尾添加 `\0`</span></span><br><span class="line"><span class="keyword">char</span> just_a_different_initialization[] = &#123;<span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;\0&#x27;</span>&#125;; <span class="comment">// 必须明确添加 \0</span></span><br></pre></td></tr></table></figure>
+
+<p>rust 不使用 null-terminated 字符串主要还是性能优化考量。</p>
+<h3 id="str"><a href="#str" class="headerlink" title="str"></a>str</h3><p>C 的字符串内部没有强制编码类型。内部只是以 null terminator 结尾的字节序列. JS 使用 UTF-16 编码字符串，而 Rust 使用 UTF-8 编码字符串。</p>
+<p>rust 中最常见的就是字符串切片： <code>&amp;str, &amp;&#39;static str, &amp;&#39;a str</code>.</p>
+<p>rust 中的切片最终都会落脚到动态大小类型 (DST).也就是他们实现了 <code>!Sized</code> trait 或者没有实现 <code>Sized</code> trait</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> string: <span class="built_in">Box</span>&lt;<span class="built_in">str</span>&gt; = <span class="built_in">Box</span>::new(*<span class="string">&quot;akaka&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>此处是无法获取动态类型大小的，因为解引用需要获取当前所指向的数据的所有权。</p>
+<p>引用就是一个指针的大小（usize） <code>std::mem::size_of::&lt;&amp;str&gt;()</code></p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
+      
+  <div class="popular-posts-header">要不看点别的吧?💗</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/04/10/" rel="bookmark">Flutter-Column</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/05/47/" rel="bookmark">Flutter-Image</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/04/18/" rel="bookmark">Flutter-Row</a></div>
+    </li>
+  </ul>
+<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>再接再厉哦！-------------</div>
+    
+</div>
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-10-23T09:56:01+08:00"
-              content="2019-10-23">
-          10-23
-        </time>
-      </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2019/10/23/01/" itemprop="url">
-            <span itemprop="name">Dart-Zone</span>
-          </a>
-      </div>
 
-    </header>
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/20/47/" rel="prev" title="Podman(Mac)挂载本地文件功能">
+      <i class="fa fa-chevron-left"></i> Podman(Mac)挂载本地文件功能
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/26/29/" rel="next" title="使用 NAPI 或者 Context Aware 在渲染进程中加载 native 模块">
+      使用 NAPI 或者 Context Aware 在渲染进程中加载 native 模块 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -299,6 +412,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#str"><span class="nav-number">1.</span> <span class="nav-text">str</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

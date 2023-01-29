@@ -285,7 +285,7 @@
 <p>我们的自定义 email scalar 类型将</p>
 <ul>
 <li>调用 <code>parseValue</code> 将 <code>$mainContact</code>变量转为运行时对象.</li>
-<li>调用 <code>parseLiteral</code> 将 AST <code>graphql.language.StringValue</code> “<a href="mailto:&#x62;&#x61;&#x63;&#107;&#117;&#112;&#x40;&#99;&#x6f;&#109;&#x70;&#97;&#110;&#121;&#x2e;&#x63;&#x6f;&#109;">&#x62;&#x61;&#x63;&#107;&#117;&#112;&#x40;&#99;&#x6f;&#109;&#x70;&#97;&#110;&#121;&#x2e;&#x63;&#x6f;&#109;</a>“ 转换为运行时对象.</li>
+<li>调用 <code>parseLiteral</code> 将 AST <code>graphql.language.StringValue</code> “<a href="mailto:&#98;&#x61;&#x63;&#x6b;&#x75;&#112;&#64;&#99;&#x6f;&#109;&#x70;&#x61;&#110;&#x79;&#x2e;&#99;&#111;&#109;">&#98;&#x61;&#x63;&#x6b;&#x75;&#112;&#64;&#99;&#x6f;&#109;&#x70;&#x61;&#110;&#x79;&#x2e;&#99;&#111;&#109;</a>“ 转换为运行时对象.</li>
 <li>调用 <code>serialize</code> 将 mainContactEmial 运行时实现转为输出对象形式.</li>
 </ul>
 <h3 id="输入输出校验"><a href="#输入输出校验" class="headerlink" title="输入输出校验"></a>输入输出校验</h3><p>例如我们的 email scalar 将会校验输入输出是否是真是的 email 地址.<br><code>graphql.schema.Coercing</code> 协议如下:</p>
@@ -297,23 +297,6 @@
 <h3 id="示例实现"><a href="#示例实现" class="headerlink" title="示例实现"></a>示例实现</h3><p>下面是一个简单的 email scalar 类型实现,展示了如何通过继承 <code>Coercing</code> 实现一个 scalar.</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">EmailScalar</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> GraphQLScalarType EMAIL = <span class="keyword">new</span> GraphQLScalarType(<span class="string">&quot;email&quot;</span>,<span class="string">&quot;A custom scalar that handles emails&quot;</span>,<span class="keyword">new</span> Coercing() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Object <span class="title">serialize</span><span class="params">(Object dataFetcherResult)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> serializeEmail(dataFetcherResult);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Object <span class="title">parseValue</span><span class="params">(Object input)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> parseEmailFromVariable(input);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Object <span class="title">parseLiterial</span><span class="params">(Object input)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> parseEmialFromAstLiterial(input);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">looksLikeAnEmailAddress</span><span class="params">(String possibleEmailValue)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Pattern.matches(<span class="string">&quot;[A-Za-z0-9]@[.*]&quot;</span>,possibleEmailValue);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Object <span class="title">serialzeEmail</span><span class="params">(Object dataFetcherResult)</span> </span>&#123;</span><br><span class="line">        String possibleEmailValue = String.valueOf(dataFetcherResult);</span><br><span class="line">        <span class="keyword">if</span> (looksLikeAnEmailAddress(possibleEmailValue)) &#123;</span><br><span class="line">            <span class="keyword">return</span> possibleEmailValue;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> CoercingSerializeException(<span class="string">&quot;Unable to serialize&quot;</span> + possibleEmailValue + <span class="string">&quot; as an email address&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Object <span class="title">parseEmailFromVariable</span><span class="params">(Object input)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (input <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">            String possibleEmailValue = input.toString();</span><br><span class="line">            <span class="keyword">if</span> (looksLikeAnEmailAddress(possibleEmailValue)) &#123;</span><br><span class="line">                <span class="keyword">return</span> possibleEmailValue;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CoercingParseValueException(<span class="string">&quot;Unable to parse variable value &quot;</span> + input + <span class="string">&quot; as an email address&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Object <span class="title">parseEmailFromAstLiterial</span><span class="params">(Object input)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (input <span class="keyword">instanceof</span> StringValue) &#123;</span><br><span class="line">            String possibleEmailValue = ((StringValue)input).getValue();</span><br><span class="line">            <span class="keyword">if</span> (looksLikeAnEmailAddress(possibleEmailValue)) &#123;</span><br><span class="line">                <span class="keyword">return</span> possibleEmailValue;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CoercingParseLiterialException(<span class="string">&quot;Unable to parse variable value &quot;</span> + input + <span class="string">&quot; as an email address&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
-  </entry>
-  <entry>
-    <title>Groovy template</title>
-    <url>/2019/08/16/58/</url>
-    <content><![CDATA[<p>Groovy MarkupTemplateEngine 主要面向生成类 XML(XML,XHTML,HTML5…)的标记语言,但是也支持其他基于内容的文本.和传统的模版引擎相比,此引擎支持基于 DSL 的 builder 语法.</p>
-<span id="more"></span>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">xmlDeclaration()</span><br><span class="line">cars &#123;</span><br><span class="line">  carsh.each &#123;</span><br><span class="line">    car(<span class="attr">make:</span>it.make,<span class="attr">model:</span>it.model)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p><code>MarkupTemplateEngine</code>支持引用来自另一个文件的内容.</p>
-<ul>
-<li>另一份模版</li>
-<li>原生内容</li>
-<li>需要转义的内容</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>译</tag>
-      </tags>
   </entry>
   <entry>
     <title>JGit</title>
@@ -523,6 +506,23 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Groovy template</title>
+    <url>/2019/08/16/58/</url>
+    <content><![CDATA[<p>Groovy MarkupTemplateEngine 主要面向生成类 XML(XML,XHTML,HTML5…)的标记语言,但是也支持其他基于内容的文本.和传统的模版引擎相比,此引擎支持基于 DSL 的 builder 语法.</p>
+<span id="more"></span>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">xmlDeclaration()</span><br><span class="line">cars &#123;</span><br><span class="line">  carsh.each &#123;</span><br><span class="line">    car(<span class="attr">make:</span>it.make,<span class="attr">model:</span>it.model)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p><code>MarkupTemplateEngine</code>支持引用来自另一个文件的内容.</p>
+<ul>
+<li>另一份模版</li>
+<li>原生内容</li>
+<li>需要转义的内容</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>译</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java 并发和多线程指南</title>
     <url>/2019/08/26/52/</url>
     <content><![CDATA[<span id="more"></span>]]></content>
@@ -590,83 +590,6 @@
 ]]></content>
       <tags>
         <tag>Architecture Components</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ObjectBox入门-10-关联</title>
-    <url>/2019/02/25/13/</url>
-    <content><![CDATA[<p>objectbox</p>
-<span id="more"></span>
-<p>Object 之间的关联具有方向性.关联是延迟初始化的：实际的引用对象只有在调用时才会从数据库中加载。一旦加载过，就会缓存起来.</p>
-<h3 id="To-One-关联"><a href="#To-One-关联" class="headerlink" title="To-One 关联"></a>To-One 关联</h3><p><img data-src="http://qiniu.picbed.dang8080.cn/20190225232506.png" alt="To-One示意图"><br>使用 ToOne 会智能的对目标对象创建关联。同时获取目标对象缓存。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Customer.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Order.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line">    <span class="keyword">public</span> ToOne&lt;Customer&gt; customer;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 为了绑定 customer 对象，对 ToOne 实例调用 setTarget() 然后就存入 order 对象</span></span><br><span class="line">Customer customer = <span class="keyword">new</span> Customer();</span><br><span class="line">Order order = <span class="keyword">new</span> Order();</span><br><span class="line">order.customer.setTarget(customer);</span><br><span class="line"><span class="keyword">long</span> orderId = boxStore.boxFor(Order.class).put(order);</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>如果 customer 在数据库中不存在，ToOne 将会存储。如果已经存在，那么 ToOne 只会创建关联,不会存储.<br>如果关联 Entity 使用的是自定义 IDs(@Id(assignable &#x3D; true)),则该 Entity 不会被存储.</p>
-</blockquote>
-<p>在 ToOne 实例中，可通过 Order 对象的 getTarget() 获取 customer</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Order order = boxStore.boxFor(Order.class).get(orderId);</span><br><span class="line">Customer customer = order.customer.getTarget(customer);</span><br></pre></td></tr></table></figure>
-
-<p>如果只是想要获取 ID 而不是整个目标对象，getTargetId() 值得拥有，此方法根本不会接触数据库，所以高效。</p>
-<p>移除关联: 仅移除关联关系，而不会从数据库中移除目标对象。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">order.customer.setTarget(<span class="keyword">null</span>);</span><br><span class="line">boxStore.boxFor(Order.class).put(order);</span><br></pre></td></tr></table></figure>
-
-<p>查看 <code>objectbox-models/default.json</code> 会发现，ToOne 属性根本没有保存。仅仅只是目标对象的 ID 保存在一个名称和 ToOne 属性后拼接 Id 的虚拟属性.</p>
-<h3 id="初始化魔术"><a href="#初始化魔术" class="headerlink" title="初始化魔术"></a>初始化魔术</h3><p>注意到 ToOne 属性 customer 从没初始化，然而调用时却不会抛出空指针异常。因为该初始化已经执行过了。<br>ObjectBox 插件会对 entity 类(仅支持纯 Java 项目和 Android 项目) 在调用前正确的初始化。所以在自定义构造方法时，你可以假设 ToOne&#x2F;ToMany&#x2F;List 属性已经初始化过了。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">    ToOne&lt;Order&gt; order;</span><br><span class="line">    ToMany&lt;Order&gt; orders;</span><br><span class="line">    <span class="keyword">transient</span> BoxStore __boxStore;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="keyword">this</span>.order = <span class="keyword">new</span> ToOne&lt;&gt;(<span class="keyword">this</span>, Example_.order);</span><br><span class="line">        <span class="keyword">this</span>.orders = <span class="keyword">new</span> ToMany&lt;&gt;(<span class="keyword">this</span>, Example_.orders);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Example</span><span class="params">(String value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="提升性能"><a href="#提升性能" class="headerlink" title="提升性能"></a>提升性能</h3><p>为了提高性能，请提供全参数构造方法。<br>对于 ToOne 属性，请添加一个名为 ToOne 属性名加 Id 的 id 参数。可以参考 objectbox-models&#x2F;default.json 里的命名.</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line">    <span class="keyword">public</span> ToOne&lt;Customer&gt; customer;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Order</span><span class="params">()</span> </span>&#123; <span class="comment">/* default constructor */</span> &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Order</span><span class="params">(<span class="keyword">long</span> id, <span class="keyword">long</span> customerId <span class="comment">/* virtual ToOne id property */</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.customer.setTargetId(customerId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="ToMany-关联"><a href="#ToMany-关联" class="headerlink" title="ToMany 关联"></a>ToMany 关联</h3><p>可以使用 List 或 ToMany 类型实现 ToMany 关联.相对 ToOne 来说，ToMany 可以实现追踪数据变化并将其写入操作中，而 List 必须自己实现.</p>
-<h3 id="1-N"><a href="#1-N" class="headerlink" title="1:N"></a>1:N</h3><p><img data-src="http://qiniu.picbed.dang8080.cn/20190226000315.png" alt="1:N"></p>
-<p>使用 @Backlink 注解 1:N 关联属性。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Customer.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// &#x27;to&#x27; is optional if only one relation matches</span></span><br><span class="line">    <span class="meta">@Backlink(to = &quot;customer&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ToMany&lt;Order&gt; orders;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Order.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ToOne&lt;Customer&gt; customer;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Customer customer = <span class="keyword">new</span> Customer();</span><br><span class="line">customer.orders.add(<span class="keyword">new</span> Order());</span><br><span class="line">customer.orders.add(<span class="keyword">new</span> Order());</span><br><span class="line"><span class="keyword">long</span> customerId = boxStore.boxFor(Customer.class).put(customer); <span class="comment">// puts customer and orders</span></span><br><span class="line"></span><br><span class="line">Customer customer = boxStore.boxFor(Customer.class).get(customerId);</span><br><span class="line"><span class="keyword">for</span> (Order order : customer.orders) &#123;</span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Order order = customer.orders.remove(<span class="number">0</span>);</span><br><span class="line">boxStore.boxFor(Customer.class).put(customer);</span><br><span class="line"><span class="comment">// optional: also remove the order from its box</span></span><br><span class="line"><span class="comment">// boxStore.boxFor(Order.class).remove(order);</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="N-N"><a href="#N-N" class="headerlink" title="N:N"></a>N:N</h3><p><img data-src="http://qiniu.picbed.dang8080.cn/20190226000708.png" alt="N:N"></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Teacher.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Student.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ToMany&lt;Teacher&gt; teachers;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Teacher teacher1 = <span class="keyword">new</span> Teacher();</span><br><span class="line">Teacher teacher2 = <span class="keyword">new</span> Teacher();</span><br><span class="line"></span><br><span class="line">Student student1 = <span class="keyword">new</span> Student();</span><br><span class="line">student1.teachers.add(teacher1);</span><br><span class="line">student1.teachers.add(teacher2);</span><br><span class="line"></span><br><span class="line">Student student2 = <span class="keyword">new</span> Student();</span><br><span class="line">student2.teachers.add(teacher2);</span><br><span class="line"></span><br><span class="line"><span class="comment">// puts students and teachers</span></span><br><span class="line">boxStore.boxFor(Student.class).put(student1, student2);</span><br><span class="line"></span><br><span class="line">Student student1 = boxStore.boxFor(Student.class).get(student1.id);</span><br><span class="line"><span class="keyword">for</span> (Teacher teacher : student1.teachers) &#123;</span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">student1.teachers.remove(<span class="number">0</span>);</span><br><span class="line"><span class="comment">// boxStore.boxFor(Student.class).put(student1);</span></span><br><span class="line"><span class="comment">// more efficient than using put:</span></span><br><span class="line">student1.teachers.applyChangesToDb();</span><br></pre></td></tr></table></figure>
-
-<p>上面可以通过 student 知道 teacher 的信息，当然可以反过来</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Teacher.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Backlink(to = &quot;teachers&quot;)</span> <span class="comment">// backed by the to-many relation in Student</span></span><br><span class="line">    <span class="keyword">public</span> ToMany&lt;Student&gt; students;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Student.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ToMany&lt;Teacher&gt; teachers;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="更新关联"><a href="#更新关联" class="headerlink" title="更新关联"></a>更新关联</h3><p>ToOne 和 ToMany 可以追踪变化（只要存入拥有关联属性的 entity）并将其存入数据库中，<br>如果 ID !&#x3D; 0 或者 @Id(assignable &#x3D; true) 那么可以通过 Box 来更新关联</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// update a related entity using its box</span></span><br><span class="line">Order orderToUpdate = customer.orders.get(<span class="number">0</span>);</span><br><span class="line">orderToUpdate.text = <span class="string">&quot;Revised description&quot;</span>;</span><br><span class="line"><span class="comment">// DOES NOT WORK</span></span><br><span class="line"><span class="comment">// boxStore.boxFor(Customer.class).put(customer);</span></span><br><span class="line"><span class="comment">// WORKS</span></span><br><span class="line">boxStore.boxFor(Order.class).put(orderToUpdate);</span><br></pre></td></tr></table></figure>
-
-<h4 id="更新-ToOne"><a href="#更新-ToOne" class="headerlink" title="更新 ToOne"></a>更新 ToOne</h4><p>ToOne 类提供了如下方法更新关联:</p>
-<ul>
-<li><code>setTarget(entity)</code>: 创建关联；传入 null 清除关联</li>
-<li><code>setTargetId(entityId)</code>: 对存在的目标 entity 创建关联；传入 0 清除关联.</li>
-<li><code>setAndPutTarget(entity)</code>:</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">order.customer.setTarget(customer); <span class="comment">// or order.customer.setCustomerId(customer.getId());</span></span><br><span class="line">orderBox.put(order);</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>如果 entity 在调用 setAndPutTarget() 之前还没存储,那么需要先绑定它的 box</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Order order = <span class="keyword">new</span> Order(); <span class="comment">// new entity</span></span><br><span class="line">orderBox.attach(order); <span class="comment">// need to attach box first</span></span><br><span class="line">order.customer.setAndPutTarget(customer);</span><br></pre></td></tr></table></figure>
-
-<p>如果目标 entity 使用自定义 IDs,必须在更新 ToOne 关联时存储它</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">customer.id = <span class="number">12</span>; <span class="comment">// self-assigned id</span></span><br><span class="line">customerBox.put(customer); <span class="comment">// need to put customer first</span></span><br><span class="line">order.customer.setTarget(customer); <span class="comment">// or order.customer.setCustomerId(customer.getId());</span></span><br><span class="line">orderBox.put(order);</span><br></pre></td></tr></table></figure>
-
-<p>这是因为 ObjectBox 只保存 id 为 0 的关联对象.</p>
-<h4 id="更新-ToMany"><a href="#更新-ToMany" class="headerlink" title="更新 ToMany"></a>更新 ToMany</h4><p>ToMany 实现了 java.lang.List 接口。如果向 ToMany 实例添加对象，这些对象就会被存储进数据库。移除也一样。（仅仅是关联被移除而已）.不要忘记把追踪 ToMany 改变的 own entity 对象存储.</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">customer.orders.add(order1);</span><br><span class="line">customer.orders.remove(order2);</span><br><span class="line">customerBox.put(customer);</span><br></pre></td></tr></table></figure>
-
-<p>如果使用自定义 IDs(@Id(assignable &#x3D; true)) 请在修改 ToMany 前绑定它的 box</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">customer.id = <span class="number">12</span>; <span class="comment">// self-assigned id</span></span><br><span class="line">customerBox.attach(customer); <span class="comment">// need to attach box first</span></span><br><span class="line">customer.orders.add(order);</span><br><span class="line">customerBox.put(customer);</span><br></pre></td></tr></table></figure>
-
-<p>如果 entity 是自定义 IDs,那么需要先存入该 entity,然后再更新关联并存储 own entity.</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">order.id = <span class="number">42</span>; <span class="comment">// self-assigned id</span></span><br><span class="line">orderBox.put(order); <span class="comment">// need to put order first</span></span><br><span class="line">customer.orders.add(order);</span><br><span class="line">customerBox.put(customer); <span class="comment">// put customer, add relation to order</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="树形关联"><a href="#树形关联" class="headerlink" title="树形关联"></a>树形关联</h3><p>可以使用 ToOne,ToMany 处理指向自身的树形关联</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    ToOne&lt;TreeNode&gt; parent;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@BackLink</span></span><br><span class="line">    ToMany&lt;TreeNode&gt; children;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>生成的 entity 可以获取它的 parent 和 children</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">TreeNode parent = entity.parent.getTarget();</span><br><span class="line">List&lt;TreeNode&gt; children = entity.children;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>ObjectBox</tag>
-        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -772,28 +695,76 @@
       </tags>
   </entry>
   <entry>
-    <title>ObjectBox入门-12-事务</title>
-    <url>/2019/02/26/55/</url>
+    <title>ObjectBox入门-10-关联</title>
+    <url>/2019/02/25/13/</url>
     <content><![CDATA[<p>objectbox</p>
 <span id="more"></span>
-<p>ObjectBox 是一个满足 ACID 特性的交易型数据库.一个事务可以包含一组操作，要么执行成功，要么全部失败。<br>几乎所有的 ObjectBox 的操作都包含了事务。比如 <code>put(),read()</code>。普通情况下，不用关心这些底层的事务。但某些复杂的情况下，手动处理事务操作可以使你的 app 更加高效一致。</p>
-<h3 id="手动事务"><a href="#手动事务" class="headerlink" title="手动事务"></a>手动事务</h3><p>ObjectBox 提供了如下方法实现手动事务：</p>
+<p>Object 之间的关联具有方向性.关联是延迟初始化的：实际的引用对象只有在调用时才会从数据库中加载。一旦加载过，就会缓存起来.</p>
+<h3 id="To-One-关联"><a href="#To-One-关联" class="headerlink" title="To-One 关联"></a>To-One 关联</h3><p><img data-src="http://qiniu.picbed.dang8080.cn/20190225232506.png" alt="To-One示意图"><br>使用 ToOne 会智能的对目标对象创建关联。同时获取目标对象缓存。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Customer.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Order.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line">    <span class="keyword">public</span> ToOne&lt;Customer&gt; customer;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 为了绑定 customer 对象，对 ToOne 实例调用 setTarget() 然后就存入 order 对象</span></span><br><span class="line">Customer customer = <span class="keyword">new</span> Customer();</span><br><span class="line">Order order = <span class="keyword">new</span> Order();</span><br><span class="line">order.customer.setTarget(customer);</span><br><span class="line"><span class="keyword">long</span> orderId = boxStore.boxFor(Order.class).put(order);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果 customer 在数据库中不存在，ToOne 将会存储。如果已经存在，那么 ToOne 只会创建关联,不会存储.<br>如果关联 Entity 使用的是自定义 IDs(@Id(assignable &#x3D; true)),则该 Entity 不会被存储.</p>
+</blockquote>
+<p>在 ToOne 实例中，可通过 Order 对象的 getTarget() 获取 customer</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Order order = boxStore.boxFor(Order.class).get(orderId);</span><br><span class="line">Customer customer = order.customer.getTarget(customer);</span><br></pre></td></tr></table></figure>
+
+<p>如果只是想要获取 ID 而不是整个目标对象，getTargetId() 值得拥有，此方法根本不会接触数据库，所以高效。</p>
+<p>移除关联: 仅移除关联关系，而不会从数据库中移除目标对象。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">order.customer.setTarget(<span class="keyword">null</span>);</span><br><span class="line">boxStore.boxFor(Order.class).put(order);</span><br></pre></td></tr></table></figure>
+
+<p>查看 <code>objectbox-models/default.json</code> 会发现，ToOne 属性根本没有保存。仅仅只是目标对象的 ID 保存在一个名称和 ToOne 属性后拼接 Id 的虚拟属性.</p>
+<h3 id="初始化魔术"><a href="#初始化魔术" class="headerlink" title="初始化魔术"></a>初始化魔术</h3><p>注意到 ToOne 属性 customer 从没初始化，然而调用时却不会抛出空指针异常。因为该初始化已经执行过了。<br>ObjectBox 插件会对 entity 类(仅支持纯 Java 项目和 Android 项目) 在调用前正确的初始化。所以在自定义构造方法时，你可以假设 ToOne&#x2F;ToMany&#x2F;List 属性已经初始化过了。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">    ToOne&lt;Order&gt; order;</span><br><span class="line">    ToMany&lt;Order&gt; orders;</span><br><span class="line">    <span class="keyword">transient</span> BoxStore __boxStore;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="keyword">this</span>.order = <span class="keyword">new</span> ToOne&lt;&gt;(<span class="keyword">this</span>, Example_.order);</span><br><span class="line">        <span class="keyword">this</span>.orders = <span class="keyword">new</span> ToMany&lt;&gt;(<span class="keyword">this</span>, Example_.orders);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Example</span><span class="params">(String value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="提升性能"><a href="#提升性能" class="headerlink" title="提升性能"></a>提升性能</h3><p>为了提高性能，请提供全参数构造方法。<br>对于 ToOne 属性，请添加一个名为 ToOne 属性名加 Id 的 id 参数。可以参考 objectbox-models&#x2F;default.json 里的命名.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line">    <span class="keyword">public</span> ToOne&lt;Customer&gt; customer;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Order</span><span class="params">()</span> </span>&#123; <span class="comment">/* default constructor */</span> &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Order</span><span class="params">(<span class="keyword">long</span> id, <span class="keyword">long</span> customerId <span class="comment">/* virtual ToOne id property */</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.customer.setTargetId(customerId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ToMany-关联"><a href="#ToMany-关联" class="headerlink" title="ToMany 关联"></a>ToMany 关联</h3><p>可以使用 List 或 ToMany 类型实现 ToMany 关联.相对 ToOne 来说，ToMany 可以实现追踪数据变化并将其写入操作中，而 List 必须自己实现.</p>
+<h3 id="1-N"><a href="#1-N" class="headerlink" title="1:N"></a>1:N</h3><p><img data-src="http://qiniu.picbed.dang8080.cn/20190226000315.png" alt="1:N"></p>
+<p>使用 @Backlink 注解 1:N 关联属性。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Customer.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// &#x27;to&#x27; is optional if only one relation matches</span></span><br><span class="line">    <span class="meta">@Backlink(to = &quot;customer&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ToMany&lt;Order&gt; orders;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Order.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ToOne&lt;Customer&gt; customer;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Customer customer = <span class="keyword">new</span> Customer();</span><br><span class="line">customer.orders.add(<span class="keyword">new</span> Order());</span><br><span class="line">customer.orders.add(<span class="keyword">new</span> Order());</span><br><span class="line"><span class="keyword">long</span> customerId = boxStore.boxFor(Customer.class).put(customer); <span class="comment">// puts customer and orders</span></span><br><span class="line"></span><br><span class="line">Customer customer = boxStore.boxFor(Customer.class).get(customerId);</span><br><span class="line"><span class="keyword">for</span> (Order order : customer.orders) &#123;</span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Order order = customer.orders.remove(<span class="number">0</span>);</span><br><span class="line">boxStore.boxFor(Customer.class).put(customer);</span><br><span class="line"><span class="comment">// optional: also remove the order from its box</span></span><br><span class="line"><span class="comment">// boxStore.boxFor(Order.class).remove(order);</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="N-N"><a href="#N-N" class="headerlink" title="N:N"></a>N:N</h3><p><img data-src="http://qiniu.picbed.dang8080.cn/20190226000708.png" alt="N:N"></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Teacher.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Student.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ToMany&lt;Teacher&gt; teachers;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Teacher teacher1 = <span class="keyword">new</span> Teacher();</span><br><span class="line">Teacher teacher2 = <span class="keyword">new</span> Teacher();</span><br><span class="line"></span><br><span class="line">Student student1 = <span class="keyword">new</span> Student();</span><br><span class="line">student1.teachers.add(teacher1);</span><br><span class="line">student1.teachers.add(teacher2);</span><br><span class="line"></span><br><span class="line">Student student2 = <span class="keyword">new</span> Student();</span><br><span class="line">student2.teachers.add(teacher2);</span><br><span class="line"></span><br><span class="line"><span class="comment">// puts students and teachers</span></span><br><span class="line">boxStore.boxFor(Student.class).put(student1, student2);</span><br><span class="line"></span><br><span class="line">Student student1 = boxStore.boxFor(Student.class).get(student1.id);</span><br><span class="line"><span class="keyword">for</span> (Teacher teacher : student1.teachers) &#123;</span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">student1.teachers.remove(<span class="number">0</span>);</span><br><span class="line"><span class="comment">// boxStore.boxFor(Student.class).put(student1);</span></span><br><span class="line"><span class="comment">// more efficient than using put:</span></span><br><span class="line">student1.teachers.applyChangesToDb();</span><br></pre></td></tr></table></figure>
+
+<p>上面可以通过 student 知道 teacher 的信息，当然可以反过来</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Teacher.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Backlink(to = &quot;teachers&quot;)</span> <span class="comment">// backed by the to-many relation in Student</span></span><br><span class="line">    <span class="keyword">public</span> ToMany&lt;Student&gt; students;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Student.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ToMany&lt;Teacher&gt; teachers;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="更新关联"><a href="#更新关联" class="headerlink" title="更新关联"></a>更新关联</h3><p>ToOne 和 ToMany 可以追踪变化（只要存入拥有关联属性的 entity）并将其存入数据库中，<br>如果 ID !&#x3D; 0 或者 @Id(assignable &#x3D; true) 那么可以通过 Box 来更新关联</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// update a related entity using its box</span></span><br><span class="line">Order orderToUpdate = customer.orders.get(<span class="number">0</span>);</span><br><span class="line">orderToUpdate.text = <span class="string">&quot;Revised description&quot;</span>;</span><br><span class="line"><span class="comment">// DOES NOT WORK</span></span><br><span class="line"><span class="comment">// boxStore.boxFor(Customer.class).put(customer);</span></span><br><span class="line"><span class="comment">// WORKS</span></span><br><span class="line">boxStore.boxFor(Order.class).put(orderToUpdate);</span><br></pre></td></tr></table></figure>
+
+<h4 id="更新-ToOne"><a href="#更新-ToOne" class="headerlink" title="更新 ToOne"></a>更新 ToOne</h4><p>ToOne 类提供了如下方法更新关联:</p>
 <ul>
-<li>runInTx: 在事务中运行指定的 runnable</li>
-<li>runInReadTx: 在一个只读的事务中运行指定的 runnable.不同于写入事务，多个只读事务可以同时运行。</li>
-<li>runInTxAsync: 在另一个线程中运行指定的 runnable.一旦事务执行完毕，callback(可为 null) 将被调用.</li>
-<li>callInTx: 类似 runInTx(Runnable),但是有返回值或抛出异常.</li>
+<li><code>setTarget(entity)</code>: 创建关联；传入 null 清除关联</li>
+<li><code>setTargetId(entityId)</code>: 对存在的目标 entity 创建关联；传入 0 清除关联.</li>
+<li><code>setAndPutTarget(entity)</code>:</li>
 </ul>
-<p>对批量存入操作进行手动事务的优势是你可以实现任意数量的操作，使用多个 box 对象。同时，在事务执行过程中，可以对数据有一个直观的认知。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 写入事务</span></span><br><span class="line">boxStore.runInTx(() -&gt; &#123;</span><br><span class="line">  <span class="keyword">for</span> (User user: allUsers) &#123;</span><br><span class="line">    <span class="keyword">if</span> (modify(user)) box.put(user);</span><br><span class="line">    <span class="keyword">else</span> box.remove(user);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">order.customer.setTarget(customer); <span class="comment">// or order.customer.setCustomerId(customer.getId());</span></span><br><span class="line">orderBox.put(order);</span><br></pre></td></tr></table></figure>
 
-<h3 id="事务代价"><a href="#事务代价" class="headerlink" title="事务代价"></a>事务代价</h3><p>理解事务可以很好的帮助掌握数据库性能。请注意: 写入事务代价大.<br>提交事务包含了将数据同步到物理存储中的操作，这对数据库是一个相对昂贵的操作。只有文件系统确认所有的数据都存储，事务操作才会被认为是成功的。事务同步该文件可能需要几毫秒。请记住：尽量把多个操作(put 等)放入同一个事务中.</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 不推荐</span></span><br><span class="line"><span class="keyword">for</span>(User user: allUsers) &#123;</span><br><span class="line">   modify(user); <span class="comment">// modifies properties of given user</span></span><br><span class="line">   box.put(user);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 推荐</span></span><br><span class="line"><span class="keyword">for</span>(User user: allUsers) &#123;</span><br><span class="line">   modify(user); <span class="comment">// modifies properties of given user</span></span><br><span class="line">&#125;</span><br><span class="line">box.put(allUsers);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果 entity 在调用 setAndPutTarget() 之前还没存储,那么需要先绑定它的 box</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Order order = <span class="keyword">new</span> Order(); <span class="comment">// new entity</span></span><br><span class="line">orderBox.attach(order); <span class="comment">// need to attach box first</span></span><br><span class="line">order.customer.setAndPutTarget(customer);</span><br></pre></td></tr></table></figure>
 
-<h3 id="读取事务"><a href="#读取事务" class="headerlink" title="读取事务"></a>读取事务</h3><p>ObjectBox 的读取事务很快。相对于写入事务，没有 commit 操作，所以没有昂贵的同步文件系统。请注意：在一个读取事务中 put 操作是非法的，会抛出一个异常。get,count,queries 等操作没有手动声明事务(读写),默认会运行在一个读取事务.<br>虽然读取事务比写入事务代价小，但是还是最好把它放入读取事务中。</p>
-<h3 id="多版本的并发"><a href="#多版本的并发" class="headerlink" title="多版本的并发"></a>多版本的并发</h3><p>ObjectBox 提供了语义化的多版本并发控制(Multiversion concurrency control MVCC).多个并发读取(读取事务)可以立即执行，无需阻塞或等待。这是通过存储多个版本的（提交）数据来实现的。即便一个写入事务正在运行，读取事务也可以立即获取到最新的同步状态。写入事务按顺序执行以便状态一致。所以保证写入事务短小可以避免阻塞其他写入事务。因此在一个写入事务中执行网络操作或复杂计算不推荐。尽量在写入事务前完成这些操作。</p>
-<p>注意不需要自己手动维持写入事务序列。如果多线程想同时执行写入事务(put,runInTx),同一时刻只有一个线程可以执行，其他必须等待。类似 Java 中的 lock 或 synchronized。</p>
-<h4 id="深入写入事务"><a href="#深入写入事务" class="headerlink" title="深入写入事务"></a>深入写入事务</h4><p>尽量避免在写入事务中使用锁(<code>synchronized</code> 或 <code>java.util.concurrent.locks</code>).因为写入事务运行费时，所以 ObjectBox 内部会获取一个写入锁。当设计多个锁时，请提高警惕。<br>始终以相同的顺序获取锁可以避免死锁。如果在一个事务获取了 X 锁，请保证你的代码在持有 X 锁时没有在另外一个写入事务中执行.</p>
+<p>如果目标 entity 使用自定义 IDs,必须在更新 ToOne 关联时存储它</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">customer.id = <span class="number">12</span>; <span class="comment">// self-assigned id</span></span><br><span class="line">customerBox.put(customer); <span class="comment">// need to put customer first</span></span><br><span class="line">order.customer.setTarget(customer); <span class="comment">// or order.customer.setCustomerId(customer.getId());</span></span><br><span class="line">orderBox.put(order);</span><br></pre></td></tr></table></figure>
+
+<p>这是因为 ObjectBox 只保存 id 为 0 的关联对象.</p>
+<h4 id="更新-ToMany"><a href="#更新-ToMany" class="headerlink" title="更新 ToMany"></a>更新 ToMany</h4><p>ToMany 实现了 java.lang.List 接口。如果向 ToMany 实例添加对象，这些对象就会被存储进数据库。移除也一样。（仅仅是关联被移除而已）.不要忘记把追踪 ToMany 改变的 own entity 对象存储.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">customer.orders.add(order1);</span><br><span class="line">customer.orders.remove(order2);</span><br><span class="line">customerBox.put(customer);</span><br></pre></td></tr></table></figure>
+
+<p>如果使用自定义 IDs(@Id(assignable &#x3D; true)) 请在修改 ToMany 前绑定它的 box</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">customer.id = <span class="number">12</span>; <span class="comment">// self-assigned id</span></span><br><span class="line">customerBox.attach(customer); <span class="comment">// need to attach box first</span></span><br><span class="line">customer.orders.add(order);</span><br><span class="line">customerBox.put(customer);</span><br></pre></td></tr></table></figure>
+
+<p>如果 entity 是自定义 IDs,那么需要先存入该 entity,然后再更新关联并存储 own entity.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">order.id = <span class="number">42</span>; <span class="comment">// self-assigned id</span></span><br><span class="line">orderBox.put(order); <span class="comment">// need to put order first</span></span><br><span class="line">customer.orders.add(order);</span><br><span class="line">customerBox.put(customer); <span class="comment">// put customer, add relation to order</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="树形关联"><a href="#树形关联" class="headerlink" title="树形关联"></a>树形关联</h3><p>可以使用 ToOne,ToMany 处理指向自身的树形关联</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">long</span> id;</span><br><span class="line"></span><br><span class="line">    ToOne&lt;TreeNode&gt; parent;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@BackLink</span></span><br><span class="line">    ToMany&lt;TreeNode&gt; children;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>生成的 entity 可以获取它的 parent 和 children</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">TreeNode parent = entity.parent.getTarget();</span><br><span class="line">List&lt;TreeNode&gt; children = entity.children;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>ObjectBox</tag>
@@ -818,6 +789,35 @@
 
 <p>建议在 Application 类中添加</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">boxStore = MyObjectBox.builder().androidContext(<span class="keyword">this</span>).build();</span><br><span class="line"><span class="keyword">if</span> (BuildConfig.DEBUG) &#123;</span><br><span class="line">    <span class="keyword">boolean</span> started = <span class="keyword">new</span> AndroidObjectBrowser(boxStore).start(<span class="keyword">this</span>);</span><br><span class="line">    Log.i(<span class="string">&quot;ObjectBrowser&quot;</span>, <span class="string">&quot;Started: &quot;</span> + started);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>ObjectBox</tag>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ObjectBox入门-12-事务</title>
+    <url>/2019/02/26/55/</url>
+    <content><![CDATA[<p>objectbox</p>
+<span id="more"></span>
+<p>ObjectBox 是一个满足 ACID 特性的交易型数据库.一个事务可以包含一组操作，要么执行成功，要么全部失败。<br>几乎所有的 ObjectBox 的操作都包含了事务。比如 <code>put(),read()</code>。普通情况下，不用关心这些底层的事务。但某些复杂的情况下，手动处理事务操作可以使你的 app 更加高效一致。</p>
+<h3 id="手动事务"><a href="#手动事务" class="headerlink" title="手动事务"></a>手动事务</h3><p>ObjectBox 提供了如下方法实现手动事务：</p>
+<ul>
+<li>runInTx: 在事务中运行指定的 runnable</li>
+<li>runInReadTx: 在一个只读的事务中运行指定的 runnable.不同于写入事务，多个只读事务可以同时运行。</li>
+<li>runInTxAsync: 在另一个线程中运行指定的 runnable.一旦事务执行完毕，callback(可为 null) 将被调用.</li>
+<li>callInTx: 类似 runInTx(Runnable),但是有返回值或抛出异常.</li>
+</ul>
+<p>对批量存入操作进行手动事务的优势是你可以实现任意数量的操作，使用多个 box 对象。同时，在事务执行过程中，可以对数据有一个直观的认知。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 写入事务</span></span><br><span class="line">boxStore.runInTx(() -&gt; &#123;</span><br><span class="line">  <span class="keyword">for</span> (User user: allUsers) &#123;</span><br><span class="line">    <span class="keyword">if</span> (modify(user)) box.put(user);</span><br><span class="line">    <span class="keyword">else</span> box.remove(user);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="事务代价"><a href="#事务代价" class="headerlink" title="事务代价"></a>事务代价</h3><p>理解事务可以很好的帮助掌握数据库性能。请注意: 写入事务代价大.<br>提交事务包含了将数据同步到物理存储中的操作，这对数据库是一个相对昂贵的操作。只有文件系统确认所有的数据都存储，事务操作才会被认为是成功的。事务同步该文件可能需要几毫秒。请记住：尽量把多个操作(put 等)放入同一个事务中.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 不推荐</span></span><br><span class="line"><span class="keyword">for</span>(User user: allUsers) &#123;</span><br><span class="line">   modify(user); <span class="comment">// modifies properties of given user</span></span><br><span class="line">   box.put(user);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 推荐</span></span><br><span class="line"><span class="keyword">for</span>(User user: allUsers) &#123;</span><br><span class="line">   modify(user); <span class="comment">// modifies properties of given user</span></span><br><span class="line">&#125;</span><br><span class="line">box.put(allUsers);</span><br></pre></td></tr></table></figure>
+
+<h3 id="读取事务"><a href="#读取事务" class="headerlink" title="读取事务"></a>读取事务</h3><p>ObjectBox 的读取事务很快。相对于写入事务，没有 commit 操作，所以没有昂贵的同步文件系统。请注意：在一个读取事务中 put 操作是非法的，会抛出一个异常。get,count,queries 等操作没有手动声明事务(读写),默认会运行在一个读取事务.<br>虽然读取事务比写入事务代价小，但是还是最好把它放入读取事务中。</p>
+<h3 id="多版本的并发"><a href="#多版本的并发" class="headerlink" title="多版本的并发"></a>多版本的并发</h3><p>ObjectBox 提供了语义化的多版本并发控制(Multiversion concurrency control MVCC).多个并发读取(读取事务)可以立即执行，无需阻塞或等待。这是通过存储多个版本的（提交）数据来实现的。即便一个写入事务正在运行，读取事务也可以立即获取到最新的同步状态。写入事务按顺序执行以便状态一致。所以保证写入事务短小可以避免阻塞其他写入事务。因此在一个写入事务中执行网络操作或复杂计算不推荐。尽量在写入事务前完成这些操作。</p>
+<p>注意不需要自己手动维持写入事务序列。如果多线程想同时执行写入事务(put,runInTx),同一时刻只有一个线程可以执行，其他必须等待。类似 Java 中的 lock 或 synchronized。</p>
+<h4 id="深入写入事务"><a href="#深入写入事务" class="headerlink" title="深入写入事务"></a>深入写入事务</h4><p>尽量避免在写入事务中使用锁(<code>synchronized</code> 或 <code>java.util.concurrent.locks</code>).因为写入事务运行费时，所以 ObjectBox 内部会获取一个写入锁。当设计多个锁时，请提高警惕。<br>始终以相同的顺序获取锁可以避免死锁。如果在一个事务获取了 X 锁，请保证你的代码在持有 X 锁时没有在另外一个写入事务中执行.</p>
 ]]></content>
       <tags>
         <tag>ObjectBox</tag>
@@ -1367,6 +1367,31 @@
       </tags>
   </entry>
   <entry>
+    <title>Podman(Mac)挂载本地文件功能</title>
+    <url>/2022/03/20/47/</url>
+    <content><![CDATA[<p>在 mac 平台使用 podman 代替 docker 的过程中遇到了容器挂载文件的问题，这里将实践过程总结一下.</p>
+<span id="more"></span>
+
+<p>先说下，为什么替换 docker. docker-desktop 其实还是很好用的，只不过在使用中会发现以下几个问题 1、启动慢 2、总是更新失败。而且根据网上消息早期 docker-desktop 内部使用的是 virtualbox 技术，所以就选择了 podman 替换。</p>
+<p>使用中 podman 和 docker 没什么多的使用差别，除了多了 <code>podman machine</code> 的操作，这是因为 podman 使用了 quemu 加载 fedora 作为容器的虚拟物理机使用。所以此处会出现挂载的问题也就是因为 quemu 没有先挂载本地文件，那么自然容器也就无法访问并挂载了，这个问题据说在 podman 4.0 中将得到解决，我们拭目以待。</p>
+<p>回到正题，看看如何为 podman 挂载上本地文件。</p>
+<p>首先当然可以通过 <code>scp</code> 将文件拷贝到虚拟机中。但实际中很浪费空间。</p>
+<p>接下来就是如何将 macOS 文件系统挂载上去。此处则需要使用 <code>sshfs</code> 通过 ssh 反向代理登录进虚拟机(qemu). (需要注意的是，每次进行 <code>podman machine</code> 操作时都需要重新走一遍.)</p>
+<p>第一步通过 <code>podman machine --log-level=debug ssh -- exit 2&gt;&amp;1 | grep Executing | awk &#123;&#39;print $8&#39;&#125;</code> 获取私有的 ssh 端口.</p>
+<p>接下来使用此端口连接到 qemu 主机</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh -i ~/.ssh/podman-machine-default -R 10000:$(hostname):22 -p &lt;PORT&gt; core@localhost</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 在 qemu 主机中生成和 macOS 主机连接的 ssh key</span></span><br><span class="line">ssh-keygen -t rsa -N &quot;&quot; -f ~/.ssh/id_rsa</span><br><span class="line">ssh-copy-id -p 10000 &lt;MAC USERNAME&gt;@127.0.0.1</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 接下来挂载 macOS 的挂载点</span></span><br><span class="line">sudo mkdir -p /mnt/Users</span><br><span class="line">sudo chown core:core /mnt/Users</span><br></pre></td></tr></table></figure>
+
+<p>现在就可以通过 <code>sshfs</code> 挂载了<br><code>sshfs -p 10000 $USER@127.0.0.1:/Users /mnt/Users</code>，</p>
+<p>使用 screen 来将此操作置于后台运行 </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">screen -t podman</span><br><span class="line">ssh -i ~/.ssh/podman-machine-default -R 10000:$(hostname):22 -p &lt;PORT&gt; core@localhost</span><br><span class="line"><span class="meta">#</span><span class="bash"> 挂载本地文件到 qemu 主机</span></span><br><span class="line">sshfs -p 10000 $USER@127.0.0.1:/Users /mnt/Users</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他方案"><a href="#其他方案" class="headerlink" title="其他方案"></a>其他方案</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">podman machine</span><br><span class="line"></span><br><span class="line">Current solution requires modifying the path, since the root directory is read-only on CoreOS:</span><br><span class="line"></span><br><span class="line">podman machine init -v /foo:/mnt/foo</span><br><span class="line"></span><br><span class="line">podman --remote run -v /mnt/foo:/foo</span><br><span class="line"></span><br><span class="line">This breaks compatibility with local version, that would do podman run -v /foo:/foo (no /mnt)</span><br><span class="line"></span><br><span class="line">other systems</span><br><span class="line"></span><br><span class="line">No issues with mounting, since the root directory can be modified to create the mountpoint dir:</span><br><span class="line"></span><br><span class="line">podman machine init -v /foo:/foo --volume-driver=sshfs</span><br><span class="line"></span><br><span class="line">podman --remote run -v /foo:/foo</span><br><span class="line"></span><br><span class="line">This means one can use the same command remote as local, when using something like Fedora.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a href="https://dalethestirling.github.io/Macos-volumes-with-Podman/">https://dalethestirling.github.io/Macos-volumes-with-Podman/</a><br><a href="https://github.com/containers/podman/issues/8016#issuecomment-995242552">https://github.com/containers/podman/issues/8016#issuecomment-995242552</a></p>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
     <title>Podman</title>
     <url>/2019/08/13/10/</url>
     <content><![CDATA[<p>Podman 是什么? Podman 是一个非守护线程的容器引擎,支持在 Linux 系统上开发、管理和运行 OCI 容器.容器同时支持 root 身份和非 root 身份.只需要使用 <code>alias docker=podman</code> 就可以立即从 docker 切换到 podman.</p>
@@ -1906,195 +1931,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>docker,docker-compose学习笔记</title>
-    <url>/2019/03/01/57/</url>
-    <content><![CDATA[<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Compose 是一个为了定义和运行多容器 Docker 应用的工具。<br><a href="https://github.com/docker/labs">官方动手示例</a></p>
-<span id="more"></span>
-<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
-<li>一个主机多个隔离环境</li>
-<li>当容器创建时保留所有的 volume</li>
-<li>只有容器被更改时才触发创建</li>
-<li>定义变量和在不同环境中使用</li>
-</ul>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>自动测试环境</li>
-<li>单独主机部署</li>
-</ul>
-<h3 id="docker-compose-安装"><a href="#docker-compose-安装" class="headerlink" title="docker-compose 安装"></a>docker-compose 安装</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line">sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</span><br><span class="line">sudo docker-compose --version</span><br></pre></td></tr></table></figure>
-
-<p>pip 安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install docker-compose</span><br></pre></td></tr></table></figure>
-
-<p>卸载</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo rm /usr/local/bin/docker-compose</span><br><span class="line">pip uninstall docker-compose</span><br></pre></td></tr></table></figure>
-
-<h3 id="docker-compose-命令"><a href="#docker-compose-命令" class="headerlink" title="docker-compose 命令"></a>docker-compose 命令</h3><ul>
-<li><code>-f</code> 指定 一个或多个 compose 文件的名称和路径<blockquote>
-<p>1、使用多个 Compose 文件时，Compose 会把这几个文件合并为一个配置。按顺序合并，后边的覆盖前边的配置。<br>2、<code>docker-compose -f docker-compose.yml -f docker-compose.admin.yml run backup_db</code><br>3、使用 <code>-(dash)</code> 作为 <code>-f</code> 的值，将会从输入中读取配置文件名。使用 <code>stdin</code> 时，配置里涉及到的路径都是相对于当前工作上下文路径。<br>4、如果不是用 <code>-f</code>,Compose 遍历当前上下文路径和它的父路径查询 <code>docker-compose.yml</code> 和 <code>docker-compose.override.yml</code> 文件。请至少提供一个 <code>docker-compose.yml</code> 文件。如果所有的文件都在同一个文件夹下，Compose 将合并它们。<br>5、<code>docker-compose.override.yml</code> 的配置高于 <code>docker-compose.yml</code>,且为后者提供额外的配置属性。</p>
-</blockquote>
-</li>
-<li>为单独的 Compose 文件指定路径<blockquote>
-<p>1、使用 <code>-f</code>, 或从命令行输入，或在 shell &#x2F; 某个环境配置文件中设置 COMPOSE_FILE 环境变量,指定不在当前文件夹的 Compose 文件路径.<br>2、<code>docker-compose -f ~/sandbox/rails/docker-compose.yml pull db</code> 从 <code>~/sandbox/rails/docker-compose.yml</code> 文件中获取 db 服务中定义的 postgres db 镜像。</p>
-</blockquote>
-</li>
-<li><code>-p</code> 指定项目名<blockquote>
-<p>1、如果不指定 <code>-p</code>,Compose 默认使用当前文件夹的名称。</p>
-</blockquote>
-</li>
-<li>配置环境变量</li>
-</ul>
-<h3 id="docker-compose-CLI-环境变量"><a href="#docker-compose-CLI-环境变量" class="headerlink" title="docker-compose CLI 环境变量"></a>docker-compose CLI 环境变量</h3><p>默认内置了几个环境变量可以配置 docker-compose.<br>以 <code>DOCKER_</code> 开头的变量和配置 docker 命令行客户端的变量类似。如果使用 <code>docker-machine</code>的话，<code>eval &quot;$(docker-machine env my-docker-vm)&quot;</code>将为变量设置正确的值。</p>
-<ul>
-<li><code>COMPOSE_PROJECT_NAME</code><blockquote>
-<p>1、设置项目名.该值在启动时会作为容器服务的前缀.比如项目名 myapp,包含两个服务 db 和 web,那么 Compose 启动的容器名为 myapp_db_1 和 myapp_web_1.<br>2、默认时项目文件夹的根目录名。</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_FILE</code><blockquote>
-<p>1、指定 Compose 文件路径。如果未指定，Compose 将在当前文件夹查询 docker-compose.yml 文件，如果不存在将继续遍历父目录直到找到。<br>2、支持使用文件路径分隔符(Linux &amp; MacOS [:] Windows [;]).比如 <code>COMPOSE_FILE=docker-compose.yml:docker-compose.prod.yml</code>,路径分隔符可以通过 <code>COMPOSE_PATH_SEPARATOR</code> 自定义</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_API_VERSION</code><blockquote>
-<p>1、Docker API 仅支持来自指定版本客户端的请求。使用 docker-compose 时出现 <code>client and server don&#39;t have same version</code> 错误，那么可以通过设置该变量解决。<br>2、设置该变量主要针对临时的运行客户端和服务端版本不一致的情况。</p>
-</blockquote>
-</li>
-<li><code>DOCKER_HOST</code><blockquote>
-<p>1、为 docker daemon 设置 URL.和 docker 客户端一样，默认为 <code>unix:///var/run/docker.sock</code></p>
-</blockquote>
-</li>
-<li><code>DOCKER_TLS_VERIFY</code><blockquote>
-<p>1、设置空字符以外的任何值时，开启 TLS.</p>
-</blockquote>
-</li>
-<li><code>DOCKER_CERT_PATH</code><blockquote>
-<p>1、配置 <code>ca.pem,cert.pem,key.pem</code> 的路径。默认 <code>~/.docker</code></p>
-</blockquote>
-</li>
-<li><code>COMPOSE_HTTP_TIMEOUT</code><blockquote>
-<p>1、超时时间(秒).默认 60s</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_TLS_VERSION</code><blockquote>
-<p>1、TLS 版本.默认 TLSv1. 可供选项 TLSv1, TLSv1_1, TLSv1_2</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_CONVERT_WINDOWS_PATH</code><blockquote>
-<p>1、是否开启把 Windos-style 的路径转为 Unix-style 的卷定义。在 Windos 上使用 Docker Machine 和 Docker Toolbox 时总是要设置该变量。默认 0。 true&#x2F;1 代表开启，false&#x2F;0 代表关闭.</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_PATH_SEPARATOR</code><blockquote>
-<p>1、如果设置，COMPOSE_FILE 值将使用此处的定义作为分隔符。</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_FORCE_WINDOWS_HOST</code><blockquote>
-<p>1、如果设置，即使 Compose 运行在 Unix-based 系统上，卷定义也将使用简略语法解析为假设运行在 Windows 上的路径。true&#x2F;a,false&#x2F;0</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_IGNORE_ORPHANS</code><blockquote>
-<p>1、如果设置，Compose 不会试着对项目的单独容器检测。true&#x2F;1,false&#x2F;0</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_PARALLEL_LIMIT</code><blockquote>
-<p>1、并行执行的限制。默认 64，绝不能低于 2.</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_INTERACTIVE_NO_CLI</code><blockquote>
-<p>1、如果设置，Compose 不会尝试使用 Docker CLI 和 run exec 操作交互。true&#x2F;1,false&#x2F;0</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="Compose-file"><a href="#Compose-file" class="headerlink" title="Compose file"></a>Compose file</h3><h4 id="version-3"><a href="#version-3" class="headerlink" title="version 3"></a>version 3</h4><h5 id="build"><a href="#build" class="headerlink" title="build"></a>build</h5><p>配置选项在编译期生效。<br>build 可以指定一个路径</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">webapp:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./dir</span></span><br></pre></td></tr></table></figure>
-
-<p>或者是一个在指定 context 下的路径对象，同时可包含 Dockerfile 和 args</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">webapp:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./dir</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">Dockerfile-alternate</span></span><br><span class="line">      <span class="attr">args:</span></span><br><span class="line">        <span class="attr">buildno:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p>如果同时也指定了 image,Compose 使用 webapp 和 image 中指定的可选的 tag 命名最终生成的镜像名</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span> <span class="string">./dir</span></span><br><span class="line"><span class="attr">image:</span> <span class="string">webapp:tag</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>swarm mode 不支持。docker stack 命令只接受预编译的镜像.</p>
-</blockquote>
-<h6 id="CONTEXT"><a href="#CONTEXT" class="headerlink" title="CONTEXT"></a>CONTEXT</h6><p>可以是包含 Dockerfile 文件的路径，或 git 仓库的 url.<br>如果是相对路径，那么被解析为相对于当前 Compose 文件的路径。此文件夹同时也是发送到 Docker daemon 的编译上下文。</p>
-<h6 id="DOCKERFILE"><a href="#DOCKERFILE" class="headerlink" title="DOCKERFILE"></a>DOCKERFILE</h6><p>可选<br>此处必须指定编译路径</p>
-<h6 id="ARGS"><a href="#ARGS" class="headerlink" title="ARGS"></a>ARGS</h6><p>只有在编译过程中可访问的环境变量。<br>首先，在 Dokcerfile 中指定参数:</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">ARG</span> <span class="string">buildno</span></span><br><span class="line"><span class="string">ARG</span> <span class="string">gitcommithash</span></span><br><span class="line"></span><br><span class="line"><span class="string">RUN</span> <span class="string">echo</span> <span class="string">&quot;Build number: $buildno&quot;</span></span><br><span class="line"><span class="string">RUN</span> <span class="string">echo</span> <span class="string">&quot;Bashed on commit: $gitcommithash&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后在 build 下给该参数复制（可以是键值对列表）：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">args:</span></span><br><span class="line">    <span class="attr">buildno:</span> <span class="number">1</span></span><br><span class="line">    <span class="attr">gitcommithash:</span> <span class="string">cdc3b19</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">args:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">buildno=1</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">gitcommithash=cdc3b19</span></span><br></pre></td></tr></table></figure>
-
-<p>你也可以不指定值，它的值就是编译时 Compose 当前运行环境的值.</p>
-<blockquote>
-<p>YAML 布尔值(true,false,yes,no,on,off)应该使用引号应用，这样解析器才能把它们解析为 string</p>
-</blockquote>
-<h6 id="CACHE-FROM"><a href="#CACHE-FROM" class="headerlink" title="CACHE_FROM"></a>CACHE_FROM</h6><blockquote>
-<p>v3.2+</p>
-</blockquote>
-<p>指定 engine 可以缓存的镜像列表</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">cache_from:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">alpine:latest</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">corp/webapp:3.14</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="LABELS"><a href="#LABELS" class="headerlink" title="LABELS"></a>LABELS</h6><blockquote>
-<p>v3.3+</p>
-</blockquote>
-<p>向生成的镜像添加元数据。可以是数组或目录<br>推荐使用反向 DNS 标记以避免和其他软件冲突</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">com.example.description:</span> <span class="string">&quot;Accounting webapp&quot;</span></span><br><span class="line">    <span class="attr">com.example.department:</span> <span class="string">&quot;Finance&quot;</span></span><br><span class="line">    <span class="attr">com.example.label-with-empty-value:</span> <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.description=Accounting webapp&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.department=Finance&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.label-with-empty-value&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="SHM-SIZE"><a href="#SHM-SIZE" class="headerlink" title="SHM_SIZE"></a>SHM_SIZE</h6><blockquote>
-<p>v3.5+</p>
-</blockquote>
-<p>设置编译生成容器 <code>dev/shm&#39;</code> 分区大小。int 值单位为 byte. string 可以携带单位</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">shm_size:</span> <span class="string">&#x27;2gb&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">shm_size:</span> <span class="number">10000000</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="TARGET"><a href="#TARGET" class="headerlink" title="TARGET"></a>TARGET</h6><blockquote>
-<p>v3.4+</p>
-</blockquote>
-<p>编译 Dockerfile 中定义的指定版本</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">target:</span> <span class="string">prod</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="cap-add-cap-drop"><a href="#cap-add-cap-drop" class="headerlink" title="cap_add,cap_drop"></a>cap_add,cap_drop</h5><p>添加或删除容器的容量。<code>man 7 capabilities</code> 查看可用列表</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cap_add:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">ALL</span></span><br><span class="line"><span class="attr">cap_drop:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">NET_ADMIN</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">SYS_ADMIN</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>swarm mode 无效</p>
-</blockquote>
-<h5 id="cgroup-parent"><a href="#cgroup-parent" class="headerlink" title="cgroup_parent"></a>cgroup_parent</h5><p>为容器指定可选的 cgroup parent</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cgroup_parent:</span> <span class="string">m-executor-abcd</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>swarm mode 无效</p>
-</blockquote>
-<h5 id="command"><a href="#command" class="headerlink" title="command"></a>command</h5><p>覆盖默认的命令</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">command:</span> <span class="string">bundle</span> <span class="string">exec</span> <span class="string">thin</span> <span class="string">-p</span> <span class="number">3000</span></span><br></pre></td></tr></table></figure>
-
-<p>也可以是列表</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">command:</span> [<span class="string">&quot;bundle&quot;</span>, <span class="string">&quot;exec&quot;</span>, <span class="string">&quot;thin&quot;</span>, <span class="string">&quot;-p&quot;</span>, <span class="string">&quot;3000&quot;</span>]</span><br></pre></td></tr></table></figure>
-
-<h5 id="configs"><a href="#configs" class="headerlink" title="configs"></a>configs</h5><h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><ul>
-<li>共享文件夹，卷，绑定挂载<blockquote>
-<p>如果你的项目不在 <code>Users</code>目录(<code>cd ~</code>),那么你需要共享驱动器或 Dockerfile 所在位置和当前正在使用的卷。如果出现运行时错误表示文件未找到，那么就是一个挂载卷的请求被拒绝，或服务启动失败，试着共享文件或驱动。挂载卷要求共享项目不在 <code>C:\Users (Windows)</code>,或 <code>/Users (Mac)</code> 的驱动，并且如果是运行在 <code>Dokcer Desktop for Windows</code> 的 Linux 容器上的所有应用都需要共享。</p>
-</blockquote>
-</li>
-<li>如果改变了一个服务的 Dockerfile 或者编译文件夹里的内容，运行 <code>docker-compose build</code>重新编译</li>
-</ul>
-<h3 id="官方示例"><a href="#官方示例" class="headerlink" title="官方示例"></a>官方示例</h3><h4 id="Compose-amp-WordPress"><a href="#Compose-amp-WordPress" class="headerlink" title="Compose &amp; WordPress"></a>Compose &amp; WordPress</h4><ul>
-<li>为项目创建空文件夹。该文件夹作为应用的上下文，且只保存构建镜像所需的资源。</li>
-<li>创建 docker-compose.yml</li>
-</ul>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">db_data:/var/lib/mysql</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">somewordpress</span></span><br><span class="line">      <span class="attr">MYSQL_DATABASE:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">MYSQL_USER:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">MYSQL_PASSWORD:</span> <span class="string">wordpress</span></span><br><span class="line">  <span class="attr">wordpress:</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">db</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wordpress:latest</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8000:80&quot;</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_HOST:</span> <span class="string">db:3306</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_USER:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_PASSWORD:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_NAME:</span> <span class="string">wordpress</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="attr">db_data:</span> &#123;&#125;</span><br><span class="line"><span class="comment"># db_data 卷会保存任何 WordPress 对数据库的改变。</span></span><br><span class="line"><span class="comment"># WordPress 通常开放 80 和 443 端口.</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>docker-compose up -d</code>.<blockquote>
-<p>如果使用 Docker Machine, 那么运行 <code>docker-machine ip MACHINE_VM</code> 获取运行地址。如果是 destop 版，<a href="http://localhost/">http://localhost</a> 即可.</p>
-</blockquote>
-</li>
-<li><code>docker-compose down</code> 移除容器，默认的网络，保留 WordPress 和数据库。<code>docker-compose down --volumes</code> 全部移除。</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>docker</tag>
-        <tag>学习笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>flutter 学习笔记</title>
     <url>/2019/06/04/00/</url>
     <content><![CDATA[<p>flutter 的核心设计是将整个应用的各个部分各个层级都看作 Widget 来渲染,所以按照 Widget 的分类来学习会比较全面。</p>
@@ -2308,6 +2144,195 @@
 ]]></content>
       <tags>
         <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>docker,docker-compose学习笔记</title>
+    <url>/2019/03/01/57/</url>
+    <content><![CDATA[<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Compose 是一个为了定义和运行多容器 Docker 应用的工具。<br><a href="https://github.com/docker/labs">官方动手示例</a></p>
+<span id="more"></span>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li>一个主机多个隔离环境</li>
+<li>当容器创建时保留所有的 volume</li>
+<li>只有容器被更改时才触发创建</li>
+<li>定义变量和在不同环境中使用</li>
+</ul>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>自动测试环境</li>
+<li>单独主机部署</li>
+</ul>
+<h3 id="docker-compose-安装"><a href="#docker-compose-安装" class="headerlink" title="docker-compose 安装"></a>docker-compose 安装</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line">sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</span><br><span class="line">sudo docker-compose --version</span><br></pre></td></tr></table></figure>
+
+<p>pip 安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>卸载</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo rm /usr/local/bin/docker-compose</span><br><span class="line">pip uninstall docker-compose</span><br></pre></td></tr></table></figure>
+
+<h3 id="docker-compose-命令"><a href="#docker-compose-命令" class="headerlink" title="docker-compose 命令"></a>docker-compose 命令</h3><ul>
+<li><code>-f</code> 指定 一个或多个 compose 文件的名称和路径<blockquote>
+<p>1、使用多个 Compose 文件时，Compose 会把这几个文件合并为一个配置。按顺序合并，后边的覆盖前边的配置。<br>2、<code>docker-compose -f docker-compose.yml -f docker-compose.admin.yml run backup_db</code><br>3、使用 <code>-(dash)</code> 作为 <code>-f</code> 的值，将会从输入中读取配置文件名。使用 <code>stdin</code> 时，配置里涉及到的路径都是相对于当前工作上下文路径。<br>4、如果不是用 <code>-f</code>,Compose 遍历当前上下文路径和它的父路径查询 <code>docker-compose.yml</code> 和 <code>docker-compose.override.yml</code> 文件。请至少提供一个 <code>docker-compose.yml</code> 文件。如果所有的文件都在同一个文件夹下，Compose 将合并它们。<br>5、<code>docker-compose.override.yml</code> 的配置高于 <code>docker-compose.yml</code>,且为后者提供额外的配置属性。</p>
+</blockquote>
+</li>
+<li>为单独的 Compose 文件指定路径<blockquote>
+<p>1、使用 <code>-f</code>, 或从命令行输入，或在 shell &#x2F; 某个环境配置文件中设置 COMPOSE_FILE 环境变量,指定不在当前文件夹的 Compose 文件路径.<br>2、<code>docker-compose -f ~/sandbox/rails/docker-compose.yml pull db</code> 从 <code>~/sandbox/rails/docker-compose.yml</code> 文件中获取 db 服务中定义的 postgres db 镜像。</p>
+</blockquote>
+</li>
+<li><code>-p</code> 指定项目名<blockquote>
+<p>1、如果不指定 <code>-p</code>,Compose 默认使用当前文件夹的名称。</p>
+</blockquote>
+</li>
+<li>配置环境变量</li>
+</ul>
+<h3 id="docker-compose-CLI-环境变量"><a href="#docker-compose-CLI-环境变量" class="headerlink" title="docker-compose CLI 环境变量"></a>docker-compose CLI 环境变量</h3><p>默认内置了几个环境变量可以配置 docker-compose.<br>以 <code>DOCKER_</code> 开头的变量和配置 docker 命令行客户端的变量类似。如果使用 <code>docker-machine</code>的话，<code>eval &quot;$(docker-machine env my-docker-vm)&quot;</code>将为变量设置正确的值。</p>
+<ul>
+<li><code>COMPOSE_PROJECT_NAME</code><blockquote>
+<p>1、设置项目名.该值在启动时会作为容器服务的前缀.比如项目名 myapp,包含两个服务 db 和 web,那么 Compose 启动的容器名为 myapp_db_1 和 myapp_web_1.<br>2、默认时项目文件夹的根目录名。</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_FILE</code><blockquote>
+<p>1、指定 Compose 文件路径。如果未指定，Compose 将在当前文件夹查询 docker-compose.yml 文件，如果不存在将继续遍历父目录直到找到。<br>2、支持使用文件路径分隔符(Linux &amp; MacOS [:] Windows [;]).比如 <code>COMPOSE_FILE=docker-compose.yml:docker-compose.prod.yml</code>,路径分隔符可以通过 <code>COMPOSE_PATH_SEPARATOR</code> 自定义</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_API_VERSION</code><blockquote>
+<p>1、Docker API 仅支持来自指定版本客户端的请求。使用 docker-compose 时出现 <code>client and server don&#39;t have same version</code> 错误，那么可以通过设置该变量解决。<br>2、设置该变量主要针对临时的运行客户端和服务端版本不一致的情况。</p>
+</blockquote>
+</li>
+<li><code>DOCKER_HOST</code><blockquote>
+<p>1、为 docker daemon 设置 URL.和 docker 客户端一样，默认为 <code>unix:///var/run/docker.sock</code></p>
+</blockquote>
+</li>
+<li><code>DOCKER_TLS_VERIFY</code><blockquote>
+<p>1、设置空字符以外的任何值时，开启 TLS.</p>
+</blockquote>
+</li>
+<li><code>DOCKER_CERT_PATH</code><blockquote>
+<p>1、配置 <code>ca.pem,cert.pem,key.pem</code> 的路径。默认 <code>~/.docker</code></p>
+</blockquote>
+</li>
+<li><code>COMPOSE_HTTP_TIMEOUT</code><blockquote>
+<p>1、超时时间(秒).默认 60s</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_TLS_VERSION</code><blockquote>
+<p>1、TLS 版本.默认 TLSv1. 可供选项 TLSv1, TLSv1_1, TLSv1_2</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_CONVERT_WINDOWS_PATH</code><blockquote>
+<p>1、是否开启把 Windos-style 的路径转为 Unix-style 的卷定义。在 Windos 上使用 Docker Machine 和 Docker Toolbox 时总是要设置该变量。默认 0。 true&#x2F;1 代表开启，false&#x2F;0 代表关闭.</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_PATH_SEPARATOR</code><blockquote>
+<p>1、如果设置，COMPOSE_FILE 值将使用此处的定义作为分隔符。</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_FORCE_WINDOWS_HOST</code><blockquote>
+<p>1、如果设置，即使 Compose 运行在 Unix-based 系统上，卷定义也将使用简略语法解析为假设运行在 Windows 上的路径。true&#x2F;a,false&#x2F;0</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_IGNORE_ORPHANS</code><blockquote>
+<p>1、如果设置，Compose 不会试着对项目的单独容器检测。true&#x2F;1,false&#x2F;0</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_PARALLEL_LIMIT</code><blockquote>
+<p>1、并行执行的限制。默认 64，绝不能低于 2.</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_INTERACTIVE_NO_CLI</code><blockquote>
+<p>1、如果设置，Compose 不会尝试使用 Docker CLI 和 run exec 操作交互。true&#x2F;1,false&#x2F;0</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Compose-file"><a href="#Compose-file" class="headerlink" title="Compose file"></a>Compose file</h3><h4 id="version-3"><a href="#version-3" class="headerlink" title="version 3"></a>version 3</h4><h5 id="build"><a href="#build" class="headerlink" title="build"></a>build</h5><p>配置选项在编译期生效。<br>build 可以指定一个路径</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">webapp:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./dir</span></span><br></pre></td></tr></table></figure>
+
+<p>或者是一个在指定 context 下的路径对象，同时可包含 Dockerfile 和 args</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">webapp:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./dir</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">Dockerfile-alternate</span></span><br><span class="line">      <span class="attr">args:</span></span><br><span class="line">        <span class="attr">buildno:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>如果同时也指定了 image,Compose 使用 webapp 和 image 中指定的可选的 tag 命名最终生成的镜像名</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span> <span class="string">./dir</span></span><br><span class="line"><span class="attr">image:</span> <span class="string">webapp:tag</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>swarm mode 不支持。docker stack 命令只接受预编译的镜像.</p>
+</blockquote>
+<h6 id="CONTEXT"><a href="#CONTEXT" class="headerlink" title="CONTEXT"></a>CONTEXT</h6><p>可以是包含 Dockerfile 文件的路径，或 git 仓库的 url.<br>如果是相对路径，那么被解析为相对于当前 Compose 文件的路径。此文件夹同时也是发送到 Docker daemon 的编译上下文。</p>
+<h6 id="DOCKERFILE"><a href="#DOCKERFILE" class="headerlink" title="DOCKERFILE"></a>DOCKERFILE</h6><p>可选<br>此处必须指定编译路径</p>
+<h6 id="ARGS"><a href="#ARGS" class="headerlink" title="ARGS"></a>ARGS</h6><p>只有在编译过程中可访问的环境变量。<br>首先，在 Dokcerfile 中指定参数:</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">ARG</span> <span class="string">buildno</span></span><br><span class="line"><span class="string">ARG</span> <span class="string">gitcommithash</span></span><br><span class="line"></span><br><span class="line"><span class="string">RUN</span> <span class="string">echo</span> <span class="string">&quot;Build number: $buildno&quot;</span></span><br><span class="line"><span class="string">RUN</span> <span class="string">echo</span> <span class="string">&quot;Bashed on commit: $gitcommithash&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在 build 下给该参数复制（可以是键值对列表）：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">args:</span></span><br><span class="line">    <span class="attr">buildno:</span> <span class="number">1</span></span><br><span class="line">    <span class="attr">gitcommithash:</span> <span class="string">cdc3b19</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">args:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">buildno=1</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">gitcommithash=cdc3b19</span></span><br></pre></td></tr></table></figure>
+
+<p>你也可以不指定值，它的值就是编译时 Compose 当前运行环境的值.</p>
+<blockquote>
+<p>YAML 布尔值(true,false,yes,no,on,off)应该使用引号应用，这样解析器才能把它们解析为 string</p>
+</blockquote>
+<h6 id="CACHE-FROM"><a href="#CACHE-FROM" class="headerlink" title="CACHE_FROM"></a>CACHE_FROM</h6><blockquote>
+<p>v3.2+</p>
+</blockquote>
+<p>指定 engine 可以缓存的镜像列表</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">cache_from:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">alpine:latest</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">corp/webapp:3.14</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="LABELS"><a href="#LABELS" class="headerlink" title="LABELS"></a>LABELS</h6><blockquote>
+<p>v3.3+</p>
+</blockquote>
+<p>向生成的镜像添加元数据。可以是数组或目录<br>推荐使用反向 DNS 标记以避免和其他软件冲突</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">com.example.description:</span> <span class="string">&quot;Accounting webapp&quot;</span></span><br><span class="line">    <span class="attr">com.example.department:</span> <span class="string">&quot;Finance&quot;</span></span><br><span class="line">    <span class="attr">com.example.label-with-empty-value:</span> <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.description=Accounting webapp&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.department=Finance&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.label-with-empty-value&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="SHM-SIZE"><a href="#SHM-SIZE" class="headerlink" title="SHM_SIZE"></a>SHM_SIZE</h6><blockquote>
+<p>v3.5+</p>
+</blockquote>
+<p>设置编译生成容器 <code>dev/shm&#39;</code> 分区大小。int 值单位为 byte. string 可以携带单位</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">shm_size:</span> <span class="string">&#x27;2gb&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">shm_size:</span> <span class="number">10000000</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="TARGET"><a href="#TARGET" class="headerlink" title="TARGET"></a>TARGET</h6><blockquote>
+<p>v3.4+</p>
+</blockquote>
+<p>编译 Dockerfile 中定义的指定版本</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">target:</span> <span class="string">prod</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="cap-add-cap-drop"><a href="#cap-add-cap-drop" class="headerlink" title="cap_add,cap_drop"></a>cap_add,cap_drop</h5><p>添加或删除容器的容量。<code>man 7 capabilities</code> 查看可用列表</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cap_add:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">ALL</span></span><br><span class="line"><span class="attr">cap_drop:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">NET_ADMIN</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">SYS_ADMIN</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>swarm mode 无效</p>
+</blockquote>
+<h5 id="cgroup-parent"><a href="#cgroup-parent" class="headerlink" title="cgroup_parent"></a>cgroup_parent</h5><p>为容器指定可选的 cgroup parent</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cgroup_parent:</span> <span class="string">m-executor-abcd</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>swarm mode 无效</p>
+</blockquote>
+<h5 id="command"><a href="#command" class="headerlink" title="command"></a>command</h5><p>覆盖默认的命令</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">command:</span> <span class="string">bundle</span> <span class="string">exec</span> <span class="string">thin</span> <span class="string">-p</span> <span class="number">3000</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以是列表</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">command:</span> [<span class="string">&quot;bundle&quot;</span>, <span class="string">&quot;exec&quot;</span>, <span class="string">&quot;thin&quot;</span>, <span class="string">&quot;-p&quot;</span>, <span class="string">&quot;3000&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<h5 id="configs"><a href="#configs" class="headerlink" title="configs"></a>configs</h5><h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><ul>
+<li>共享文件夹，卷，绑定挂载<blockquote>
+<p>如果你的项目不在 <code>Users</code>目录(<code>cd ~</code>),那么你需要共享驱动器或 Dockerfile 所在位置和当前正在使用的卷。如果出现运行时错误表示文件未找到，那么就是一个挂载卷的请求被拒绝，或服务启动失败，试着共享文件或驱动。挂载卷要求共享项目不在 <code>C:\Users (Windows)</code>,或 <code>/Users (Mac)</code> 的驱动，并且如果是运行在 <code>Dokcer Desktop for Windows</code> 的 Linux 容器上的所有应用都需要共享。</p>
+</blockquote>
+</li>
+<li>如果改变了一个服务的 Dockerfile 或者编译文件夹里的内容，运行 <code>docker-compose build</code>重新编译</li>
+</ul>
+<h3 id="官方示例"><a href="#官方示例" class="headerlink" title="官方示例"></a>官方示例</h3><h4 id="Compose-amp-WordPress"><a href="#Compose-amp-WordPress" class="headerlink" title="Compose &amp; WordPress"></a>Compose &amp; WordPress</h4><ul>
+<li>为项目创建空文件夹。该文件夹作为应用的上下文，且只保存构建镜像所需的资源。</li>
+<li>创建 docker-compose.yml</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">db_data:/var/lib/mysql</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">somewordpress</span></span><br><span class="line">      <span class="attr">MYSQL_DATABASE:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">MYSQL_USER:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">MYSQL_PASSWORD:</span> <span class="string">wordpress</span></span><br><span class="line">  <span class="attr">wordpress:</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">db</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wordpress:latest</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8000:80&quot;</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_HOST:</span> <span class="string">db:3306</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_USER:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_PASSWORD:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_NAME:</span> <span class="string">wordpress</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="attr">db_data:</span> &#123;&#125;</span><br><span class="line"><span class="comment"># db_data 卷会保存任何 WordPress 对数据库的改变。</span></span><br><span class="line"><span class="comment"># WordPress 通常开放 80 和 443 端口.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>docker-compose up -d</code>.<blockquote>
+<p>如果使用 Docker Machine, 那么运行 <code>docker-machine ip MACHINE_VM</code> 获取运行地址。如果是 destop 版，<a href="http://localhost/">http://localhost</a> 即可.</p>
+</blockquote>
+</li>
+<li><code>docker-compose down</code> 移除容器，默认的网络，保留 WordPress 和数据库。<code>docker-compose down --volumes</code> 全部移除。</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>docker</tag>
+        <tag>学习笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2805,6 +2830,32 @@ NDKr21
 ]]></content>
   </entry>
   <entry>
+    <title>rust 中的字符串</title>
+    <url>/2022/03/26/03/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://betterprogramming.pub/strings-in-rust-28c08a2d3130">Exploring Strings in Rust</a></p>
+</blockquote>
+<span id="more"></span>
+
+<p>计算机如何存储解析字符序列的</p>
+<ul>
+<li>计算机按字节（8位）顺序存储</li>
+<li>字节可以代表任意对象。只不过我们可以把某些字节转化为人可理解的对象。这也就是 ASCII &#x2F; Unicode 码表的功能.</li>
+<li>字符串就是一系列可以通过码表进行解析的字节序列. 在 rust 中我们常用 <code>String</code>,<code>str</code>,<code>&amp;str</code>,<code>&amp;String</code>,<code>Box&lt;str&gt;</code>,<code>Box&lt;&amp;str&gt;</code> 等实现。</li>
+</ul>
+<p>C 语言中是这样处理字符串的.</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> <span class="built_in">string</span>[] = <span class="string">&quot;banana&quot;</span>; <span class="comment">// c 在末尾添加 `\0`</span></span><br><span class="line"><span class="keyword">char</span> long_mostly_empty_string[<span class="number">42</span>] = <span class="string">&quot;banana&quot;</span>; <span class="comment">// c 在末尾添加 `\0`</span></span><br><span class="line"><span class="keyword">char</span> just_a_different_initialization[] = &#123;<span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;\0&#x27;</span>&#125;; <span class="comment">// 必须明确添加 \0</span></span><br></pre></td></tr></table></figure>
+
+<p>rust 不使用 null-terminated 字符串主要还是性能优化考量。</p>
+<h3 id="str"><a href="#str" class="headerlink" title="str"></a>str</h3><p>C 的字符串内部没有强制编码类型。内部只是以 null terminator 结尾的字节序列. JS 使用 UTF-16 编码字符串，而 Rust 使用 UTF-8 编码字符串。</p>
+<p>rust 中最常见的就是字符串切片： <code>&amp;str, &amp;&#39;static str, &amp;&#39;a str</code>.</p>
+<p>rust 中的切片最终都会落脚到动态大小类型 (DST).也就是他们实现了 <code>!Sized</code> trait 或者没有实现 <code>Sized</code> trait</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> string: <span class="built_in">Box</span>&lt;<span class="built_in">str</span>&gt; = <span class="built_in">Box</span>::new(*<span class="string">&quot;akaka&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>此处是无法获取动态类型大小的，因为解引用需要获取当前所指向的数据的所有权。</p>
+<p>引用就是一个指针的大小（usize） <code>std::mem::size_of::&lt;&amp;str&gt;()</code></p>
+]]></content>
+  </entry>
+  <entry>
     <title>teamcity自动化更新hexo博客</title>
     <url>/2019/03/09/22/</url>
     <content><![CDATA[<p>hexo deploy</p>
@@ -2844,7 +2895,7 @@ NDKr21
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 nodejs</span></span><br><span class="line">VERSION=v10.15.2</span><br><span class="line">DISTRO=linux-x64</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">checkNode</span></span>() &#123;</span><br><span class="line">  ISNODESUCCEED=$(node -v)</span><br><span class="line">  <span class="keyword">if</span> [ ISNODESUCCEED != <span class="variable">$VERSION</span> ]; <span class="keyword">then</span></span><br><span class="line">    installNode</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;NodeJS已安装&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">insallNode</span></span>() &#123;</span><br><span class="line">  mkdir -p /usr/<span class="built_in">local</span>/lib/nodejs</span><br><span class="line">  tar -xJf /data/teamcity_agent/others/node-<span class="variable">$VERSION</span>-<span class="variable">$DISTRO</span> <span class="comment"># -v 会输出解压日志，此处太多，所以关闭</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">export</span> PATH=/usr/<span class="built_in">local</span>/lib/nodejs/node-<span class="variable">$VERSION</span>-<span class="variable">$DISTRO</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">source</span> ~/.profile</span><br><span class="line"></span><br><span class="line">  checkNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">checkNode</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">npm i</span><br><span class="line"><span class="comment"># 生成public文件</span></span><br><span class="line">./node_modules/hexo/bin/hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为 github.io 配置 CNAME</span></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="string">&quot;/CNAME&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;blog.dang8080.cn&quot;</span> &gt; CNAME</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 git</span></span><br><span class="line"></span><br><span class="line">git config --global credential.helper store <span class="comment"># 保存 github 提交者信息，下次不用再输密码</span></span><br><span class="line">git config --global user.name <span class="string">&quot;Humphrey&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;dang8080@qq.com&quot;</span></span><br><span class="line"></span><br><span class="line">git add --all</span><br><span class="line">git commit -m <span class="string">&quot;TeamCity CI 提交部署: <span class="subst">$(date)</span>&quot;</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
 
 <h3 id="问题"><a href="#问题" class="headerlink" title="问题:"></a>问题:</h3><blockquote>
-<p>所以问题来了,配置完了点击 <code>run</code> 查看 Build log 会发现 push 失败。因为通过 https 向 github 提交代码需要交互式输入用户密码。而此处没有提供，将密码硬编码到此 shell 里提交到 github 也不安全。<br>或者即使是通过修改 VCS root 使用 <a href="mailto:&#x67;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#98;&#46;&#99;&#x6f;&#x6d;">&#x67;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#98;&#46;&#99;&#x6f;&#x6d;</a> ssh checkout 的代码，也无法推送到 github.</p>
+<p>所以问题来了,配置完了点击 <code>run</code> 查看 Build log 会发现 push 失败。因为通过 https 向 github 提交代码需要交互式输入用户密码。而此处没有提供，将密码硬编码到此 shell 里提交到 github 也不安全。<br>或者即使是通过修改 VCS root 使用 <a href="mailto:&#103;&#x69;&#x74;&#x40;&#103;&#x69;&#116;&#104;&#117;&#x62;&#46;&#x63;&#x6f;&#x6d;">&#103;&#x69;&#x74;&#x40;&#103;&#x69;&#116;&#104;&#117;&#x62;&#46;&#x63;&#x6f;&#x6d;</a> ssh checkout 的代码，也无法推送到 github.</p>
 </blockquote>
 <h4 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位:"></a>问题定位:</h4><blockquote>
 <p>TeamCity SSH agent 使用本机(Linux&#x2F;MacOS)的 OpenSSH 管理 SSH,对于 Windows,需要手动安装 OpenSSH (CygWin,MinGW,Git for Windows).<br>SSH agent 必须添加到 <code>$PATH</code> 中.<br>第一次连接到远程地址时，SSH agent 会询问是否保存远程地址的 fingerprint 到地址数据库 <code>~/.ssh/known_hosts</code>中.<br>为了避免询问，可以提前配置。如果相信该远程地址，可以禁用远程地址检查</p>
@@ -2884,6 +2935,25 @@ NDKr21
         <tag>teamcity</tag>
         <tag>hexo</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>使用 NAPI 或者 Context Aware 在渲染进程中加载 native 模块</title>
+    <url>/2022/03/26/29/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://github.com/electron/electron/issues/18397">Requiring Native Modules in the Renderer Process to be NAPI or Context Aware</a></p>
+</blockquote>
+<p>当前在 electron 中加载 native 模块有些困难。比如编译 native 模块时，需要确保 <code>NODE_MODULE_VERSION</code> 版本正确。在同一个进程中加载多个 native 模块实例等问题。</p>
+<span id="more"></span>
+
+<p>之前官方团队实现了对 chromium 打 patch 的方案，却碰到了很多 tricky 的问题。现在随着 Node 12 Worker Threads 的发布，就可以轻松实现这个功能了。</p>
+<p>其实 Node 团队在实现 Worker Thread 时也遇到了在多个 worker 线程中无法加载 native 模块的问题。他们的解决方案是提供了 <code>Context Aware</code> 的 native 模块方案。也就是 native 模块会告诉 Node, 他们可以被安全加载进多个 <code>v8::Context</code> 中，NAN 有个方便的宏 <code>NAN_MODULE_WORKER_ENABLED</code> 可以实现。</p>
+<p>所以，Context Aware 模块和 NAPI 模块就可以在 node 中被多次实例化。</p>
+<p>也就是说，任何想在渲染进程被加载的 native 模块必须得是 NAPI 或者 Context Aware.</p>
+<h3 id="计划时间线"><a href="#计划时间线" class="headerlink" title="计划时间线."></a>计划时间线.</h3><p>1、在 <code>Electron6</code> 添加 <code>app.allowRendererProcessReuses</code> 选项<br>2、在 <code>Electron 7</code> 对非 context-aware 的 native 模块开始提出弃用警告<br>3、在 <code>Electron 8</code> 对需要使用 <code>app.allowRendererProcessReuses</code> 默认值提出弃用警告<br>4、在 <code>Electron 9</code> 中切换 <code>app.allowRendererProcessReuses</code> 默认值为 true<br>5、在 <code>Electron 10</code> 中弃用切换 <code>app.allowRendererProcessReuses</code> 的能力<br>6、在 <code>Electron 14</code> 中移除切换 <code>app.allowRendererProcessReuses</code> 的能力</p>
+<blockquote>
+<p><a href="https://nodejs.org/api/addons.html#addons_context_aware_addons">Context-aware addons</a></p>
+</blockquote>
+]]></content>
   </entry>
   <entry>
     <title>安卓中的viewModelScope</title>
@@ -3089,30 +3159,5 @@ NDKr21
         <tag>LiveData</tag>
         <tag>Navigation</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Podman(Mac)挂载本地文件功能</title>
-    <url>/2022/03/20/47/</url>
-    <content><![CDATA[<p>在 mac 平台使用 podman 代替 docker 的过程中遇到了容器挂载文件的问题，这里将实践过程总结一下.</p>
-<span id="more"></span>
-
-<p>先说下，为什么替换 docker. docker-desktop 其实还是很好用的，只不过在使用中会发现以下几个问题 1、启动慢 2、总是更新失败。而且根据网上消息早期 docker-desktop 内部使用的是 virtualbox 技术，所以就选择了 podman 替换。</p>
-<p>使用中 podman 和 docker 没什么多的使用差别，除了多了 <code>podman machine</code> 的操作，这是因为 podman 使用了 quemu 加载 fedora 作为容器的虚拟物理机使用。所以此处会出现挂载的问题也就是因为 quemu 没有先挂载本地文件，那么自然容器也就无法访问并挂载了，这个问题据说在 podman 4.0 中将得到解决，我们拭目以待。</p>
-<p>回到正题，看看如何为 podman 挂载上本地文件。</p>
-<p>首先当然可以通过 <code>scp</code> 将文件拷贝到虚拟机中。但实际中很浪费空间。</p>
-<p>接下来就是如何将 macOS 文件系统挂载上去。此处则需要使用 <code>sshfs</code> 通过 ssh 反向代理登录进虚拟机(qemu). (需要注意的是，每次进行 <code>podman machine</code> 操作时都需要重新走一遍.)</p>
-<p>第一步通过 <code>podman machine --log-level=debug ssh -- exit 2&gt;&amp;1 | grep Executing | awk &#123;&#39;print $8&#39;&#125;</code> 获取私有的 ssh 端口.</p>
-<p>接下来使用此端口连接到 qemu 主机</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh -i ~/.ssh/podman-machine-default -R 10000:$(hostname):22 -p &lt;PORT&gt; core@localhost</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 在 qemu 主机中生成和 macOS 主机连接的 ssh key</span></span><br><span class="line">ssh-keygen -t rsa -N &quot;&quot; -f ~/.ssh/id_rsa</span><br><span class="line">ssh-copy-id -p 10000 &lt;MAC USERNAME&gt;@127.0.0.1</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 接下来挂载 macOS 的挂载点</span></span><br><span class="line">sudo mkdir -p /mnt/Users</span><br><span class="line">sudo chown core:core /mnt/Users</span><br></pre></td></tr></table></figure>
-
-<p>现在就可以通过 <code>sshfs</code> 挂载了<br><code>sshfs -p 10000 $USER@127.0.0.1:/Users /mnt/Users</code>，</p>
-<p>使用 screen 来将此操作置于后台运行 </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">screen -t podman</span><br><span class="line">ssh -i ~/.ssh/podman-machine-default -R 10000:$(hostname):22 -p &lt;PORT&gt; core@localhost</span><br><span class="line"><span class="meta">#</span><span class="bash"> 挂载本地文件到 qemu 主机</span></span><br><span class="line">sshfs -p 10000 $USER@127.0.0.1:/Users /mnt/Users</span><br></pre></td></tr></table></figure>
-
-<h3 id="其他方案"><a href="#其他方案" class="headerlink" title="其他方案"></a>其他方案</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">podman machine</span><br><span class="line"></span><br><span class="line">Current solution requires modifying the path, since the root directory is read-only on CoreOS:</span><br><span class="line"></span><br><span class="line">podman machine init -v /foo:/mnt/foo</span><br><span class="line"></span><br><span class="line">podman --remote run -v /mnt/foo:/foo</span><br><span class="line"></span><br><span class="line">This breaks compatibility with local version, that would do podman run -v /foo:/foo (no /mnt)</span><br><span class="line"></span><br><span class="line">other systems</span><br><span class="line"></span><br><span class="line">No issues with mounting, since the root directory can be modified to create the mountpoint dir:</span><br><span class="line"></span><br><span class="line">podman machine init -v /foo:/foo --volume-driver=sshfs</span><br><span class="line"></span><br><span class="line">podman --remote run -v /foo:/foo</span><br><span class="line"></span><br><span class="line">This means one can use the same command remote as local, when using something like Fedora.</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://dalethestirling.github.io/Macos-volumes-with-Podman/">https://dalethestirling.github.io/Macos-volumes-with-Podman/</a><br><a href="https://github.com/containers/podman/issues/8016#issuecomment-995242552">https://github.com/containers/podman/issues/8016#issuecomment-995242552</a></p>
-</blockquote>
-]]></content>
   </entry>
 </search>
