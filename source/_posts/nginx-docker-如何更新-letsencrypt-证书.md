@@ -15,6 +15,9 @@ description:
 
 当前的个人主页是运行在 docker nginx 上的。为了安全起见，把所有的 http 请求已经转发到了 https, 免费的 SSL 证书过期了，所以使用了 letsencrypt 的免费证书来签名。但是它默认的是 3 个月有效期，所以必须得定期去更新。否则就会导致 nginx 服务不可用了。以下为如何在 docker 上更新 letsencrypt 证书.
 
+<!-- more -->
+
+
 ### 部署架构
 
 众所周知，docker 的命令配置大都很长，一般是通过shell 脚本或者 docker-compose.yaml 文件来进行管理的。而我采用的就是后者。

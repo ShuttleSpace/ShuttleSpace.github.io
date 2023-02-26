@@ -8,6 +8,8 @@ What every JavaScript developer should know about Unicode
 {% endblockquote %}
 本文起源于一个忏悔：我对 Unicode 已经恐惧很久了。当实际工作中需要 Unicode 知识时，我一般仅针对问题搜索答案，而不会对其原理进行深入探究。
 
+<!-- more -->
+
 我一直在回避这件事，直到我遇到了一个需要深入理解 Unicode 原理的问题。此刻没有现成的解决方案可用了。
 
 在付出大量努力（阅读一大堆文章）后，我才发现，其实 Unicode 也没那么难懂。好吧。。。有些文章确实需要至少3遍之后才能理解。
@@ -17,8 +19,6 @@ What every JavaScript developer should know about Unicode
 本文将阐述 Unicode 的基本原理及其创建的必要性。然后介绍 JavaScript 如何使用 Unicode, 以及开发中可能遇到的问题。同时也会学习如何使用最新的 ECMAScript 2015 特性解决一部分难题。
 
 准备好了吗？
-
-<!-- more -->
 
 [toc]
 

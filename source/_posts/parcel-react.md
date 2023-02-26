@@ -15,6 +15,8 @@ description:
 
 相比较 create-react-app 这么笨重的武器，parcel 是一个开箱即用的开发打包工具，在小项目、简单测试时用起来就非常得心应手了。
 
+<!-- more -->
+
 ### 依赖
 
 ```json
