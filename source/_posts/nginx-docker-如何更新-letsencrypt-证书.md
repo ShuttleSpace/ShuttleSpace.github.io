@@ -12,11 +12,9 @@ categories:
 keywords: docker, nginx, letsencrypt
 description:
 ---
-
 当前的个人主页是运行在 docker nginx 上的。为了安全起见，把所有的 http 请求已经转发到了 https, 免费的 SSL 证书过期了，所以使用了 letsencrypt 的免费证书来签名。但是它默认的是 3 个月有效期，所以必须得定期去更新。否则就会导致 nginx 服务不可用了。以下为如何在 docker 上更新 letsencrypt 证书.
 
 <!-- more -->
-
 
 ### 部署架构
 
@@ -27,6 +25,7 @@ description:
 以下以 nginx 和 couchdb 为例.
 
 couchdb/docker-compose.yaml
+
 ```yaml
 version: "3.6"
 
@@ -51,6 +50,7 @@ networks:
 这里新建了一个名为 main 的 networks, 属性 `external` 设置为 true, 同时设置容器的 networks 为 default + main, 后面只要其他容器都在 main 这个网络内，都是可以直接 localhost 或者端口互相访问的。
 
 nginx/docker-compose.yaml
+
 ```yaml
 version: "3.6"
 
@@ -79,7 +79,9 @@ networks:
    main:
      external: true
 ```
+
 那么在 nginx 中就可以直接访问 couchdb 了.
+
 ```conf
 location /couchdb {
   rewrite /couchdb(.*) $1 break;
@@ -89,10 +91,10 @@ location /couchdb {
 
 ![docker sidecar arch](http://picbed.dang8080.cn/nginx-letsencrypt.png)
 
-
 ### 使用 letsencrypt 生成证书
 
 首先看下 letsencrypt 的 docker-compose
+
 ```yaml
 version: "3.6"
 
@@ -120,7 +122,29 @@ certbot 运行时，需要本机提供一个 http 服务，即外部能访问的
 
 2、使用 certbot 提供的 http 服务
 
-这里我选择了方案1
+这里我选择了方案1, nginx 需要添加一条新 location 满足 letsencrypt 访问的需求
+
+```
+server {
+	listen 80;
+	listen [::]:80;
+	server_name dang8080.cn localhost;
+	root /usr/shar/nginx/html;
+
+	location / {
+		root /usr/share/nginx/html;
+		return 301 https://dang8080.cn$request_uri;
+	}
+
+	location ^~ /.well-known/acme-challenge/ {
+		allow all;
+		default_type "text/plain";
+		root /var/www/dang8080.cn;
+	}
+}
+```
+
+注意: `/.well-known/acme-challenge 的 root 必须是 /var/www/dang8080.cn 否则会报 404.`
 
 certbot 使用的参数
 
@@ -132,7 +156,6 @@ certbot 使用的参数
 
 > --standalone 就是 certbot 开启一个新的 http 服务.
 
-
 执行完后就能在本地看到生成的 ssl 证书了
 
 ![](http://picbed.dang8080.cn/202302261012588.png)
@@ -140,6 +163,7 @@ certbot 使用的参数
 ### 配置 nginx
 
 因为 nginx 运行在 docker 中，而生成的 ssl 证书在其他目录，所以需要将 ssl 证书目录也映射到 ngixn 容器中.
+
 ```yaml
   - ./certbot/letsencrypt/live:/etc/letsencrypt/live:rw
   - ./certbot/letsencrypt/archive:/etc/letsencrypt/archive:rw
@@ -151,6 +175,7 @@ certbot 使用的参数
 > 同时为了 ssl 安全，使用 2048位的 DH 参数. 生成方式 `openssl dhparam -out dhparam-2048.pem 2048`
 
 https.conf
+
 ```conf
 ssl_certificate /etc/letsencrypt/live/dang8080.cn/fullchain.pem;
 ssl_certificate_key /etc/letsencrypt/live/dang8080.cn/privkey.pem;
@@ -164,6 +189,7 @@ ssl_dhparam /etc/letsencrypt/dhparam-2048.pem;
 前面提到，letsencrypt 生成的 ssl 证书一般只有3个月有效期，所以得定期更新.这里使用 crontab 更新就行.
 
 rewnew.sh
+
 ```shell
 #! /usr/bin/env sh
 
@@ -173,7 +199,8 @@ sudo docker kill --signal=HUP [] &&
 sudo docker-compose down
 ```
 
-或者 
+或者
+
 ```shell
 #!/usr/bin/env sh
 
