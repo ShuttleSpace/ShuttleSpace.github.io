@@ -65,9 +65,8 @@ services:
     volumes:
       - ./nginx/html:/usr/share/nginx/html:rw
       - ./nginx/etc/nginx:/etc/nginx:rw
-      - ./certbot/letsencrypt:/etc/letsencrypt:rw
-      - ./certbot/var/www/dang8080.cn:/var/www/dang8080.cn:rw
-      - ./certbot/var/www/humphreyd.cn:/var/www/humphreyd.cn:rw
+      - ./certbot/letsencrypt/live:/etc/letsencrypt/live:rw
+      - ./certbot/letsencrypt/archive:/etc/letsencrypt/archive:rw
       - ./certbot/dhparam-2048.pem:/etc/letsencrypt/dhparam-2048.pem:rw
     networks:
       - default
@@ -145,11 +144,11 @@ server {
 }
 ```
 
-注意: **<font color="#00b0f0">`/.well-known/acme-challenge 的 root 必须和 certbot --webroot -w 指定的路径保持一致. 否则会报 404.`</font>**
+注意: `/.well-known/acme-challenge 的 root 必须是 /var/www/dang8080.cn 否则会报 404.`
 
 certbot 使用的参数
 
-> --webroot -w 指定生成的 ssl 证书目录，注意这里是在 docker 中运行的，所以需要将其映射到本地文件系统。如果是使用 ng, 那么 ng 配置的 /.well-known/acme-challenge 必须和 -w 指定的目录保持一致
+> --webroot -w 指定生成的 ssl 证书目录，注意这里是在 docker 中运行的，所以需要将其映射到本地文件系统
 
 > --agree-tos 跳过 cli 中的交互式问询
 
@@ -166,9 +165,8 @@ certbot 使用的参数
 因为 nginx 运行在 docker 中，而生成的 ssl 证书在其他目录，所以需要将 ssl 证书目录也映射到 ngixn 容器中.
 
 ```yaml
-  - ./certbot/letsencrypt:/etc/letsencrypt:rw
-  - ./certbot/var/www/dang8080.cn:/var/www/dang8080.cn:rw
-  - ./certbot/var/www/humphreyd.cn:/var/www/humphreyd.cn:rw
+  - ./certbot/letsencrypt/live:/etc/letsencrypt/live:rw
+  - ./certbot/letsencrypt/archive:/etc/letsencrypt/archive:rw
   - ./certbot/dhparam-2048.pem:/etc/letsencrypt/dhparam-2048.pem:rw
 ```
 
