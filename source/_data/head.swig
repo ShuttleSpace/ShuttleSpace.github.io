@@ -1,4 +1,4 @@
-<script type="text/javascript" src="http://cdn.dang8080.cn/love.js"></script>
+<%- js('js/love.js') %>
 <script src="https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js"></script>
 <script>
 //    (function(){

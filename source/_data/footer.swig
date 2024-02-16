@@ -44,7 +44,6 @@
         async function site_read_count() {
             const className = 'Counter',
                 query = new AV.Query(className)
-            console.log('site_read_count')
             return query.find()
                 .then(_ => _.map(i => i.attributes.time))
                 .then(_ => _.reduce((a, b) => a + b))
@@ -59,7 +58,6 @@
         })
             .then(() => site_read_count())
             .then((count) => {
-                console.log('[mycount]', count)
                 const s = ` ${count} 次`
                 document.getElementById("site_total_read_count").innerHTML = s
             })

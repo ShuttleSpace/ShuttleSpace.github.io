@@ -1,5 +1,6 @@
+{% if is_post %}
  <script>
- var valineParentDOM = document.querySelector('body > main > div.main-inner.post.posts-expand')
+ var valineParentDOM = document.querySelector('body > main > div.main-inner')
  var valineDOM = document.createElement('div')
  valineDOM.style.marginTop = '2rem'
  valineDOM.id = 'vcomments'
@@ -11,3 +12,4 @@
       appKey: 'NgSfNQLxbzWKBuQROhn56aP5'
   });
 </script>
+{% endif %}

@@ -41,7 +41,10 @@ external_link:
   exclude: ''
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
+marked:
+  prependRoot: true
+  postAsset: true
 relative_link: false
 future: true
 highlight:
@@ -116,14 +119,14 @@ theme: next
 theme_config:
   minify: false
   custom_file_path:
-    head: source/_data/head.njk
+    head: source/_data/head.swig
     #header: source/_data/header.njk
     #sidebar: source/_data/sidebar.njk
     #postMeta: source/_data/post-meta.njk
     #postBodyStart: source/_data/post-body-start.njk
-    postBodyEnd: source/_data/post-body-end.njk
-    footer: source/_data/footer.njk
-    bodyEnd: source/_data/body-end.njk
+    postBodyEnd: source/_data/post-body-end.swig
+    footer: source/_data/footer.swig
+    bodyEnd: source/_data/body-end.swig
     #variable: source/_data/variables.styl
     #mixin: source/_data/mixins.styl
     style: source/_data/styles.styl
@@ -133,10 +136,10 @@ theme_config:
   darkmode: auto
   colorscheme: light
   favicon:
-    small: static/images/favicon-16x16-next.png
-    medium: static/images/favicon-32x32-next.png
-    apple_touch_icon: static/images/apple-touch-icon-next.png
-    safari_pinned_tab: static/images/logo.svg
+    small: images/favicon-16x16-next.png
+    medium: images/favicon-32x32-next.png
+    apple_touch_icon: images/apple-touch-icon-next.png
+    safari_pinned_tab: images/logo.svg
     #android_manifest: /manifest.json
   open_graph:
     enable: false
@@ -152,7 +155,7 @@ theme_config:
   sidebar:
     position: right
   avatar:
-    url: http://picbed.dang8080.cn/avatar.jpeg
+    url: images/avatar.jpeg
     rounded: true
   social:
     GitHub: https://github.com/ShuttleSpace || fab fa-github
@@ -169,8 +172,8 @@ theme_config:
     wpm: 275
   tag_icon: true
   reward:
-    wechatpay: static/images/site/wechatpay.png
-    alipay: static/images/site/alipay.png
+    wechatpay: images/site/wechatpay.png
+    alipay: images/site/alipay.png
   related_posts:
     enable: true
     title: 要不看点别的吧?💗 # Custom header, leave empty to use the default one
