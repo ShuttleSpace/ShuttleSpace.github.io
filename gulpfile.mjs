@@ -1,5 +1,5 @@
 import gulp from "gulp";
-import minifycss from "gulp-minify-css";
+import cleancss from "gulp-clean-css";
 import uglify from "gulp-uglify";
 import htmlmin from "gulp-htmlmin";
 import htmlclean from "gulp-htmlclean";
@@ -10,7 +10,7 @@ import babel from "gulp-babel";
 gulp.task("minify-css", function (done) {
   return gulp
     .src("./public/**/*.css")
-    .pipe(minifycss())
+    .pipe(cleancss())
     .on("error", (e) => done(e))
     .pipe(gulp.dest("./public"));
 });

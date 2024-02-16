@@ -44,6 +44,7 @@
         async function site_read_count() {
             const className = 'Counter',
                 query = new AV.Query(className)
+            console.log('site_read_count')
             return query.find()
                 .then(_ => _.map(i => i.attributes.time))
                 .then(_ => _.reduce((a, b) => a + b))
@@ -53,12 +54,13 @@
                 if (typeof AV !== "undefined") {
                     clearInterval(timer)
                     return resolve()
-                }
+                } 
             }, 250)
         })
             .then(() => site_read_count())
-            .then(_ => {
-                const s = ` ${_} 次`
+            .then((count) => {
+                console.log('[mycount]', count)
+                const s = ` ${count} 次`
                 document.getElementById("site_total_read_count").innerHTML = s
             })
             .catch(e => console.error(e.message))
