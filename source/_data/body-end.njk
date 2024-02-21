@@ -1,0 +1,18 @@
+ <script>
+ var isPostContentPage = /\/[0-9]{0,4}\/[0-9]{0,4}\/[0-9]{0,4}\/[0-9]{0,4}/g.test(navigation.currentEntry.url)
+ console.log(isPostContentPage, '---');
+ if (isPostContentPage) {
+  var valineParentDOM = document.querySelector('body > main > div.main-inner')
+  var valineDOM = document.createElement('div')
+  valineDOM.style.marginTop = '2rem'
+  valineDOM.id = 'vcomments'
+  valineParentDOM.appendChild(valineDOM)
+
+  new Valine({
+      el: valineDOM ,
+      appId: 'WS6xwQjL3YsDPCdcRTqtpdhg-gzGzoHsz',
+      appKey: 'NgSfNQLxbzWKBuQROhn56aP5'
+  });
+ }
+
+</script>
