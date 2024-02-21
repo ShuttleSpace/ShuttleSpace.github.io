@@ -6,10 +6,10 @@
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.1.1">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/static/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -39,8 +39,8 @@
 
 
 
-<script type="text/javascript" src="http://cdn.dang8080.cn/love.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js"></script>
+<script src="https://secondarymarquis-1253126512.cos.ap-nanjing.myqcloud.com/homepage/love.js"/>
 <script>
 //    (function(){
 //        if('' != ''){
@@ -148,7 +148,7 @@
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="HumphreyDan"
-      src="http://picbed.dang8080.cn/avatar.jpeg">
+      src="/images/avatar.jpeg">
   <p class="site-author-name" itemprop="name">HumphreyDan</p>
   <div class="site-description" itemprop="description">donot dedicate your life to ignorance,mediocrity,vulgarity.</div>
 </div>
@@ -304,7 +304,6 @@
         async function site_read_count() {
             const className = 'Counter',
                 query = new AV.Query(className)
-            console.log('site_read_count')
             return query.find()
                 .then(_ => _.map(i => i.attributes.time))
                 .then(_ => _.reduce((a, b) => a + b))
@@ -319,7 +318,6 @@
         })
             .then(() => site_read_count())
             .then((count) => {
-                console.log('[mycount]', count)
                 const s = ` ${count} 次`
                 document.getElementById("site_total_read_count").innerHTML = s
             })
@@ -377,17 +375,22 @@
 
 
  <script>
- var valineParentDOM = document.querySelector('body > main > div.main-inner.post.posts-expand')
- var valineDOM = document.createElement('div')
- valineDOM.style.marginTop = '2rem'
- valineDOM.id = 'vcomments'
- valineParentDOM.appendChild(valineDOM)
+ var isPostContentPage = /\/[0-9]{0,4}\/[0-9]{0,4}\/[0-9]{0,4}\/[0-9]{0,4}/g.test(navigation.currentEntry.url)
+ console.log(isPostContentPage, '---');
+ if (isPostContentPage) {
+  var valineParentDOM = document.querySelector('body > main > div.main-inner')
+  var valineDOM = document.createElement('div')
+  valineDOM.style.marginTop = '2rem'
+  valineDOM.id = 'vcomments'
+  valineParentDOM.appendChild(valineDOM)
 
   new Valine({
       el: valineDOM ,
       appId: 'WS6xwQjL3YsDPCdcRTqtpdhg-gzGzoHsz',
       appKey: 'NgSfNQLxbzWKBuQROhn56aP5'
   });
+ }
+
 </script>
 </body>
 </html>
