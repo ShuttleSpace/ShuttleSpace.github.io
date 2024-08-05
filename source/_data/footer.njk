@@ -48,12 +48,12 @@
                 .then(_ => _.map(i => i.attributes.time))
                 .then(_ => _.reduce((a, b) => a + b))
         }
-        new Promise(resolve => {
+        new Promise((resolve,reject) => {
             const timer = setInterval(() => {
                 if (typeof AV !== "undefined") {
                     clearInterval(timer)
-                    return resolve()
-                } 
+                    return reject()
+                }
             }, 250)
         })
             .then(() => site_read_count())

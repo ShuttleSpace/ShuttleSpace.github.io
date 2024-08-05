@@ -8,7 +8,7 @@ subtitle: 云青青兮欲雨, 水澹澹兮生烟
 description: donot dedicate your life to ignorance,mediocrity,vulgarity.
 keywords: Android,Java,Kotlin,JS,Rust,Electron,Golang,Flutter,Dart,TS,kubernetes,k8s
 author: HumphreyDan
-# language: zh-Hans
+language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL
@@ -96,7 +96,7 @@ pagination_dir: page
 ## include:/exclude: options only apply to the 'source/' folder
 # include:
 # exclude:
-# ignore:
+ignore:
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
