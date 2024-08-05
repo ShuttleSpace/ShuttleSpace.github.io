@@ -1,64 +1,50 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.0.0">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="##00696b" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="##80d4d5" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.1.1">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
-  <link rel="mask-icon" href="/images/favicon-32x32-next.ico" color="#222">
+  <link rel="mask-icon" href="/images/favicon-32x32-next.ico" color="##00696b">
 
 <link rel="stylesheet" href="/css/main.css">
 
-<link rel="stylesheet" href="http://fonts.gmirror.org/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"shuttlespace.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
 
-  <meta name="description" content="记录下使用 rust 绑定 libgit2 动态库进行 安卓交叉编译时的过程。">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"shuttlespace.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":"auto","version":"8.20.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"flat"},"fold":{"enable":true,"height":300},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="记录下使用 rust 绑定 libgit2 动态库进行 安卓交叉编译时的过程。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="rust android 交叉编译">
 <meta property="og:url" content="https://shuttlespace.github.io/2022/03/03/31/">
 <meta property="og:site_name" content="HumphreyIO">
 <meta property="og:description" content="记录下使用 rust 绑定 libgit2 动态库进行 安卓交叉编译时的过程。">
-<meta property="og:locale">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-03T14:16:31.000Z">
 <meta property="article:modified_time" content="2022-12-07T08:38:09.607Z">
 <meta property="article:author" content="HumphreyDan">
-<meta property="article:tag" content="Android,Java,Kotlin,JS,Rust,Electron">
+<meta property="article:tag" content="Android,Java,Kotlin,JS,Rust,Electron,Golang,Flutter,Dart,TS,kubernetes,k8s">
 <meta name="twitter:card" content="summary">
+
 
 <link rel="canonical" href="https://shuttlespace.github.io/2022/03/03/31/">
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-Hans'
-  };
-</script>
-<script type="text/javascript" src="/js/love.js"></script>
-<script>
-    (function(){
-        if(''){
-            if (prompt('please input your password.') !== ''){
-                alert('wrong password!!!');
-                history.back();
-            }
-        }
-    })();
-</script>
 
-  <title>rust android 交叉编译 | HumphreyIO</title>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://shuttlespace.github.io/2022/03/03/31/","path":"2022/03/03/31/","title":"rust android 交叉编译"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>rust android 交叉编译 | HumphreyIO</title>
   
 
 
@@ -66,220 +52,185 @@
 
 
 
+
+<script src="https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js"></script>
+<script src="https://secondarymarquis-1253126512.cos.ap-nanjing.myqcloud.com/homepage/love.js"/>
+<script>
+//    (function(){
+//        if('' != ''){
+//            if (prompt('please input your password.') !== ''){
+//                alert('wrong password!!!');
+//                history.back();
+//            }
+//        }
+//    })();
+</script>
+
   <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">HumphreyIO</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
+      <p class="site-title">HumphreyIO</p>
+      <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">云青青兮欲雨, 水澹澹兮生烟</p>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
     </div>
   </div>
 </div>
 
 
 
-
 <nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
-
-  </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
   </ul>
 </nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA-libgit2-%E7%94%9F%E6%88%90-rust-binding"><span class="nav-number">1.</span> <span class="nav-text">为 libgit2 生成 rust binding</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8-rust-%E7%94%9F%E6%88%90-jni-%E5%8A%A8%E6%80%81%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">用 rust 生成 jni 动态库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rust-jni-%E4%BB%A3%E7%A0%81%EF%BC%88%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">rust jni 代码（动态加载方式）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%94%9F%E6%88%90-kotlin-%E6%96%87%E4%BB%B6-jni-%E5%A4%B4%E6%96%87%E4%BB%B6%E7%9A%84%E5%87%BD%E6%95%B0%E7%AD%BE%E5%90%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">3.0.0.0.1.</span> <span class="nav-text">生成 kotlin 文件 jni 头文件的函数签名方式</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">HumphreyDan</p>
+  <div class="site-description" itemprop="description">donot dedicate your life to ignorance,mediocrity,vulgarity.</div>
 </div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
 </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
 
     </div>
-  </div>
 
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-  <div class="reading-progress-bar"></div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
-
-  <a href="https://github.com/ShuttleSpace" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+    <div class="main-inner post posts-expand">
 
 
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
+  
 
-          <div class="content post posts-expand">
-            
 
-    
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://shuttlespace.github.io/2022/03/03/31/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://picbed.dang8080.cn/avatar.jpeg">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="HumphreyDan">
-      <meta itemprop="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="HumphreyIO">
+      <meta itemprop="description" content="donot dedicate your life to ignorance,mediocrity,vulgarity.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="rust android 交叉编译 | HumphreyIO">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          rust android 交叉编译
+          rust android 交叉编译<a href="https://github.com/ShuttleSpace/ShuttleSpace.github.io/tree/main/source/_posts/rust-android-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
         </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-03 22:16:31" itemprop="dateCreated datePublished" datetime="2022-03-03T22:16:31+08:00">2022-03-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-12-07 16:38:09" itemprop="dateModified" datetime="2022-12-07T16:38:09+08:00">2022-12-07</time>
-              </span>
-
-          
-            <span id="/2022/03/03/31/" class="post-meta-item leancloud_visitors" data-flag-title="rust android 交叉编译" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
       <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
+        <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/2022/03/03/31/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/03/31/" itemprop="commentCount"></span>
-    </a>
-  </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-03 22:16:31" itemprop="dateCreated datePublished" datetime="2022-03-03T22:16:31+08:00">2022-03-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-07 16:38:09" itemprop="dateModified" datetime="2022-12-07T16:38:09+08:00">2022-12-07</time>
+    </span>
+
   
-  <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>7.2k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>7 mins.</span>
-            </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
 
         </div>
       </header>
@@ -287,10 +238,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <p>记录下使用 rust 绑定 libgit2 动态库进行 安卓交叉编译时的过程。</p>
+    <div class="post-body" itemprop="articleBody"><p>记录下使用 rust 绑定 libgit2 动态库进行 安卓交叉编译时的过程。</p>
 <span id="more"></span>
 
 <h1 id="为-libgit2-生成-rust-binding"><a href="#为-libgit2-生成-rust-binding" class="headerlink" title="为 libgit2 生成 rust binding"></a>为 libgit2 生成 rust binding</h1><p>如前所述，我们生成好了 libgit2 的安卓动态库，如果需要 rust 调用安卓动态库的话，不但手写很麻烦，还需要用到 unsafe, 可能会出现各种问题。<br>所以我们采用官方提供的 bindgen 来为我们自动生成 binding.</p>
@@ -301,7 +249,7 @@
 <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line">...</span><br><span class="line"><span class="attr">build</span>=<span class="string">&quot;build.rs</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[build-dependencies]</span></span><br><span class="line"><span class="string">bindgen = &quot;</span><span class="number">0.59</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure>
 
 <p>3、编辑 build.rs</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> bindgen;</span><br><span class="line"><span class="keyword">use</span> std::env;</span><br><span class="line"><span class="keyword">use</span> std::path::PathBuf;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">  <span class="keyword">let</span> header_path = <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;/deps/libgit2/include&quot;</span>, env::current_dir().unwrap());</span><br><span class="line">  <span class="keyword">let</span> bindings = bindgen::Builder::default()</span><br><span class="line">        .header(<span class="string">&quot;deps/libgit2/include/git2.h&quot;</span>)</span><br><span class="line">        .clang_arg(<span class="built_in">format!</span>(<span class="string">&quot;-I&#123;&#125;&quot;</span>, git2_header_path))</span><br><span class="line">        .clang_arg(<span class="built_in">format!</span>(<span class="string">&quot;--sysroot=&#123;&#125;/toolchains/llvm/prebuilt/darwin-x86_64/sysroot&quot;</span>, env::var(<span class="string">&quot;ANDROID_NDK&quot;</span>)))</span><br><span class="line">        .clang_arg(<span class="string">&quot;--target=armv7-linux-androideabi&quot;</span>) <span class="comment">// 指定 arm 平台的编译，否则编译出来的 header 有问题</span></span><br><span class="line">        .disable_header_comment()</span><br><span class="line">        .generate_comments(<span class="literal">false</span>)</span><br><span class="line">        .parse_callbacks(<span class="built_in">Box</span>::new(bindgen::CargoCallbacks))</span><br><span class="line">        .generate()</span><br><span class="line">        .expect(<span class="string">&quot;Unable to generate bindings&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> out_path = PathBuf::from(env::current_dir().expect(<span class="string">&quot;can&#x27;t get current dir&quot;</span>).join(<span class="string">&quot;src&quot;</span>));</span><br><span class="line">    bindings</span><br><span class="line">        .write_to_file(out_path.join(<span class="string">&quot;lib.rs&quot;</span>))</span><br><span class="line">        .expect(<span class="string">&quot;Couldn&#x27;t write bindings!&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;cargo:warning=out:&#123;:?&#125;&quot;</span>, out_path.clone().join(<span class="string">&quot;bindings.rs&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> bindgen;</span><br><span class="line"><span class="keyword">use</span> std::env;</span><br><span class="line"><span class="keyword">use</span> std::path::PathBuf;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="variable">header_path</span> = <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;/deps/libgit2/include&quot;</span>, env::<span class="title function_ invoke__">current_dir</span>().<span class="title function_ invoke__">unwrap</span>());</span><br><span class="line">  <span class="keyword">let</span> <span class="variable">bindings</span> = bindgen::Builder::<span class="title function_ invoke__">default</span>()</span><br><span class="line">        .<span class="title function_ invoke__">header</span>(<span class="string">&quot;deps/libgit2/include/git2.h&quot;</span>)</span><br><span class="line">        .<span class="title function_ invoke__">clang_arg</span>(<span class="built_in">format!</span>(<span class="string">&quot;-I&#123;&#125;&quot;</span>, git2_header_path))</span><br><span class="line">        .<span class="title function_ invoke__">clang_arg</span>(<span class="built_in">format!</span>(<span class="string">&quot;--sysroot=&#123;&#125;/toolchains/llvm/prebuilt/darwin-x86_64/sysroot&quot;</span>, env::<span class="title function_ invoke__">var</span>(<span class="string">&quot;ANDROID_NDK&quot;</span>)))</span><br><span class="line">        .<span class="title function_ invoke__">clang_arg</span>(<span class="string">&quot;--target=armv7-linux-androideabi&quot;</span>) <span class="comment">// 指定 arm 平台的编译，否则编译出来的 header 有问题</span></span><br><span class="line">        .<span class="title function_ invoke__">disable_header_comment</span>()</span><br><span class="line">        .<span class="title function_ invoke__">generate_comments</span>(<span class="literal">false</span>)</span><br><span class="line">        .<span class="title function_ invoke__">parse_callbacks</span>(<span class="type">Box</span>::<span class="title function_ invoke__">new</span>(bindgen::CargoCallbacks))</span><br><span class="line">        .<span class="title function_ invoke__">generate</span>()</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Unable to generate bindings&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">out_path</span> = PathBuf::<span class="title function_ invoke__">from</span>(env::<span class="title function_ invoke__">current_dir</span>().<span class="title function_ invoke__">expect</span>(<span class="string">&quot;can&#x27;t get current dir&quot;</span>).<span class="title function_ invoke__">join</span>(<span class="string">&quot;src&quot;</span>));</span><br><span class="line">    bindings</span><br><span class="line">        .<span class="title function_ invoke__">write_to_file</span>(out_path.<span class="title function_ invoke__">join</span>(<span class="string">&quot;lib.rs&quot;</span>))</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Couldn&#x27;t write bindings!&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;cargo:warning=out:&#123;:?&#125;&quot;</span>, out_path.<span class="title function_ invoke__">clone</span>().<span class="title function_ invoke__">join</span>(<span class="string">&quot;bindings.rs&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>4、运行 cargo build 即可在 src 目录下生成 <code>lib.rs</code> binding 文件了</p>
 <h1 id="用-rust-生成-jni-动态库"><a href="#用-rust-生成-jni-动态库" class="headerlink" title="用 rust 生成 jni 动态库"></a>用 rust 生成 jni 动态库</h1><p>1、首先新建 rust 项目</p>
@@ -331,14 +279,14 @@
 <p>如果不想每次都在命令行后指定 -L 参数，可以使用 build.rs 来编译</p>
 <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line">...</span><br><span class="line"><span class="attr">build</span> = <span class="string">&quot;build.rs&quot;</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="comment">// CARGO_CFG_TARGET_OS</span></span><br><span class="line">  <span class="keyword">let</span> TARGET = env::var(<span class="string">&quot;TARGET&quot;</span>).unwrap();</span><br><span class="line">  <span class="keyword">let</span> target = <span class="keyword">if</span> TARGET.contains(<span class="string">&quot;x86_64-linux-android&quot;</span>) &#123;</span><br><span class="line">    <span class="string">&quot;android_x86-64&quot;</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> TARGET.contains(<span class="string">&quot;aarch64-linux-android&quot;</span>) &#123;</span><br><span class="line">    <span class="string">&quot;android_arm64&quot;</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="string">&quot;&quot;</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-link-search=native=./deps/libgit2/lib/&#123;&#125;&quot;</span>, target);</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-link-search=native=./deps/openssl/lib/&#123;&#125;&quot;</span>, target);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-link-lib=dylib=git2&quot;</span>);</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-link-lib=dylib=crypto&quot;</span>);</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-link-lib=dylib=ssl&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-flags=-L./deps/gcc&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="comment">// CARGO_CFG_TARGET_OS</span></span><br><span class="line">  <span class="keyword">let</span> <span class="variable">TARGET</span> = env::<span class="title function_ invoke__">var</span>(<span class="string">&quot;TARGET&quot;</span>).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">  <span class="keyword">let</span> <span class="variable">target</span> = <span class="keyword">if</span> TARGET.<span class="title function_ invoke__">contains</span>(<span class="string">&quot;x86_64-linux-android&quot;</span>) &#123;</span><br><span class="line">    <span class="string">&quot;android_x86-64&quot;</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> TARGET.<span class="title function_ invoke__">contains</span>(<span class="string">&quot;aarch64-linux-android&quot;</span>) &#123;</span><br><span class="line">    <span class="string">&quot;android_arm64&quot;</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="string">&quot;&quot;</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-link-search=native=./deps/libgit2/lib/&#123;&#125;&quot;</span>, target);</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-link-search=native=./deps/openssl/lib/&#123;&#125;&quot;</span>, target);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-link-lib=dylib=git2&quot;</span>);</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-link-lib=dylib=crypto&quot;</span>);</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-link-lib=dylib=ssl&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;cargo:rustc-flags=-L./deps/gcc&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>7.1、接下来执行 <code>cargo b --target x86_64-linux-android</code> 即可<br>7.2、也可以配置 Makefile.toml 使用 cargo-make 工具简化命令行运行输入</p>
 <p>首先安装 cargo-make 工具, <code>cargo install cargo-make</code></p>
 <figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[tasks.a_arm64]</span></span><br><span class="line"><span class="attr">command</span> = <span class="string">&quot;cargo&quot;</span></span><br><span class="line"><span class="attr">args</span> = [<span class="string">&quot;b&quot;</span>, <span class="string">&quot;--target&quot;</span>, <span class="string">&quot;aarch64-linux-android&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="section">[tasks.a_x64]</span></span><br><span class="line"><span class="attr">command</span> = <span class="string">&quot;cargo&quot;</span></span><br><span class="line"><span class="attr">args</span> = [<span class="string">&quot;b&quot;</span>, <span class="string">&quot;--target&quot;</span>, <span class="string">&quot;x86_64-linux-android&quot;</span>]</span><br></pre></td></tr></table></figure>
 
 <p>然后执行 <code>cargo make a_arm64</code> 或者 <code>makers a_arm64</code> 即可</p>
-<h1 id="rust-jni-代码（动态加载方式）"><a href="#rust-jni-代码（动态加载方式）" class="headerlink" title="rust jni 代码（动态加载方式）"></a>rust jni 代码（动态加载方式）</h1><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> core::panic;</span><br><span class="line"><span class="keyword">use</span> jni::&#123;</span><br><span class="line">    descriptors::Desc,</span><br><span class="line">    objects::&#123;GlobalRef, JClass, JMethodID&#125;,</span><br><span class="line">    strings::JNIString,</span><br><span class="line">    sys::&#123;jclass, jint, JNI_VERSION_1_6&#125;,</span><br><span class="line">    JNIEnv, JavaVM, NativeMethod,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">use</span> std::ffi::CString;</span><br><span class="line"><span class="keyword">use</span> std::sync::Once;</span><br><span class="line"><span class="keyword">use</span> std::&#123;os::raw::c_void, panic::catch_unwind&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> INVAL_JNI_VERSION: jint = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">static</span> INIT: Once = Once::new();</span><br><span class="line"></span><br><span class="line"><span class="comment">// JNI 动态加载的入口</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#[allow(non_snake_case)]</span></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">&quot;system&quot;</span> <span class="function"><span class="keyword">fn</span> <span class="title">JNI_OnLoad</span></span>(vm: JavaVM, _: *<span class="keyword">mut</span> c_void) -&gt; jint &#123;</span><br><span class="line">    <span class="keyword">let</span> env = vm.get_env().expect(<span class="string">&quot;Cannot get reference to the JNIEnv&quot;</span>);</span><br><span class="line">    catch_unwind(|| &#123;</span><br><span class="line">        prepare(&amp;env);</span><br><span class="line">        JNI_VERSION_1_6</span><br><span class="line">    &#125;)</span><br><span class="line">    .unwrap_or(INVAL_JNI_VERSION)</span><br><span class="line">    <span class="comment">// 如果使用 JNI_VERSION_1_8 会报错</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span>(<span class="keyword">crate</span>) <span class="function"><span class="keyword">fn</span> <span class="title">prepare</span></span>(env: &amp;JNIEnv) &#123;</span><br><span class="line">    INIT.call_once(|| <span class="keyword">unsafe</span> &#123;</span><br><span class="line">        <span class="comment">// 在这里动态注册就行，不用写那么多冗余函数</span></span><br><span class="line">        <span class="keyword">let</span> host_jclass: GlobalRef = get_class(env, <span class="string">&quot;io/shuttle/coder/MainActivity&quot;</span>).unwrap();</span><br><span class="line">        <span class="keyword">let</span> native_methods = [NativeMethod &#123;</span><br><span class="line">            name: <span class="string">&quot;hello&quot;</span>.into(),</span><br><span class="line">            sig: <span class="string">&quot;()Ljava/lang/String;&quot;</span>.into(),</span><br><span class="line">            fn_ptr: hello <span class="keyword">as</span> *<span class="keyword">const</span> c_void <span class="keyword">as</span> *<span class="keyword">mut</span> c_void,</span><br><span class="line">        &#125;];</span><br><span class="line">        env.register_native_methods(&amp;host_jclass, &amp;native_methods);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 类方法</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">hello</span></span>(env: JNIEnv, _: JClass) -&gt; jclass &#123;</span><br><span class="line">    <span class="keyword">let</span> output = env</span><br><span class="line">        .new_string(<span class="string">&quot;from rust string!!!&quot;</span>)</span><br><span class="line">        .expect(<span class="string">&quot;Couldn&#x27;t create java string!&quot;</span>);</span><br><span class="line">    output.into_inner()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 静态方法</span></span><br><span class="line"><span class="comment">// env: JNIEnv, object: JObject</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">get_class</span></span>(env: &amp;JNIEnv, class: &amp;<span class="built_in">str</span>) -&gt; <span class="built_in">Option</span>&lt;GlobalRef&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> class = env</span><br><span class="line">        .find_class(class)</span><br><span class="line">        .unwrap_or_else(|_| <span class="built_in">panic!</span>(<span class="string">&quot;Class not found: &#123;&#125;&quot;</span>, class));</span><br><span class="line">    <span class="literal">Some</span>(env.new_global_ref(class).unwrap())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">get_method_id</span></span>(env: &amp;JNIEnv, class: &amp;<span class="built_in">str</span>, name: &amp;<span class="built_in">str</span>, sig: &amp;<span class="built_in">str</span>) -&gt; <span class="built_in">Option</span>&lt;JMethodID&lt;<span class="symbol">&#x27;static</span>&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> method_id = env</span><br><span class="line">        .get_method_id(class, name, sig)</span><br><span class="line">        .map(|mid| mid.into_inner().into())</span><br><span class="line">        .unwrap_or_else(|_| &#123;</span><br><span class="line">            <span class="built_in">panic!</span>(</span><br><span class="line">                <span class="string">&quot;Method &#123;&#125; with signature &#123;&#125; of class &#123;&#125; not found&quot;</span>,</span><br><span class="line">                name, sig, class</span><br><span class="line">            )</span><br><span class="line">        &#125;);</span><br><span class="line">    <span class="literal">Some</span>(method_id)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="rust-jni-代码（动态加载方式）"><a href="#rust-jni-代码（动态加载方式）" class="headerlink" title="rust jni 代码（动态加载方式）"></a>rust jni 代码（动态加载方式）</h1><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> core::panic;</span><br><span class="line"><span class="keyword">use</span> jni::&#123;</span><br><span class="line">    descriptors::Desc,</span><br><span class="line">    objects::&#123;GlobalRef, JClass, JMethodID&#125;,</span><br><span class="line">    strings::JNIString,</span><br><span class="line">    sys::&#123;jclass, jint, JNI_VERSION_1_6&#125;,</span><br><span class="line">    JNIEnv, JavaVM, NativeMethod,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">use</span> std::ffi::CString;</span><br><span class="line"><span class="keyword">use</span> std::sync::Once;</span><br><span class="line"><span class="keyword">use</span> std::&#123;os::raw::c_void, panic::catch_unwind&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> INVAL_JNI_VERSION: jint = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">static</span> INIT: Once = Once::<span class="title function_ invoke__">new</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// JNI 动态加载的入口</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#[allow(non_snake_case)]</span></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">&quot;system&quot;</span> <span class="keyword">fn</span> <span class="title function_">JNI_OnLoad</span>(vm: JavaVM, _: *<span class="keyword">mut</span> c_void) <span class="punctuation">-&gt;</span> jint &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">env</span> = vm.<span class="title function_ invoke__">get_env</span>().<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Cannot get reference to the JNIEnv&quot;</span>);</span><br><span class="line">    <span class="title function_ invoke__">catch_unwind</span>(|| &#123;</span><br><span class="line">        <span class="title function_ invoke__">prepare</span>(&amp;env);</span><br><span class="line">        JNI_VERSION_1_6</span><br><span class="line">    &#125;)</span><br><span class="line">    .<span class="title function_ invoke__">unwrap_or</span>(INVAL_JNI_VERSION)</span><br><span class="line">    <span class="comment">// 如果使用 JNI_VERSION_1_8 会报错</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">pub</span>(<span class="keyword">crate</span>) <span class="keyword">fn</span> <span class="title function_">prepare</span>(env: &amp;JNIEnv) &#123;</span><br><span class="line">    INIT.<span class="title function_ invoke__">call_once</span>(|| <span class="keyword">unsafe</span> &#123;</span><br><span class="line">        <span class="comment">// 在这里动态注册就行，不用写那么多冗余函数</span></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">host_jclass</span>: GlobalRef = <span class="title function_ invoke__">get_class</span>(env, <span class="string">&quot;io/shuttle/coder/MainActivity&quot;</span>).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">native_methods</span> = [NativeMethod &#123;</span><br><span class="line">            name: <span class="string">&quot;hello&quot;</span>.<span class="title function_ invoke__">into</span>(),</span><br><span class="line">            sig: <span class="string">&quot;()Ljava/lang/String;&quot;</span>.<span class="title function_ invoke__">into</span>(),</span><br><span class="line">            fn_ptr: hello <span class="keyword">as</span> *<span class="keyword">const</span> c_void <span class="keyword">as</span> *<span class="keyword">mut</span> c_void,</span><br><span class="line">        &#125;];</span><br><span class="line">        env.<span class="title function_ invoke__">register_native_methods</span>(&amp;host_jclass, &amp;native_methods);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 类方法</span></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">hello</span>(env: JNIEnv, _: JClass) <span class="punctuation">-&gt;</span> jclass &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">output</span> = env</span><br><span class="line">        .<span class="title function_ invoke__">new_string</span>(<span class="string">&quot;from rust string!!!&quot;</span>)</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Couldn&#x27;t create java string!&quot;</span>);</span><br><span class="line">    output.<span class="title function_ invoke__">into_inner</span>()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 静态方法</span></span><br><span class="line"><span class="comment">// env: JNIEnv, object: JObject</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">get_class</span>(env: &amp;JNIEnv, class: &amp;<span class="type">str</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;GlobalRef&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">class</span> = env</span><br><span class="line">        .<span class="title function_ invoke__">find_class</span>(class)</span><br><span class="line">        .<span class="title function_ invoke__">unwrap_or_else</span>(|_| <span class="built_in">panic!</span>(<span class="string">&quot;Class not found: &#123;&#125;&quot;</span>, class));</span><br><span class="line">    <span class="title function_ invoke__">Some</span>(env.<span class="title function_ invoke__">new_global_ref</span>(class).<span class="title function_ invoke__">unwrap</span>())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">get_method_id</span>(env: &amp;JNIEnv, class: &amp;<span class="type">str</span>, name: &amp;<span class="type">str</span>, sig: &amp;<span class="type">str</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;JMethodID&lt;<span class="symbol">&#x27;static</span>&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">method_id</span> = env</span><br><span class="line">        .<span class="title function_ invoke__">get_method_id</span>(class, name, sig)</span><br><span class="line">        .<span class="title function_ invoke__">map</span>(|mid| mid.<span class="title function_ invoke__">into_inner</span>().<span class="title function_ invoke__">into</span>())</span><br><span class="line">        .<span class="title function_ invoke__">unwrap_or_else</span>(|_| &#123;</span><br><span class="line">            <span class="built_in">panic!</span>(</span><br><span class="line">                <span class="string">&quot;Method &#123;&#125; with signature &#123;&#125; of class &#123;&#125; not found&quot;</span>,</span><br><span class="line">                name, sig, class</span><br><span class="line">            )</span><br><span class="line">        &#125;);</span><br><span class="line">    <span class="title function_ invoke__">Some</span>(method_id)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h5 id="生成-kotlin-文件-jni-头文件的函数签名方式"><a href="#生成-kotlin-文件-jni-头文件的函数签名方式" class="headerlink" title="生成 kotlin 文件 jni 头文件的函数签名方式"></a>生成 kotlin 文件 jni 头文件的函数签名方式</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">➜  Coder ./gradlew -v </span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Gradle 7.4</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Build time:   2022-02-08 09:58:38 UTC</span><br><span class="line">Revision:     f0d9291c04b90b59445041eaa75b2ee744162586</span><br><span class="line"></span><br><span class="line">Kotlin:       1.5.31</span><br><span class="line">Groovy:       3.0.9</span><br><span class="line">Ant:          Apache Ant(TM) version 1.10.11 compiled on July 10 2021</span><br><span class="line">JVM:          17.0.1 (Homebrew 17.0.1+0)</span><br><span class="line">OS:           Mac OS X 12.2.1 x86_64</span><br></pre></td></tr></table></figure>
 <p>进入 <code>build/tmp/kotlin-classes/debug/io/shuttle/coder</code> 目录, 可以看到其下有两个 class 文件 <code>MainActivity</code> 和 <code>MainActivityKt.class</code></p>
@@ -349,176 +297,61 @@
     
     
     
-      
-  <div class="popular-posts-header">要不看点别的吧?💗</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/06/04/10/" rel="bookmark">Flutter-Column</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/06/05/47/" rel="bookmark">Flutter-Image</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/06/04/18/" rel="bookmark">Flutter-Row</a></div>
-    </li>
-  </ul>
-<div>
-    
-        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>再接再厉哦！-------------</div>
-    
-</div>
 
-
-
-      <footer class="post-footer">
+    <footer class="post-footer">
 
         
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/02/25/04/" rel="prev" title="安卓中的viewModelScope">
-      <i class="fa fa-chevron-left"></i> 安卓中的viewModelScope
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/03/03/01/" rel="next" title="android 交叉编译">
-      android 交叉编译 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/25/04/" rel="prev" title="安卓中的viewModelScope">
+                  <i class="fa fa-angle-left"></i> 安卓中的viewModelScope
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/03/01/" rel="next" title="android 交叉编译">
+                  android 交叉编译 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
           </div>
-          
-    <div class="comments" id="valine-comments"></div>
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA-libgit2-%E7%94%9F%E6%88%90-rust-binding"><span class="nav-number">1.</span> <span class="nav-text">为 libgit2 生成 rust binding</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8-rust-%E7%94%9F%E6%88%90-jni-%E5%8A%A8%E6%80%81%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">用 rust 生成 jni 动态库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rust-jni-%E4%BB%A3%E7%A0%81%EF%BC%88%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">rust jni 代码（动态加载方式）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%94%9F%E6%88%90-kotlin-%E6%96%87%E4%BB%B6-jni-%E5%A4%B4%E6%96%87%E4%BB%B6%E7%9A%84%E5%87%BD%E6%95%B0%E7%AD%BE%E5%90%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">3.0.0.0.1.</span> <span class="nav-text">生成 kotlin 文件 jni 头文件的函数签名方式</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="HumphreyDan"
-      src="http://picbed.dang8080.cn/avatar.jpeg">
-  <p class="site-author-name" itemprop="name">HumphreyDan</p>
-  <div class="site-description" itemprop="description">donot dedicate your life to ignorance,mediocrity,vulgarity.</div>
+    </footer>
+  </article>
 </div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">58</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">28</span>
-        <span class="site-state-item-name">tags</span></a>
-      </div>
-  </nav>
+
+
+
+
+
+
 </div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/ShuttleSpace" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ShuttleSpace" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:dang8080@qq.com" title="E-Mail → mailto:dang8080@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
-      </span>
-  </div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
 
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 2018 – 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">HumphreyIO</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
     </span>
-      <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">174k</span>
-    <span class="post-meta-divider">|</span>
+    <span class="author" itemprop="copyrightHolder">HumphreyIO</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">180k</span>
+  </span>
+  <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-      <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">2:39</span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:43</span>
+  </span>
 </div><div>
 <!--添加网站运行时间-->
 <span>小破站已经在风雨中度过了</span>
@@ -569,17 +402,17 @@
                 .then(_ => _.map(i => i.attributes.time))
                 .then(_ => _.reduce((a, b) => a + b))
         }
-        new Promise(resolve => {
+        new Promise((resolve,reject) => {
             const timer = setInterval(() => {
                 if (typeof AV !== "undefined") {
                     clearInterval(timer)
-                    return resolve()
+                    return reject()
                 }
             }, 250)
         })
             .then(() => site_read_count())
-            .then(_ => {
-                const s = ` ${_} 次`
+            .then((count) => {
+                const s = ` ${count} 次`
                 document.getElementById("site_total_read_count").innerHTML = s
             })
             .catch(e => console.error(e.message))
@@ -587,128 +420,55 @@
 </div>
 
 
-        
+    </div>
+  </footer>
 
-
-
-
-
-
-
-
-      </div>
-    </footer>
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
   </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
 
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-<script src="/js/bookmark.js"></script>
-
-
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
   
-
-
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
 
   
-<script src="/js/local-search.js"></script>
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.3.0/pdfobject.min.js","integrity":"sha256-JJZNsid68vnh3/zyj0lY9BN5ynxVX/12XgOa1TlaYN0="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
 
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
 
+  <script class="next-config" data-name="wavedrom" type="application/json">{"enable":true,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.5.0/wavedrom.min.js","integrity":"sha256-INLAoJc6quTNfiMWkGZniYO2cxE8mHpddnLow1m6RFs="}}</script>
+  <script class="next-config" data-name="wavedrom_skin" type="application/json">{"enable":true,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.5.0/skins/default.js","integrity":"sha256-fduc/Zszk5ezWws2uInY/ALWVmIrmV6VTgXbsYSReFI="}}</script>
+  <script src="/js/third-party/tags/wavedrom.js"></script>
 
+  <script src="/js/third-party/fancybox.js"></script>
 
-
-
-
-
-
-<script>
-document.querySelectorAll('.pdfobject-container').forEach(element => {
-  let url = element.dataset.target;
-  let pdfOpenParams = {
-    navpanes : 0,
-    toolbar  : 0,
-    statusbar: 0,
-    pagemode : 'thumbs',
-    view     : 'FitH'
-  };
-  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
-  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
-
-  if (NexT.utils.supportsPDFs()) {
-    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
-  } else {
-    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
-  }
-});
-</script>
-
-
-<script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'forest',
-      logLevel : 3,
-      flowchart: { curve     : 'linear' },
-      gantt    : { axisFormat: '%m/%d/%Y' },
-      sequence : { actorMargin: 50 }
-    });
-  }, window.mermaid);
-}
-</script>
+  <script src="/js/third-party/pace.js"></script>
 
 
   
 
-  
 
 
-<script>
-NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
-  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
-    var GUEST = ['nick', 'mail', 'link'];
-    var guest = 'nick,mail,link';
-    guest = guest.split(',').filter(item => {
-      return GUEST.includes(item);
-    });
-    new Valine({
-      el         : '#valine-comments',
-      verify     : true,
-      notify     : true,
-      appId      : 'WS6xwQjL3YsDPCdcRTqtpdhg-gzGzoHsz',
-      appKey     : 'NgSfNQLxbzWKBuQROhn56aP5',
-      placeholder: "Just go go go!!!",
-      avatar     : 'mm',
-      meta       : guest,
-      pageSize   : '10' || 10,
-      visitor    : true,
-      lang       : 'zh-cn' || 'zh-cn',
-      path       : location.pathname,
-      recordIP   : false,
-      serverURLs : ''
-    });
-  }, window.Valine);
-});
-</script>
+
 
 </body>
 </html>
