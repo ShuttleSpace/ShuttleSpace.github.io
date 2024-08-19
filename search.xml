@@ -285,7 +285,7 @@
 <p>我们的自定义 email scalar 类型将</p>
 <ul>
 <li>调用 <code>parseValue</code> 将 <code>$mainContact</code>变量转为运行时对象.</li>
-<li>调用 <code>parseLiteral</code> 将 AST <code>graphql.language.StringValue</code> “<a href="mailto:&#x62;&#97;&#x63;&#107;&#117;&#x70;&#x40;&#x63;&#111;&#109;&#x70;&#97;&#x6e;&#x79;&#x2e;&#x63;&#111;&#109;">&#x62;&#97;&#x63;&#107;&#117;&#x70;&#x40;&#x63;&#111;&#109;&#x70;&#97;&#x6e;&#x79;&#x2e;&#x63;&#111;&#109;</a>“ 转换为运行时对象.</li>
+<li>调用 <code>parseLiteral</code> 将 AST <code>graphql.language.StringValue</code> “<a href="mailto:&#x62;&#97;&#x63;&#x6b;&#117;&#112;&#64;&#99;&#111;&#x6d;&#112;&#97;&#x6e;&#x79;&#x2e;&#x63;&#x6f;&#x6d;">&#x62;&#97;&#x63;&#x6b;&#117;&#112;&#64;&#99;&#111;&#x6d;&#112;&#97;&#x6e;&#x79;&#x2e;&#x63;&#x6f;&#x6d;</a>“ 转换为运行时对象.</li>
 <li>调用 <code>serialize</code> 将 mainContactEmial 运行时实现转为输出对象形式.</li>
 </ul>
 <h3 id="输入输出校验"><a href="#输入输出校验" class="headerlink" title="输入输出校验"></a>输入输出校验</h3><p>例如我们的 email scalar 将会校验输入输出是否是真是的 email 地址.<br><code>graphql.schema.Coercing</code> 协议如下:</p>
@@ -523,16 +523,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Java 并发和多线程指南</title>
-    <url>/2019/08/26/52/</url>
-    <content><![CDATA[<span id="more"></span>]]></content>
-      <tags>
-        <tag>java</tag>
-        <tag>多线程</tag>
-        <tag>并发</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Kotlin/Native</title>
     <url>/2020/02/14/53/</url>
     <content><![CDATA[<span id="more"></span>]]></content>
@@ -548,6 +538,58 @@
 ]]></content>
       <tags>
         <tag>kotlin</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java 并发和多线程指南</title>
+    <url>/2019/08/26/52/</url>
+    <content><![CDATA[<span id="more"></span>]]></content>
+      <tags>
+        <tag>java</tag>
+        <tag>多线程</tag>
+        <tag>并发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LiveData</title>
+    <url>/2019/02/28/39/</url>
+    <content><![CDATA[<p>LiveData</p>
+<span id="more"></span>
+<h3 id="LiveData-的优势"><a href="#LiveData-的优势" class="headerlink" title="LiveData 的优势"></a>LiveData 的优势</h3><ul>
+<li>确保 UI 和数据状态匹配<blockquote>
+<p>LiveData 遵循观察者模式。</p>
+</blockquote>
+</li>
+<li>无内存泄漏</li>
+<li>不会因为 Activity 被终止而崩溃<blockquote>
+<p>如果观察者处于 inactive 状态，例如 activity 处于回退栈中，那么它不会接收到任何 LiveData 事件.</p>
+</blockquote>
+</li>
+<li>不用手动处理生命周期事件</li>
+<li>时刻更新数据状态<blockquote>
+<p>如果一个观察者的变为 inactive，那么它会在重新 active 时获取最新的数据状态。比如，一个 activiy 如果处于后台，那么它将在重新返回前台时获取到最新的数据。</p>
+</blockquote>
+</li>
+<li>应对 configuration change<blockquote>
+<p>如果一个 activity 或 fragment 由于 configuration change(设备旋转) 导致重新创建，它会立即获取最新可用的数据.</p>
+</blockquote>
+</li>
+<li>共享资源<blockquote>
+<p>可以使用单例模式扩展 LiveData，封装系统服务在 app 内共享。</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>在 ViewModel 对象中保存可以更新 UI 的 LiveData 对象，而不是在 activity 或 fragment 的原因是：</p>
+<ul>
+<li>避免 activty 或 framgent 过度膨胀。UI controller 仅负责展示数据而不是保存数据状态</li>
+<li>从特性的 activity 或 fragment 中剥离 LiveData 实例，使得 LiveData 对象可以在 configuration change 中存活。</li>
+</ul>
+</blockquote>
+<p><em>请在主线程中调用 setValue(T) 更新 LiveData 对象.如果是在工作线程，请调用 postValue(T).</em></p>
+]]></content>
+      <tags>
+        <tag>Architecture Components</tag>
       </tags>
   </entry>
   <entry>
@@ -653,78 +695,12 @@
       </tags>
   </entry>
   <entry>
-    <title>LiveData</title>
-    <url>/2019/02/28/39/</url>
-    <content><![CDATA[<p>LiveData</p>
-<span id="more"></span>
-<h3 id="LiveData-的优势"><a href="#LiveData-的优势" class="headerlink" title="LiveData 的优势"></a>LiveData 的优势</h3><ul>
-<li>确保 UI 和数据状态匹配<blockquote>
-<p>LiveData 遵循观察者模式。</p>
-</blockquote>
-</li>
-<li>无内存泄漏</li>
-<li>不会因为 Activity 被终止而崩溃<blockquote>
-<p>如果观察者处于 inactive 状态，例如 activity 处于回退栈中，那么它不会接收到任何 LiveData 事件.</p>
-</blockquote>
-</li>
-<li>不用手动处理生命周期事件</li>
-<li>时刻更新数据状态<blockquote>
-<p>如果一个观察者的变为 inactive，那么它会在重新 active 时获取最新的数据状态。比如，一个 activiy 如果处于后台，那么它将在重新返回前台时获取到最新的数据。</p>
-</blockquote>
-</li>
-<li>应对 configuration change<blockquote>
-<p>如果一个 activity 或 fragment 由于 configuration change(设备旋转) 导致重新创建，它会立即获取最新可用的数据.</p>
-</blockquote>
-</li>
-<li>共享资源<blockquote>
-<p>可以使用单例模式扩展 LiveData，封装系统服务在 app 内共享。</p>
-</blockquote>
-</li>
-</ul>
-<blockquote>
-<p>在 ViewModel 对象中保存可以更新 UI 的 LiveData 对象，而不是在 activity 或 fragment 的原因是：</p>
-<ul>
-<li>避免 activty 或 framgent 过度膨胀。UI controller 仅负责展示数据而不是保存数据状态</li>
-<li>从特性的 activity 或 fragment 中剥离 LiveData 实例，使得 LiveData 对象可以在 configuration change 中存活。</li>
-</ul>
-</blockquote>
-<p><em>请在主线程中调用 setValue(T) 更新 LiveData 对象.如果是在工作线程，请调用 postValue(T).</em></p>
-]]></content>
-      <tags>
-        <tag>Architecture Components</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ObjectBox入门-11-Data Browser</title>
-    <url>/2019/02/26/52/</url>
-    <content><![CDATA[<p>objectbox</p>
-<span id="more"></span>
-<p>Data Browser 具有如下功能:</p>
-<ul>
-<li>查看数据库的 entities 和 schema</li>
-<li>下载 JSON 格式的 entities</li>
-</ul>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    debugImplementation <span class="string">&quot;io.objectbox:objectbox-android-objectbrowser:$objectboxVersion&quot;</span></span><br><span class="line">    releaseImplementation <span class="string">&quot;io.objectbox:objectbox-android:$objectboxVersion&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// apply the plugin after the dependencies block</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;io.objectbox&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>不这样设置可能出现 <code>Duplicate files copied in APK lib/armeabi-v7a/libobjectbox.so</code> 这样的错误.因为 ObjectBox 插件又添加了一次 objectbox-android 库</p>
-<p>在 AndroidManifest.xml 添加如下权限(2.2.0 后需要)</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&lt;!-- Required to provide the web interface --&gt;</span><br><span class="line">&lt;uses-permission android:name=<span class="string">&quot;android.permission.INTERNET&quot;</span> /&gt;</span><br><span class="line">&lt;!-- Required to run keep-alive service when targeting API <span class="number">28</span> or higher --&gt;</span><br><span class="line">&lt;uses-permission android:name=<span class="string">&quot;android.permission.FOREGROUND_SERVICE&quot;</span>/&gt;</span><br></pre></td></tr></table></figure>
-
-<p>建议在 Application 类中添加</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">boxStore = MyObjectBox.builder().androidContext(<span class="built_in">this</span>).build();</span><br><span class="line"><span class="keyword">if</span> (BuildConfig.DEBUG) &#123;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">started</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AndroidObjectBrowser</span>(boxStore).start(<span class="built_in">this</span>);</span><br><span class="line">    Log.i(<span class="string">&quot;ObjectBrowser&quot;</span>, <span class="string">&quot;Started: &quot;</span> + started);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>ObjectBox</tag>
-        <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ObjectBox入门-10-关联</title>
     <url>/2019/02/25/13/</url>
     <content><![CDATA[<p>objectbox</p>
 <span id="more"></span>
 <p>Object 之间的关联具有方向性.关联是延迟初始化的：实际的引用对象只有在调用时才会从数据库中加载。一旦加载过，就会缓存起来.</p>
-<h3 id="To-One-关联"><a href="#To-One-关联" class="headerlink" title="To-One 关联"></a>To-One 关联</h3><p><img data-src="http://qiniu.picbed.dang8080.cn/20190225232506.png" alt="To-One示意图"><br>使用 ToOne 会智能的对目标对象创建关联。同时获取目标对象缓存。</p>
+<h3 id="To-One-关联"><a href="#To-One-关联" class="headerlink" title="To-One 关联"></a>To-One 关联</h3><p><img src="http://qiniu.picbed.dang8080.cn/20190225232506.png" alt="To-One示意图"><br>使用 ToOne 会智能的对目标对象创建关联。同时获取目标对象缓存。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Customer.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Customer</span> &#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="type">long</span> id;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Order.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Order</span> &#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="type">long</span> id;</span><br><span class="line">    <span class="keyword">public</span> ToOne&lt;Customer&gt; customer;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 为了绑定 customer 对象，对 ToOne 实例调用 setTarget() 然后就存入 order 对象</span></span><br><span class="line"><span class="type">Customer</span> <span class="variable">customer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Customer</span>();</span><br><span class="line"><span class="type">Order</span> <span class="variable">order</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Order</span>();</span><br><span class="line">order.customer.setTarget(customer);</span><br><span class="line"><span class="type">long</span> <span class="variable">orderId</span> <span class="operator">=</span> boxStore.boxFor(Order.class).put(order);</span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -745,11 +721,11 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Order</span> &#123;</span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="type">long</span> id;</span><br><span class="line">    <span class="keyword">public</span> ToOne&lt;Customer&gt; customer;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Order</span><span class="params">()</span> &#123; <span class="comment">/* default constructor */</span> &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Order</span><span class="params">(<span class="type">long</span> id, <span class="type">long</span> customerId <span class="comment">/* virtual ToOne id property */</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.id = id;</span><br><span class="line">        <span class="built_in">this</span>.customer.setTargetId(customerId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="ToMany-关联"><a href="#ToMany-关联" class="headerlink" title="ToMany 关联"></a>ToMany 关联</h3><p>可以使用 List 或 ToMany 类型实现 ToMany 关联.相对 ToOne 来说，ToMany 可以实现追踪数据变化并将其写入操作中，而 List 必须自己实现.</p>
-<h3 id="1-N"><a href="#1-N" class="headerlink" title="1:N"></a>1:N</h3><p><img data-src="http://qiniu.picbed.dang8080.cn/20190226000315.png" alt="1:N"></p>
+<h3 id="1-N"><a href="#1-N" class="headerlink" title="1:N"></a>1:N</h3><p><img src="http://qiniu.picbed.dang8080.cn/20190226000315.png" alt="1:N"></p>
 <p>使用 @Backlink 注解 1:N 关联属性。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Customer.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Customer</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="type">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// &#x27;to&#x27; is optional if only one relation matches</span></span><br><span class="line">    <span class="meta">@Backlink(to = &quot;customer&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ToMany&lt;Order&gt; orders;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Order.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Order</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="type">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ToOne&lt;Customer&gt; customer;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Customer</span> <span class="variable">customer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Customer</span>();</span><br><span class="line">customer.orders.add(<span class="keyword">new</span> <span class="title class_">Order</span>());</span><br><span class="line">customer.orders.add(<span class="keyword">new</span> <span class="title class_">Order</span>());</span><br><span class="line"><span class="type">long</span> <span class="variable">customerId</span> <span class="operator">=</span> boxStore.boxFor(Customer.class).put(customer); <span class="comment">// puts customer and orders</span></span><br><span class="line"></span><br><span class="line"><span class="type">Customer</span> <span class="variable">customer</span> <span class="operator">=</span> boxStore.boxFor(Customer.class).get(customerId);</span><br><span class="line"><span class="keyword">for</span> (Order order : customer.orders) &#123;</span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Order</span> <span class="variable">order</span> <span class="operator">=</span> customer.orders.remove(<span class="number">0</span>);</span><br><span class="line">boxStore.boxFor(Customer.class).put(customer);</span><br><span class="line"><span class="comment">// optional: also remove the order from its box</span></span><br><span class="line"><span class="comment">// boxStore.boxFor(Order.class).remove(order);</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="N-N"><a href="#N-N" class="headerlink" title="N:N"></a>N:N</h3><p><img data-src="http://qiniu.picbed.dang8080.cn/20190226000708.png" alt="N:N"></p>
+<h3 id="N-N"><a href="#N-N" class="headerlink" title="N:N"></a>N:N</h3><p><img src="http://qiniu.picbed.dang8080.cn/20190226000708.png" alt="N:N"></p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Teacher.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Teacher</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="type">long</span> id;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Student.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Student</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="keyword">public</span> <span class="type">long</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ToMany&lt;Teacher&gt; teachers;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Teacher</span> <span class="variable">teacher1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Teacher</span>();</span><br><span class="line"><span class="type">Teacher</span> <span class="variable">teacher2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Teacher</span>();</span><br><span class="line"></span><br><span class="line"><span class="type">Student</span> <span class="variable">student1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>();</span><br><span class="line">student1.teachers.add(teacher1);</span><br><span class="line">student1.teachers.add(teacher2);</span><br><span class="line"></span><br><span class="line"><span class="type">Student</span> <span class="variable">student2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>();</span><br><span class="line">student2.teachers.add(teacher2);</span><br><span class="line"></span><br><span class="line"><span class="comment">// puts students and teachers</span></span><br><span class="line">boxStore.boxFor(Student.class).put(student1, student2);</span><br><span class="line"></span><br><span class="line"><span class="type">Student</span> <span class="variable">student1</span> <span class="operator">=</span> boxStore.boxFor(Student.class).get(student1.id);</span><br><span class="line"><span class="keyword">for</span> (Teacher teacher : student1.teachers) &#123;</span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">student1.teachers.remove(<span class="number">0</span>);</span><br><span class="line"><span class="comment">// boxStore.boxFor(Student.class).put(student1);</span></span><br><span class="line"><span class="comment">// more efficient than using put:</span></span><br><span class="line">student1.teachers.applyChangesToDb();</span><br></pre></td></tr></table></figure>
 
 <p>上面可以通过 student 知道 teacher 的信息，当然可以反过来</p>
@@ -865,6 +841,30 @@
 <li>优先使用 <code>put</code> 批量操作列表 （<code>put(entities)</code>）</li>
 <li>如果在循环中操作大量数据，考虑明确使用事务，如<code>runInTx()</code></li>
 </ul>
+]]></content>
+      <tags>
+        <tag>ObjectBox</tag>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ObjectBox入门-11-Data Browser</title>
+    <url>/2019/02/26/52/</url>
+    <content><![CDATA[<p>objectbox</p>
+<span id="more"></span>
+<p>Data Browser 具有如下功能:</p>
+<ul>
+<li>查看数据库的 entities 和 schema</li>
+<li>下载 JSON 格式的 entities</li>
+</ul>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    debugImplementation <span class="string">&quot;io.objectbox:objectbox-android-objectbrowser:$objectboxVersion&quot;</span></span><br><span class="line">    releaseImplementation <span class="string">&quot;io.objectbox:objectbox-android:$objectboxVersion&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// apply the plugin after the dependencies block</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;io.objectbox&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>不这样设置可能出现 <code>Duplicate files copied in APK lib/armeabi-v7a/libobjectbox.so</code> 这样的错误.因为 ObjectBox 插件又添加了一次 objectbox-android 库</p>
+<p>在 AndroidManifest.xml 添加如下权限(2.2.0 后需要)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&lt;!-- Required to provide the web interface --&gt;</span><br><span class="line">&lt;uses-permission android:name=<span class="string">&quot;android.permission.INTERNET&quot;</span> /&gt;</span><br><span class="line">&lt;!-- Required to run keep-alive service when targeting API <span class="number">28</span> or higher --&gt;</span><br><span class="line">&lt;uses-permission android:name=<span class="string">&quot;android.permission.FOREGROUND_SERVICE&quot;</span>/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>建议在 Application 类中添加</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">boxStore = MyObjectBox.builder().androidContext(<span class="built_in">this</span>).build();</span><br><span class="line"><span class="keyword">if</span> (BuildConfig.DEBUG) &#123;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">started</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AndroidObjectBrowser</span>(boxStore).start(<span class="built_in">this</span>);</span><br><span class="line">    Log.i(<span class="string">&quot;ObjectBrowser&quot;</span>, <span class="string">&quot;Started: &quot;</span> + started);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>ObjectBox</tag>
@@ -1241,6 +1241,37 @@
       </tags>
   </entry>
   <entry>
+    <title>ObjectBox高级-4-entity继承</title>
+    <url>/2019/02/26/42/</url>
+    <content><![CDATA[<p>objectbox</p>
+<span id="more"></span>
+<p>ObjectBox 允许子类继承 entity 父类持久化的属性。同样也支持继承非 entity 类。1.4+ 也支持多继承.<br>对于父类来说可以使用 @BaseEntity.</p>
+<ul>
+<li>无注解: 类本身及其属性不需要持久化</li>
+<li>@BaseEntity: 属性在子类中持久化，类本身不持久化</li>
+<li>@Entity: 属性在子类中持久化，类本身也持久化</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// base class:</span></span><br><span class="line"><span class="meta">@BaseEntity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="type">long</span> id;</span><br><span class="line">    String baseString;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Base</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Base</span><span class="params">(<span class="type">long</span> id, String baseString)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.id = id;</span><br><span class="line">        <span class="built_in">this</span>.baseString = baseString;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// sub class:</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Sub</span> <span class="keyword">extends</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"></span><br><span class="line">    String subString;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Sub</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Sub</span><span class="params">(<span class="type">long</span> id, String baseString, String subString)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(id, baseString);</span><br><span class="line">        <span class="built_in">this</span>.subString = subString;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// entities inherit properties from entities</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SubSub</span> <span class="keyword">extends</span> <span class="title class_">Sub</span> &#123;</span><br><span class="line"></span><br><span class="line">    String subSubString;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SubSub</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SubSub</span><span class="params">(<span class="type">long</span> id, String baseString, String subString, String subSubString)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(id, baseString, subString);</span><br><span class="line">        <span class="built_in">this</span>.subSubString = subSubString;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用前注意"><a href="#使用前注意" class="headerlink" title="使用前注意"></a>使用前注意</h4><ul>
+<li>在继承链中可能存在由 @BaseEntity 注解的类，它们的属性将被忽略，不会成为 entity model 的一部分</li>
+<li>不推荐继承一个仅含有 ID 属性的 base entity 类.</li>
+<li>某些情况下可以使用 interface 更简单明了</li>
+</ul>
+<h3 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h3><ul>
+<li>@BaseEntity 注解的父类不能成为 library 的一部分。</li>
+<li>没有多态查询(例如查询父类却希望得到子类)</li>
+<li>当前无论是 @Entity 还是 @BaseEntity 注解的父类，都不能使用 ToOne ToMany 关联</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>ObjectBox</tag>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ObjectBox高级-3-自定义类型</title>
     <url>/2019/02/26/46/</url>
     <content><![CDATA[<p>objectbox</p>
@@ -1266,37 +1297,6 @@
 <li>准备好应对未知: 定义一个 UNKNOWN 的 enmu 值。可以应对 null 或 unknown 值的情况。例如可以确保已经被移除的 enum 值不会导致 App 崩溃.</li>
 </ul>
 <h3 id="查询时的自定义类型"><a href="#查询时的自定义类型" class="headerlink" title="查询时的自定义类型"></a>查询时的自定义类型</h3><p><code>QueryBuilder</code> 是不关心自定类型的。请使用内置类型查询。</p>
-]]></content>
-      <tags>
-        <tag>ObjectBox</tag>
-        <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ObjectBox高级-4-entity继承</title>
-    <url>/2019/02/26/42/</url>
-    <content><![CDATA[<p>objectbox</p>
-<span id="more"></span>
-<p>ObjectBox 允许子类继承 entity 父类持久化的属性。同样也支持继承非 entity 类。1.4+ 也支持多继承.<br>对于父类来说可以使用 @BaseEntity.</p>
-<ul>
-<li>无注解: 类本身及其属性不需要持久化</li>
-<li>@BaseEntity: 属性在子类中持久化，类本身不持久化</li>
-<li>@Entity: 属性在子类中持久化，类本身也持久化</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// base class:</span></span><br><span class="line"><span class="meta">@BaseEntity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span> <span class="type">long</span> id;</span><br><span class="line">    String baseString;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Base</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Base</span><span class="params">(<span class="type">long</span> id, String baseString)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.id = id;</span><br><span class="line">        <span class="built_in">this</span>.baseString = baseString;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// sub class:</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Sub</span> <span class="keyword">extends</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"></span><br><span class="line">    String subString;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Sub</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Sub</span><span class="params">(<span class="type">long</span> id, String baseString, String subString)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(id, baseString);</span><br><span class="line">        <span class="built_in">this</span>.subString = subString;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// entities inherit properties from entities</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SubSub</span> <span class="keyword">extends</span> <span class="title class_">Sub</span> &#123;</span><br><span class="line"></span><br><span class="line">    String subSubString;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SubSub</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SubSub</span><span class="params">(<span class="type">long</span> id, String baseString, String subString, String subSubString)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(id, baseString, subString);</span><br><span class="line">        <span class="built_in">this</span>.subSubString = subSubString;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用前注意"><a href="#使用前注意" class="headerlink" title="使用前注意"></a>使用前注意</h4><ul>
-<li>在继承链中可能存在由 @BaseEntity 注解的类，它们的属性将被忽略，不会成为 entity model 的一部分</li>
-<li>不推荐继承一个仅含有 ID 属性的 base entity 类.</li>
-<li>某些情况下可以使用 interface 更简单明了</li>
-</ul>
-<h3 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h3><ul>
-<li>@BaseEntity 注解的父类不能成为 library 的一部分。</li>
-<li>没有多态查询(例如查询父类却希望得到子类)</li>
-<li>当前无论是 @Entity 还是 @BaseEntity 注解的父类，都不能使用 ToOne ToMany 关联</li>
-</ul>
 ]]></content>
       <tags>
         <tag>ObjectBox</tag>
@@ -1490,30 +1490,6 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">pid_t</span> pid = fork();</span><br><span class="line"><span class="keyword">if</span> (pid &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">throw_runtime_exception</span>(env, <span class="string">&quot;Fork failed&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (pid &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// 当前进程</span></span><br><span class="line">    *pProcessId = (<span class="type">int</span>) pid;</span><br><span class="line">    <span class="keyword">return</span> ptm;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// Clear signals which the Android java process may have blocked:</span></span><br><span class="line">    <span class="type">sigset_t</span> signals_to_unblock;</span><br><span class="line">    <span class="built_in">sigfillset</span>(&amp;signals_to_unblock); <span class="comment">// 初始化 signals_to_unblock,然后将所有的信号加入此信号集.</span></span><br><span class="line">    <span class="built_in">sigprocmask</span>(SIG_UNBLOCK, &amp;signals_to_unblock, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// SIG_BLOCK: 将参数二中的信号添加到信号屏蔽字中</span></span><br><span class="line">    <span class="comment">// SIG_SETMASK: 将信号屏蔽字设置为参数二中信号</span></span><br><span class="line">    <span class="comment">// SIG_UNBLOCK: 从信号屏蔽字中删除参数二中的信号.</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">close</span>(ptm);</span><br><span class="line">    <span class="built_in">setsid</span>();</span><br><span class="line">    <span class="comment">// 子进程从父进程继承了: SessionID, process GroupID 和打开的终端</span></span><br><span class="line">    <span class="comment">// setsid 帮助子进程脱离父进程继承的属性.</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> pts = <span class="built_in">open</span>(devname, O_RDWR); <span class="comment">// 打开伪终端 slave 设备.</span></span><br><span class="line">    <span class="keyword">if</span> (pts &lt; <span class="number">0</span>) <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">dup2</span>(pts, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">dup2</span>(pts, <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">dup2</span>(pts, <span class="number">2</span>);</span><br><span class="line">    <span class="comment">// 一般一个进程会有3个文件描述符存在(0,1,2)0 -&gt; 进程的标准输入,1 -&gt; 进程的标准输出,2 -&gt; 进程的标准错误输出.</span></span><br><span class="line">    <span class="comment">// int dup(int oldfd); </span></span><br><span class="line">    <span class="comment">// 内核在进程创建一个新的文件描述符,此描述符是当前可用文件描述符的最小数值,指向 oldfd 所拥有的文件表项.</span></span><br><span class="line">    <span class="comment">// int dup2(int oldfd,int newfd); </span></span><br><span class="line">    <span class="comment">// 使用newfd 指定新描述符的数值,如果 newfd 已经打开,先将其关闭.如果 newfd 等于 oldfd,则返回 newfd,不关闭它.</span></span><br><span class="line"></span><br><span class="line">    DIR* self_dir = <span class="built_in">opendir</span>(<span class="string">&quot;/proc/self/fd&quot;</span>); <span class="comment">// 当前进程打开的文件</span></span><br><span class="line">    <span class="keyword">if</span> (self_dir != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="type">int</span> self_dir_fd = <span class="built_in">dirfd</span>(self_dir); <span class="comment">// 把 DIR* 转为文件描述符</span></span><br><span class="line">        <span class="keyword">struct</span> <span class="title class_">dirent</span>* entry;</span><br><span class="line">        <span class="keyword">while</span> ((entry = <span class="built_in">readdir</span>(self_dir)) != <span class="literal">NULL</span>) &#123;</span><br><span class="line">            <span class="type">int</span> fd = <span class="built_in">atoi</span>(entry-&gt;d_name);</span><br><span class="line">            <span class="keyword">if</span>(fd &gt; <span class="number">2</span> &amp;&amp; fd != self_dir_fd) <span class="built_in">close</span>(fd); <span class="comment">// 关闭打开的文件</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">closedir</span>(self_dir);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">clearenv</span>(); <span class="comment">// 删除环境表中所有的环境变量</span></span><br><span class="line">    <span class="comment">// getenv() 按环境变量的名称取得环境变量的值</span></span><br><span class="line">    <span class="keyword">if</span> (envp) <span class="keyword">for</span> (; *envp; ++envp) <span class="built_in">putenv</span>(*envp); <span class="comment">// 将传进来的环境变量设为当前环境变量</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">chdir</span>(cwd) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="type">char</span>* error_message;</span><br><span class="line">        <span class="comment">// No need to free asprintf()-allocated memory since doing execvp() or exit() below.</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">asprintf</span>(&amp;error_message, <span class="string">&quot;chdir(\&quot;%s\&quot;)&quot;</span>, cwd) == <span class="number">-1</span>) error_message = <span class="string">&quot;chdir()&quot;</span>;</span><br><span class="line">        <span class="built_in">perror</span>(error_message);</span><br><span class="line">        <span class="built_in">fflush</span>(stderr);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 从 PATH 环境变量所值的目录中查找符合参数 cmd 的文件名,找到后便执行该文件,然后将第二个参数 argv 传给此文件.</span></span><br><span class="line">    <span class="comment">// 成功无返回，失败返回 -1,失败原因存于 errno 中.</span></span><br><span class="line">    <span class="built_in">execvp</span>(cmd, argv);</span><br><span class="line">    <span class="comment">// Show terminal output about failing exec() call:</span></span><br><span class="line">    <span class="type">char</span>* error_message;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">asprintf</span>(&amp;error_message, <span class="string">&quot;exec(\&quot;%s\&quot;)&quot;</span>, cmd) == <span class="number">-1</span>) error_message = <span class="string">&quot;exec()&quot;</span>;</span><br><span class="line">    <span class="built_in">perror</span>(error_message);</span><br><span class="line">    _exit(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>因为 termux 的主界面是一个 psuedo terminal,所以第一步先建立伪终端设备,然后创建当前进程的子进程去执行命令.因此,termux 能访问的就只能 termux app 私有文件目录及 SD 卡公开目录(需要特殊命令支持)</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>android 交叉编译</title>
-    <url>/2022/03/03/01/</url>
-    <content><![CDATA[<p>当前 native 项目大多是 cmake 或 autotool 配置编译，以下就分别以 libgit2 和 openssl 来说明如何进行 NDK 交叉编译</p>
-<span id="more"></span>
-
-<h3 id="openssl"><a href="#openssl" class="headerlink" title="openssl"></a>openssl</h3><p>openssl 使用 autotool 配置，如 NOTES-ANDROID.md 所述先进行环境配置</p>
-<p>1、<code>.zshrc</code></p>
-<p>因为 NDK 从 r20 后不再携带 gcc,所以需要使用 clang 编译 </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">export ANDROID_NDK_HOME=/Users/shuttle/Library/Android/sdk/ndk</span><br><span class="line">export ANDROID_NDK_ROOT=$ANDROID_NDK_HOME/24.0.7956693</span><br><span class="line">export PATH=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64/bin:$PATH</span><br><span class="line">export CC=x86_64-linux-android32-clang</span><br></pre></td></tr></table></figure>
-<p>2、执行 Configure</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./Configure android-x86_64  -D__ANDROID_API__=32</span><br></pre></td></tr></table></figure>
-<p>3、编译</p>
-<p><code>make -j6</code></p>
-<p>同理，openssl 支持 <code>android-arm,android-arm64,android-mips,android-mip64,android-x86,android-x86_64</code>(其中 r20+后不再支持 mips 架构)</p>
-<h3 id="libgit2"><a href="#libgit2" class="headerlink" title="libgit2"></a>libgit2</h3><p>1、添加 CMakeLists.android.tx 文件</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 交叉编译 Android</span></span><br><span class="line"><span class="keyword">SET</span>(CMAKE_SYSTEM_NAME Android)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置安卓的 api level, 如未设置，按一下顺序取值</span></span><br><span class="line"><span class="comment"># - CMAKE_ANDROID_API 即 android api level</span></span><br><span class="line"><span class="comment"># - CMAKE_SYSROOT</span></span><br><span class="line"><span class="comment"># - lastes api level 都没设置则取 ndk 最新的 api level</span></span><br><span class="line"><span class="comment"># SET(CMAKE_SYSTEM_VERSION 32)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置编译架构：arm64-v8a,armeabi-v7a,armeabi-v6,armeabi,mips,mips64,x86,x86_64 默认 armeabi</span></span><br><span class="line"><span class="keyword">SET</span>(CMAKE_ANDROID_ARCH_ABI arm64-v8a)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ndk 绝对路径</span></span><br><span class="line"><span class="keyword">SET</span>(CMAKE_ANDROID_NDK /Users/shuttle/Library/Android/sdk/ndk/<span class="number">24.0</span>.<span class="number">7956693</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># true -&gt; 使用 api level 已经废弃的 header, 而不使用统一头文件。默认 false</span></span><br><span class="line"><span class="comment"># SET(CMAKE_ANDROID_NDK_DEPRECATED_HEADERS false)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 ndk 编译链版本。默认最新的</span></span><br><span class="line"><span class="comment"># SET(CMAKE_ANDROID_NDK_TOOLCHAIN_VERSION 32)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># none: No C++ Support</span></span><br><span class="line"><span class="comment"># system: Minimal C+++ without STL</span></span><br><span class="line"><span class="comment"># gabi++_static: GAbi++ Static</span></span><br><span class="line"><span class="comment"># gabi++_shared: GAbi++ Shared</span></span><br><span class="line"><span class="comment"># gnustl_static: GNU libstd++ Static</span></span><br><span class="line"><span class="comment"># gnustl_shared: GNU libstd++ Shared</span></span><br><span class="line"><span class="comment"># c++_shared: LLVM libc++ Shared</span></span><br><span class="line"><span class="comment"># c++_static: LLVM libc++ Static</span></span><br><span class="line"><span class="comment"># stlport_static: STLport Static</span></span><br><span class="line"><span class="comment"># stlport_shared: STLport Shared</span></span><br><span class="line"><span class="comment"># 默认 gnustl_static</span></span><br><span class="line"><span class="comment"># SET(CMAKE_ANDROID_STL_TYPE none)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># SET(CMAKE_&lt;LANG&gt;_ANDROID_TOOLCHAIN_PREFIX ) # 自动生成，绝对路径前缀</span></span><br><span class="line"><span class="comment"># SET(CMAKE_&lt;LANG&gt;_ANDROID_TOOLCHAIN_SUFFIX ) # 自动生成，绝对路径后缀</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># SET(CMAKE_C_COMPILER $&#123;NDK_HOME&#125;/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android32-clang)</span></span><br><span class="line"><span class="comment"># SET(CMAKE_CXX_COMPILER $&#123;NDK_HOME&#125;/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android32-clang++)</span></span><br><span class="line"><span class="comment"># SET(CMAKE_FIND_ROOT_PATH $&#123;NDK_HOME&#125;/toolchains/llvm/prebuilt/darwin-x86_64/sysroot)</span></span><br><span class="line"><span class="comment"># SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)</span></span><br><span class="line"><span class="comment"># SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)</span></span><br><span class="line"><span class="comment"># SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(NDK_HOME /Users/shuttle/Library/Android/sdk/ndk/<span class="number">24.0</span>.<span class="number">7956693</span>)</span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_DYHOME /Users/shuttle/<span class="keyword">Project</span>/Native/libgit2/deps/openssl)</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_ROOT_DIR <span class="variable">$&#123;OPENSSL_DYHOME&#125;</span>)</span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_INCLUDE_DIR <span class="variable">$&#123;OPENSSL_DYHOME&#125;</span>/<span class="keyword">include</span>)</span><br><span class="line"><span class="comment"># Could NOT find OpenSSL, try to set the path to OpenSSL root folder in the system variable OPENSSL_ROOT_DIR (missing: OPENSSL_CRYPTO_LIBRARY) </span></span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_CRYPTO_LIBRARY <span class="variable">$&#123;OPENSSL_DYHOME&#125;</span>/android_arm64/libcrypto.so)</span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_SSL_LIBRARY <span class="variable">$&#123;OPENSSL_DYHOME&#125;</span>/android_arm64/libssl.so)</span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_LIBRARIES <span class="variable">$&#123;OPENSSL_DYHOME&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_definitions</span>(<span class="string">&quot;--sysroot=$&#123;CMAKE_FIND_ROOT_PATH&#125; -Wall -g&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(USE_SHA1 OpenSSL)</span><br><span class="line"><span class="keyword">SET</span>(USE_HTTPS OpenSSL)</span><br><span class="line"><span class="keyword">SET</span>(BUILD_TESTS <span class="keyword">OFF</span>)</span><br><span class="line"><span class="keyword">SET</span>(CMAKE_GENERATOR Ninja)</span><br></pre></td></tr></table></figure>
-
-<p>2、cmake 配置</p>
-<p><code>cmake -S. -Bbuild_arm64 -GNinja -DCMAKE_TOOLCHAIN_FILE=CMakeLists.android.txt</code></p>
-<p>3、编译 </p>
-<p><code>cmake --build build_arm64</code></p>
 ]]></content>
   </entry>
   <entry>
@@ -1831,42 +1807,27 @@
       </tags>
   </entry>
   <entry>
-    <title>dart-build tool</title>
-    <url>/2019/12/20/32/</url>
-    <content><![CDATA[<p>build-tool</p>
+    <title>android 交叉编译</title>
+    <url>/2022/03/03/01/</url>
+    <content><![CDATA[<p>当前 native 项目大多是 cmake 或 autotool 配置编译，以下就分别以 libgit2 和 openssl 来说明如何进行 NDK 交叉编译</p>
 <span id="more"></span>
 
-<h3 id="使用-build-runner-作为开发服务"><a href="#使用-build-runner-作为开发服务" class="headerlink" title="使用 build_runner 作为开发服务"></a>使用 <code>build_runner</code> 作为开发服务</h3><p>1、在 <code>pubspec.yaml</code>中添加<code>build_runner</code>和<code>build_web_compilers</code></p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">environment:</span></span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">&#x27;&gt;=2.0.0 &lt;3.0.0&#x27;</span></span><br><span class="line"><span class="attr">dev_dependencies:</span></span><br><span class="line">  <span class="attr">build_runner:</span> <span class="string">^1.0.0</span></span><br><span class="line">  <span class="attr">build_web_compilers:</span> <span class="string">^0.4.0</span></span><br></pre></td></tr></table></figure>
-<p>2、下载依赖</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pub get</span><br></pre></td></tr></table></figure>
-<p>3、启动服务</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pub run build_runner serve</span><br></pre></td></tr></table></figure>
-<p>服务启动后,每次保存操作都会触发重新构建.</p>
-<h3 id="创建输出文件夹"><a href="#创建输出文件夹" class="headerlink" title="创建输出文件夹"></a>创建输出文件夹</h3><p>使用<code>--output &lt;directory name&gt;</code>选项构建,将内部引用 URL 匹配的文件路径和<code>directory name</code>合并作为输出目录,将文件写入.<br>此选项可以在<code>build,watch,serve</code>命令中使用.如果没有使用 <code>serve</code>命令时,此目录同时被另一个不同的 server 使用.<br>如果只想输出包的一部分,比如<code>web</code>目录,可以使用<code>--output web:&lt;directory name&gt;</code>.</p>
-<h3 id="使用其他-build-runner-命令"><a href="#使用其他-build-runner-命令" class="headerlink" title="使用其他 build_runner 命令"></a>使用其他 <code>build_runner</code> 命令</h3><ul>
-<li><code>build</code>: 执行单独构建然后退出.如果你的构建会把产物输出到源码文件中会很有用.使用<code>--output &lt;dirname&gt;</code> 可以将所有的源和生成的产物输出到合并目录中.</li>
-<li><code>watch</code>: 类似 <code>build</code>,但是在文件改变时返回.使用<code>--output &lt;dirname&gt;</code>将数据的改变保存到合并的目录中.可以保持输出持续更新和其他基于文件的开发服务器配合使用.</li>
-<li><code>test</code>: 创建输出目录然后运行<code>pub run test</code>.此命令需要 <code>dev dependency</code>中有<code>build_test</code>依赖.</li>
-</ul>
-<h3 id="切换到-dart2js"><a href="#切换到-dart2js" class="headerlink" title="切换到 dart2js"></a>切换到 dart2js</h3><p>默认情况下 <code>build_web_compilers</code>使用<code>dartdevc</code>.如果需要切换到 dart2js,在 <code>pub run build_runner build/serve</code>后传递<code>--release</code>选项.在<code>build.yaml</code>文件中配置.</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">targets:</span></span><br><span class="line">  <span class="string">$default:</span></span><br><span class="line">    <span class="attr">builders:</span></span><br><span class="line">      <span class="string">build_web_compilers|entrypoint:</span></span><br><span class="line">        <span class="attr">optioins:</span></span><br><span class="line">          <span class="attr">dart2js_args:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">--minify</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">--fast_startup</span></span><br></pre></td></tr></table></figure>
+<h3 id="openssl"><a href="#openssl" class="headerlink" title="openssl"></a>openssl</h3><p>openssl 使用 autotool 配置，如 NOTES-ANDROID.md 所述先进行环境配置</p>
+<p>1、<code>.zshrc</code></p>
+<p>因为 NDK 从 r20 后不再携带 gcc,所以需要使用 clang 编译 </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">export ANDROID_NDK_HOME=/Users/shuttle/Library/Android/sdk/ndk</span><br><span class="line">export ANDROID_NDK_ROOT=$ANDROID_NDK_HOME/24.0.7956693</span><br><span class="line">export PATH=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64/bin:$PATH</span><br><span class="line">export CC=x86_64-linux-android32-clang</span><br></pre></td></tr></table></figure>
+<p>2、执行 Configure</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./Configure android-x86_64  -D__ANDROID_API__=32</span><br></pre></td></tr></table></figure>
+<p>3、编译</p>
+<p><code>make -j6</code></p>
+<p>同理，openssl 支持 <code>android-arm,android-arm64,android-mips,android-mip64,android-x86,android-x86_64</code>(其中 r20+后不再支持 mips 架构)</p>
+<h3 id="libgit2"><a href="#libgit2" class="headerlink" title="libgit2"></a>libgit2</h3><p>1、添加 CMakeLists.android.tx 文件</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 交叉编译 Android</span></span><br><span class="line"><span class="keyword">SET</span>(CMAKE_SYSTEM_NAME Android)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置安卓的 api level, 如未设置，按一下顺序取值</span></span><br><span class="line"><span class="comment"># - CMAKE_ANDROID_API 即 android api level</span></span><br><span class="line"><span class="comment"># - CMAKE_SYSROOT</span></span><br><span class="line"><span class="comment"># - lastes api level 都没设置则取 ndk 最新的 api level</span></span><br><span class="line"><span class="comment"># SET(CMAKE_SYSTEM_VERSION 32)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置编译架构：arm64-v8a,armeabi-v7a,armeabi-v6,armeabi,mips,mips64,x86,x86_64 默认 armeabi</span></span><br><span class="line"><span class="keyword">SET</span>(CMAKE_ANDROID_ARCH_ABI arm64-v8a)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ndk 绝对路径</span></span><br><span class="line"><span class="keyword">SET</span>(CMAKE_ANDROID_NDK /Users/shuttle/Library/Android/sdk/ndk/<span class="number">24.0</span>.<span class="number">7956693</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># true -&gt; 使用 api level 已经废弃的 header, 而不使用统一头文件。默认 false</span></span><br><span class="line"><span class="comment"># SET(CMAKE_ANDROID_NDK_DEPRECATED_HEADERS false)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 ndk 编译链版本。默认最新的</span></span><br><span class="line"><span class="comment"># SET(CMAKE_ANDROID_NDK_TOOLCHAIN_VERSION 32)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># none: No C++ Support</span></span><br><span class="line"><span class="comment"># system: Minimal C+++ without STL</span></span><br><span class="line"><span class="comment"># gabi++_static: GAbi++ Static</span></span><br><span class="line"><span class="comment"># gabi++_shared: GAbi++ Shared</span></span><br><span class="line"><span class="comment"># gnustl_static: GNU libstd++ Static</span></span><br><span class="line"><span class="comment"># gnustl_shared: GNU libstd++ Shared</span></span><br><span class="line"><span class="comment"># c++_shared: LLVM libc++ Shared</span></span><br><span class="line"><span class="comment"># c++_static: LLVM libc++ Static</span></span><br><span class="line"><span class="comment"># stlport_static: STLport Static</span></span><br><span class="line"><span class="comment"># stlport_shared: STLport Shared</span></span><br><span class="line"><span class="comment"># 默认 gnustl_static</span></span><br><span class="line"><span class="comment"># SET(CMAKE_ANDROID_STL_TYPE none)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># SET(CMAKE_&lt;LANG&gt;_ANDROID_TOOLCHAIN_PREFIX ) # 自动生成，绝对路径前缀</span></span><br><span class="line"><span class="comment"># SET(CMAKE_&lt;LANG&gt;_ANDROID_TOOLCHAIN_SUFFIX ) # 自动生成，绝对路径后缀</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># SET(CMAKE_C_COMPILER $&#123;NDK_HOME&#125;/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android32-clang)</span></span><br><span class="line"><span class="comment"># SET(CMAKE_CXX_COMPILER $&#123;NDK_HOME&#125;/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android32-clang++)</span></span><br><span class="line"><span class="comment"># SET(CMAKE_FIND_ROOT_PATH $&#123;NDK_HOME&#125;/toolchains/llvm/prebuilt/darwin-x86_64/sysroot)</span></span><br><span class="line"><span class="comment"># SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)</span></span><br><span class="line"><span class="comment"># SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)</span></span><br><span class="line"><span class="comment"># SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(NDK_HOME /Users/shuttle/Library/Android/sdk/ndk/<span class="number">24.0</span>.<span class="number">7956693</span>)</span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_DYHOME /Users/shuttle/<span class="keyword">Project</span>/Native/libgit2/deps/openssl)</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_ROOT_DIR <span class="variable">$&#123;OPENSSL_DYHOME&#125;</span>)</span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_INCLUDE_DIR <span class="variable">$&#123;OPENSSL_DYHOME&#125;</span>/<span class="keyword">include</span>)</span><br><span class="line"><span class="comment"># Could NOT find OpenSSL, try to set the path to OpenSSL root folder in the system variable OPENSSL_ROOT_DIR (missing: OPENSSL_CRYPTO_LIBRARY) </span></span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_CRYPTO_LIBRARY <span class="variable">$&#123;OPENSSL_DYHOME&#125;</span>/android_arm64/libcrypto.so)</span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_SSL_LIBRARY <span class="variable">$&#123;OPENSSL_DYHOME&#125;</span>/android_arm64/libssl.so)</span><br><span class="line"><span class="keyword">SET</span>(OPENSSL_LIBRARIES <span class="variable">$&#123;OPENSSL_DYHOME&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_definitions</span>(<span class="string">&quot;--sysroot=$&#123;CMAKE_FIND_ROOT_PATH&#125; -Wall -g&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(USE_SHA1 OpenSSL)</span><br><span class="line"><span class="keyword">SET</span>(USE_HTTPS OpenSSL)</span><br><span class="line"><span class="keyword">SET</span>(BUILD_TESTS <span class="keyword">OFF</span>)</span><br><span class="line"><span class="keyword">SET</span>(CMAKE_GENERATOR Ninja)</span><br></pre></td></tr></table></figure>
 
-<h2 id="build-yaml-格式"><a href="#build-yaml-格式" class="headerlink" title="build.yaml 格式"></a><code>build.yaml</code> 格式</h2><p><code>build.yaml</code> 文件按照 <code>BuildConfig</code>对象配置.</p>
-<h3 id="BuildConfig"><a href="#BuildConfig" class="headerlink" title="BuildConfig"></a>BuildConfig</h3><table>
-<thead>
-<tr>
-<th>key</th>
-<th>value</th>
-<th>default</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>targets</code></td>
-<td><code>Map&lt;String,BuildTarget&gt;</code></td>
-<td>a single target with the same name as the package</td>
-</tr>
-</tbody></table>
+<p>2、cmake 配置</p>
+<p><code>cmake -S. -Bbuild_arm64 -GNinja -DCMAKE_TOOLCHAIN_FILE=CMakeLists.android.txt</code></p>
+<p>3、编译 </p>
+<p><code>cmake --build build_arm64</code></p>
 ]]></content>
   </entry>
   <entry>
@@ -1929,6 +1890,234 @@
 </li>
 </ul>
 ]]></content>
+  </entry>
+  <entry>
+    <title>dart-build tool</title>
+    <url>/2019/12/20/32/</url>
+    <content><![CDATA[<p>build-tool</p>
+<span id="more"></span>
+
+<h3 id="使用-build-runner-作为开发服务"><a href="#使用-build-runner-作为开发服务" class="headerlink" title="使用 build_runner 作为开发服务"></a>使用 <code>build_runner</code> 作为开发服务</h3><p>1、在 <code>pubspec.yaml</code>中添加<code>build_runner</code>和<code>build_web_compilers</code></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">environment:</span></span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">&#x27;&gt;=2.0.0 &lt;3.0.0&#x27;</span></span><br><span class="line"><span class="attr">dev_dependencies:</span></span><br><span class="line">  <span class="attr">build_runner:</span> <span class="string">^1.0.0</span></span><br><span class="line">  <span class="attr">build_web_compilers:</span> <span class="string">^0.4.0</span></span><br></pre></td></tr></table></figure>
+<p>2、下载依赖</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pub get</span><br></pre></td></tr></table></figure>
+<p>3、启动服务</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pub run build_runner serve</span><br></pre></td></tr></table></figure>
+<p>服务启动后,每次保存操作都会触发重新构建.</p>
+<h3 id="创建输出文件夹"><a href="#创建输出文件夹" class="headerlink" title="创建输出文件夹"></a>创建输出文件夹</h3><p>使用<code>--output &lt;directory name&gt;</code>选项构建,将内部引用 URL 匹配的文件路径和<code>directory name</code>合并作为输出目录,将文件写入.<br>此选项可以在<code>build,watch,serve</code>命令中使用.如果没有使用 <code>serve</code>命令时,此目录同时被另一个不同的 server 使用.<br>如果只想输出包的一部分,比如<code>web</code>目录,可以使用<code>--output web:&lt;directory name&gt;</code>.</p>
+<h3 id="使用其他-build-runner-命令"><a href="#使用其他-build-runner-命令" class="headerlink" title="使用其他 build_runner 命令"></a>使用其他 <code>build_runner</code> 命令</h3><ul>
+<li><code>build</code>: 执行单独构建然后退出.如果你的构建会把产物输出到源码文件中会很有用.使用<code>--output &lt;dirname&gt;</code> 可以将所有的源和生成的产物输出到合并目录中.</li>
+<li><code>watch</code>: 类似 <code>build</code>,但是在文件改变时返回.使用<code>--output &lt;dirname&gt;</code>将数据的改变保存到合并的目录中.可以保持输出持续更新和其他基于文件的开发服务器配合使用.</li>
+<li><code>test</code>: 创建输出目录然后运行<code>pub run test</code>.此命令需要 <code>dev dependency</code>中有<code>build_test</code>依赖.</li>
+</ul>
+<h3 id="切换到-dart2js"><a href="#切换到-dart2js" class="headerlink" title="切换到 dart2js"></a>切换到 dart2js</h3><p>默认情况下 <code>build_web_compilers</code>使用<code>dartdevc</code>.如果需要切换到 dart2js,在 <code>pub run build_runner build/serve</code>后传递<code>--release</code>选项.在<code>build.yaml</code>文件中配置.</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">targets:</span></span><br><span class="line">  <span class="string">$default:</span></span><br><span class="line">    <span class="attr">builders:</span></span><br><span class="line">      <span class="string">build_web_compilers|entrypoint:</span></span><br><span class="line">        <span class="attr">optioins:</span></span><br><span class="line">          <span class="attr">dart2js_args:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">--minify</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">--fast_startup</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="build-yaml-格式"><a href="#build-yaml-格式" class="headerlink" title="build.yaml 格式"></a><code>build.yaml</code> 格式</h2><p><code>build.yaml</code> 文件按照 <code>BuildConfig</code>对象配置.</p>
+<h3 id="BuildConfig"><a href="#BuildConfig" class="headerlink" title="BuildConfig"></a>BuildConfig</h3><table>
+<thead>
+<tr>
+<th>key</th>
+<th>value</th>
+<th>default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>targets</code></td>
+<td><code>Map&lt;String,BuildTarget&gt;</code></td>
+<td>a single target with the same name as the package</td>
+</tr>
+</tbody></table>
+]]></content>
+  </entry>
+  <entry>
+    <title>docker,docker-compose学习笔记</title>
+    <url>/2019/03/01/57/</url>
+    <content><![CDATA[<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Compose 是一个为了定义和运行多容器 Docker 应用的工具。<br><a href="https://github.com/docker/labs">官方动手示例</a></p>
+<span id="more"></span>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li>一个主机多个隔离环境</li>
+<li>当容器创建时保留所有的 volume</li>
+<li>只有容器被更改时才触发创建</li>
+<li>定义变量和在不同环境中使用</li>
+</ul>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>自动测试环境</li>
+<li>单独主机部署</li>
+</ul>
+<h3 id="docker-compose-安装"><a href="#docker-compose-安装" class="headerlink" title="docker-compose 安装"></a>docker-compose 安装</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line">sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</span><br><span class="line">sudo docker-compose --version</span><br></pre></td></tr></table></figure>
+
+<p>pip 安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>卸载</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo rm /usr/local/bin/docker-compose</span><br><span class="line">pip uninstall docker-compose</span><br></pre></td></tr></table></figure>
+
+<h3 id="docker-compose-命令"><a href="#docker-compose-命令" class="headerlink" title="docker-compose 命令"></a>docker-compose 命令</h3><ul>
+<li><code>-f</code> 指定 一个或多个 compose 文件的名称和路径<blockquote>
+<p>1、使用多个 Compose 文件时，Compose 会把这几个文件合并为一个配置。按顺序合并，后边的覆盖前边的配置。<br>2、<code>docker-compose -f docker-compose.yml -f docker-compose.admin.yml run backup_db</code><br>3、使用 <code>-(dash)</code> 作为 <code>-f</code> 的值，将会从输入中读取配置文件名。使用 <code>stdin</code> 时，配置里涉及到的路径都是相对于当前工作上下文路径。<br>4、如果不是用 <code>-f</code>,Compose 遍历当前上下文路径和它的父路径查询 <code>docker-compose.yml</code> 和 <code>docker-compose.override.yml</code> 文件。请至少提供一个 <code>docker-compose.yml</code> 文件。如果所有的文件都在同一个文件夹下，Compose 将合并它们。<br>5、<code>docker-compose.override.yml</code> 的配置高于 <code>docker-compose.yml</code>,且为后者提供额外的配置属性。</p>
+</blockquote>
+</li>
+<li>为单独的 Compose 文件指定路径<blockquote>
+<p>1、使用 <code>-f</code>, 或从命令行输入，或在 shell &#x2F; 某个环境配置文件中设置 COMPOSE_FILE 环境变量,指定不在当前文件夹的 Compose 文件路径.<br>2、<code>docker-compose -f ~/sandbox/rails/docker-compose.yml pull db</code> 从 <code>~/sandbox/rails/docker-compose.yml</code> 文件中获取 db 服务中定义的 postgres db 镜像。</p>
+</blockquote>
+</li>
+<li><code>-p</code> 指定项目名<blockquote>
+<p>1、如果不指定 <code>-p</code>,Compose 默认使用当前文件夹的名称。</p>
+</blockquote>
+</li>
+<li>配置环境变量</li>
+</ul>
+<h3 id="docker-compose-CLI-环境变量"><a href="#docker-compose-CLI-环境变量" class="headerlink" title="docker-compose CLI 环境变量"></a>docker-compose CLI 环境变量</h3><p>默认内置了几个环境变量可以配置 docker-compose.<br>以 <code>DOCKER_</code> 开头的变量和配置 docker 命令行客户端的变量类似。如果使用 <code>docker-machine</code>的话，<code>eval &quot;$(docker-machine env my-docker-vm)&quot;</code>将为变量设置正确的值。</p>
+<ul>
+<li><code>COMPOSE_PROJECT_NAME</code><blockquote>
+<p>1、设置项目名.该值在启动时会作为容器服务的前缀.比如项目名 myapp,包含两个服务 db 和 web,那么 Compose 启动的容器名为 myapp_db_1 和 myapp_web_1.<br>2、默认时项目文件夹的根目录名。</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_FILE</code><blockquote>
+<p>1、指定 Compose 文件路径。如果未指定，Compose 将在当前文件夹查询 docker-compose.yml 文件，如果不存在将继续遍历父目录直到找到。<br>2、支持使用文件路径分隔符(Linux &amp; MacOS [:] Windows [;]).比如 <code>COMPOSE_FILE=docker-compose.yml:docker-compose.prod.yml</code>,路径分隔符可以通过 <code>COMPOSE_PATH_SEPARATOR</code> 自定义</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_API_VERSION</code><blockquote>
+<p>1、Docker API 仅支持来自指定版本客户端的请求。使用 docker-compose 时出现 <code>client and server don&#39;t have same version</code> 错误，那么可以通过设置该变量解决。<br>2、设置该变量主要针对临时的运行客户端和服务端版本不一致的情况。</p>
+</blockquote>
+</li>
+<li><code>DOCKER_HOST</code><blockquote>
+<p>1、为 docker daemon 设置 URL.和 docker 客户端一样，默认为 <code>unix:///var/run/docker.sock</code></p>
+</blockquote>
+</li>
+<li><code>DOCKER_TLS_VERIFY</code><blockquote>
+<p>1、设置空字符以外的任何值时，开启 TLS.</p>
+</blockquote>
+</li>
+<li><code>DOCKER_CERT_PATH</code><blockquote>
+<p>1、配置 <code>ca.pem,cert.pem,key.pem</code> 的路径。默认 <code>~/.docker</code></p>
+</blockquote>
+</li>
+<li><code>COMPOSE_HTTP_TIMEOUT</code><blockquote>
+<p>1、超时时间(秒).默认 60s</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_TLS_VERSION</code><blockquote>
+<p>1、TLS 版本.默认 TLSv1. 可供选项 TLSv1, TLSv1_1, TLSv1_2</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_CONVERT_WINDOWS_PATH</code><blockquote>
+<p>1、是否开启把 Windos-style 的路径转为 Unix-style 的卷定义。在 Windos 上使用 Docker Machine 和 Docker Toolbox 时总是要设置该变量。默认 0。 true&#x2F;1 代表开启，false&#x2F;0 代表关闭.</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_PATH_SEPARATOR</code><blockquote>
+<p>1、如果设置，COMPOSE_FILE 值将使用此处的定义作为分隔符。</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_FORCE_WINDOWS_HOST</code><blockquote>
+<p>1、如果设置，即使 Compose 运行在 Unix-based 系统上，卷定义也将使用简略语法解析为假设运行在 Windows 上的路径。true&#x2F;a,false&#x2F;0</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_IGNORE_ORPHANS</code><blockquote>
+<p>1、如果设置，Compose 不会试着对项目的单独容器检测。true&#x2F;1,false&#x2F;0</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_PARALLEL_LIMIT</code><blockquote>
+<p>1、并行执行的限制。默认 64，绝不能低于 2.</p>
+</blockquote>
+</li>
+<li><code>COMPOSE_INTERACTIVE_NO_CLI</code><blockquote>
+<p>1、如果设置，Compose 不会尝试使用 Docker CLI 和 run exec 操作交互。true&#x2F;1,false&#x2F;0</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Compose-file"><a href="#Compose-file" class="headerlink" title="Compose file"></a>Compose file</h3><h4 id="version-3"><a href="#version-3" class="headerlink" title="version 3"></a>version 3</h4><h5 id="build"><a href="#build" class="headerlink" title="build"></a>build</h5><p>配置选项在编译期生效。<br>build 可以指定一个路径</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">webapp:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./dir</span></span><br></pre></td></tr></table></figure>
+
+<p>或者是一个在指定 context 下的路径对象，同时可包含 Dockerfile 和 args</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">webapp:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./dir</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">Dockerfile-alternate</span></span><br><span class="line">      <span class="attr">args:</span></span><br><span class="line">        <span class="attr">buildno:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>如果同时也指定了 image,Compose 使用 webapp 和 image 中指定的可选的 tag 命名最终生成的镜像名</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span> <span class="string">./dir</span></span><br><span class="line"><span class="attr">image:</span> <span class="string">webapp:tag</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>swarm mode 不支持。docker stack 命令只接受预编译的镜像.</p>
+</blockquote>
+<h6 id="CONTEXT"><a href="#CONTEXT" class="headerlink" title="CONTEXT"></a>CONTEXT</h6><p>可以是包含 Dockerfile 文件的路径，或 git 仓库的 url.<br>如果是相对路径，那么被解析为相对于当前 Compose 文件的路径。此文件夹同时也是发送到 Docker daemon 的编译上下文。</p>
+<h6 id="DOCKERFILE"><a href="#DOCKERFILE" class="headerlink" title="DOCKERFILE"></a>DOCKERFILE</h6><p>可选<br>此处必须指定编译路径</p>
+<h6 id="ARGS"><a href="#ARGS" class="headerlink" title="ARGS"></a>ARGS</h6><p>只有在编译过程中可访问的环境变量。<br>首先，在 Dokcerfile 中指定参数:</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">ARG</span> <span class="string">buildno</span></span><br><span class="line"><span class="string">ARG</span> <span class="string">gitcommithash</span></span><br><span class="line"></span><br><span class="line"><span class="string">RUN</span> <span class="string">echo</span> <span class="string">&quot;Build number: $buildno&quot;</span></span><br><span class="line"><span class="string">RUN</span> <span class="string">echo</span> <span class="string">&quot;Bashed on commit: $gitcommithash&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在 build 下给该参数复制（可以是键值对列表）：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">args:</span></span><br><span class="line">    <span class="attr">buildno:</span> <span class="number">1</span></span><br><span class="line">    <span class="attr">gitcommithash:</span> <span class="string">cdc3b19</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">args:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">buildno=1</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">gitcommithash=cdc3b19</span></span><br></pre></td></tr></table></figure>
+
+<p>你也可以不指定值，它的值就是编译时 Compose 当前运行环境的值.</p>
+<blockquote>
+<p>YAML 布尔值(true,false,yes,no,on,off)应该使用引号应用，这样解析器才能把它们解析为 string</p>
+</blockquote>
+<h6 id="CACHE-FROM"><a href="#CACHE-FROM" class="headerlink" title="CACHE_FROM"></a>CACHE_FROM</h6><blockquote>
+<p>v3.2+</p>
+</blockquote>
+<p>指定 engine 可以缓存的镜像列表</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">cache_from:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">alpine:latest</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">corp/webapp:3.14</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="LABELS"><a href="#LABELS" class="headerlink" title="LABELS"></a>LABELS</h6><blockquote>
+<p>v3.3+</p>
+</blockquote>
+<p>向生成的镜像添加元数据。可以是数组或目录<br>推荐使用反向 DNS 标记以避免和其他软件冲突</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">com.example.description:</span> <span class="string">&quot;Accounting webapp&quot;</span></span><br><span class="line">    <span class="attr">com.example.department:</span> <span class="string">&quot;Finance&quot;</span></span><br><span class="line">    <span class="attr">com.example.label-with-empty-value:</span> <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.description=Accounting webapp&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.department=Finance&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.label-with-empty-value&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="SHM-SIZE"><a href="#SHM-SIZE" class="headerlink" title="SHM_SIZE"></a>SHM_SIZE</h6><blockquote>
+<p>v3.5+</p>
+</blockquote>
+<p>设置编译生成容器 <code>dev/shm&#39;</code> 分区大小。int 值单位为 byte. string 可以携带单位</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">shm_size:</span> <span class="string">&#x27;2gb&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">shm_size:</span> <span class="number">10000000</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="TARGET"><a href="#TARGET" class="headerlink" title="TARGET"></a>TARGET</h6><blockquote>
+<p>v3.4+</p>
+</blockquote>
+<p>编译 Dockerfile 中定义的指定版本</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">target:</span> <span class="string">prod</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="cap-add-cap-drop"><a href="#cap-add-cap-drop" class="headerlink" title="cap_add,cap_drop"></a>cap_add,cap_drop</h5><p>添加或删除容器的容量。<code>man 7 capabilities</code> 查看可用列表</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cap_add:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">ALL</span></span><br><span class="line"><span class="attr">cap_drop:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">NET_ADMIN</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">SYS_ADMIN</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>swarm mode 无效</p>
+</blockquote>
+<h5 id="cgroup-parent"><a href="#cgroup-parent" class="headerlink" title="cgroup_parent"></a>cgroup_parent</h5><p>为容器指定可选的 cgroup parent</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cgroup_parent:</span> <span class="string">m-executor-abcd</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>swarm mode 无效</p>
+</blockquote>
+<h5 id="command"><a href="#command" class="headerlink" title="command"></a>command</h5><p>覆盖默认的命令</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">command:</span> <span class="string">bundle</span> <span class="string">exec</span> <span class="string">thin</span> <span class="string">-p</span> <span class="number">3000</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以是列表</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">command:</span> [<span class="string">&quot;bundle&quot;</span>, <span class="string">&quot;exec&quot;</span>, <span class="string">&quot;thin&quot;</span>, <span class="string">&quot;-p&quot;</span>, <span class="string">&quot;3000&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<h5 id="configs"><a href="#configs" class="headerlink" title="configs"></a>configs</h5><h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><ul>
+<li>共享文件夹，卷，绑定挂载<blockquote>
+<p>如果你的项目不在 <code>Users</code>目录(<code>cd ~</code>),那么你需要共享驱动器或 Dockerfile 所在位置和当前正在使用的卷。如果出现运行时错误表示文件未找到，那么就是一个挂载卷的请求被拒绝，或服务启动失败，试着共享文件或驱动。挂载卷要求共享项目不在 <code>C:\Users (Windows)</code>,或 <code>/Users (Mac)</code> 的驱动，并且如果是运行在 <code>Dokcer Desktop for Windows</code> 的 Linux 容器上的所有应用都需要共享。</p>
+</blockquote>
+</li>
+<li>如果改变了一个服务的 Dockerfile 或者编译文件夹里的内容，运行 <code>docker-compose build</code>重新编译</li>
+</ul>
+<h3 id="官方示例"><a href="#官方示例" class="headerlink" title="官方示例"></a>官方示例</h3><h4 id="Compose-WordPress"><a href="#Compose-WordPress" class="headerlink" title="Compose &amp; WordPress"></a>Compose &amp; WordPress</h4><ul>
+<li>为项目创建空文件夹。该文件夹作为应用的上下文，且只保存构建镜像所需的资源。</li>
+<li>创建 docker-compose.yml</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">db_data:/var/lib/mysql</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">somewordpress</span></span><br><span class="line">      <span class="attr">MYSQL_DATABASE:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">MYSQL_USER:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">MYSQL_PASSWORD:</span> <span class="string">wordpress</span></span><br><span class="line">  <span class="attr">wordpress:</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">db</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wordpress:latest</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8000:80&quot;</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_HOST:</span> <span class="string">db:3306</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_USER:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_PASSWORD:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_NAME:</span> <span class="string">wordpress</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="attr">db_data:</span> &#123;&#125;</span><br><span class="line"><span class="comment"># db_data 卷会保存任何 WordPress 对数据库的改变。</span></span><br><span class="line"><span class="comment"># WordPress 通常开放 80 和 443 端口.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>docker-compose up -d</code>.<blockquote>
+<p>如果使用 Docker Machine, 那么运行 <code>docker-machine ip MACHINE_VM</code> 获取运行地址。如果是 destop 版，<a href="http://localhost/">http://localhost</a> 即可.</p>
+</blockquote>
+</li>
+<li><code>docker-compose down</code> 移除容器，默认的网络，保留 WordPress 和数据库。<code>docker-compose down --volumes</code> 全部移除。</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>docker</tag>
+        <tag>学习笔记</tag>
+      </tags>
   </entry>
   <entry>
     <title>flutter 学习笔记</title>
@@ -2131,195 +2320,6 @@
 ]]></content>
       <tags>
         <tag>flutter</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>docker,docker-compose学习笔记</title>
-    <url>/2019/03/01/57/</url>
-    <content><![CDATA[<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Compose 是一个为了定义和运行多容器 Docker 应用的工具。<br><a href="https://github.com/docker/labs">官方动手示例</a></p>
-<span id="more"></span>
-<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
-<li>一个主机多个隔离环境</li>
-<li>当容器创建时保留所有的 volume</li>
-<li>只有容器被更改时才触发创建</li>
-<li>定义变量和在不同环境中使用</li>
-</ul>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li>自动测试环境</li>
-<li>单独主机部署</li>
-</ul>
-<h3 id="docker-compose-安装"><a href="#docker-compose-安装" class="headerlink" title="docker-compose 安装"></a>docker-compose 安装</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line">sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose</span><br><span class="line">sudo docker-compose --version</span><br></pre></td></tr></table></figure>
-
-<p>pip 安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install docker-compose</span><br></pre></td></tr></table></figure>
-
-<p>卸载</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo rm /usr/local/bin/docker-compose</span><br><span class="line">pip uninstall docker-compose</span><br></pre></td></tr></table></figure>
-
-<h3 id="docker-compose-命令"><a href="#docker-compose-命令" class="headerlink" title="docker-compose 命令"></a>docker-compose 命令</h3><ul>
-<li><code>-f</code> 指定 一个或多个 compose 文件的名称和路径<blockquote>
-<p>1、使用多个 Compose 文件时，Compose 会把这几个文件合并为一个配置。按顺序合并，后边的覆盖前边的配置。<br>2、<code>docker-compose -f docker-compose.yml -f docker-compose.admin.yml run backup_db</code><br>3、使用 <code>-(dash)</code> 作为 <code>-f</code> 的值，将会从输入中读取配置文件名。使用 <code>stdin</code> 时，配置里涉及到的路径都是相对于当前工作上下文路径。<br>4、如果不是用 <code>-f</code>,Compose 遍历当前上下文路径和它的父路径查询 <code>docker-compose.yml</code> 和 <code>docker-compose.override.yml</code> 文件。请至少提供一个 <code>docker-compose.yml</code> 文件。如果所有的文件都在同一个文件夹下，Compose 将合并它们。<br>5、<code>docker-compose.override.yml</code> 的配置高于 <code>docker-compose.yml</code>,且为后者提供额外的配置属性。</p>
-</blockquote>
-</li>
-<li>为单独的 Compose 文件指定路径<blockquote>
-<p>1、使用 <code>-f</code>, 或从命令行输入，或在 shell &#x2F; 某个环境配置文件中设置 COMPOSE_FILE 环境变量,指定不在当前文件夹的 Compose 文件路径.<br>2、<code>docker-compose -f ~/sandbox/rails/docker-compose.yml pull db</code> 从 <code>~/sandbox/rails/docker-compose.yml</code> 文件中获取 db 服务中定义的 postgres db 镜像。</p>
-</blockquote>
-</li>
-<li><code>-p</code> 指定项目名<blockquote>
-<p>1、如果不指定 <code>-p</code>,Compose 默认使用当前文件夹的名称。</p>
-</blockquote>
-</li>
-<li>配置环境变量</li>
-</ul>
-<h3 id="docker-compose-CLI-环境变量"><a href="#docker-compose-CLI-环境变量" class="headerlink" title="docker-compose CLI 环境变量"></a>docker-compose CLI 环境变量</h3><p>默认内置了几个环境变量可以配置 docker-compose.<br>以 <code>DOCKER_</code> 开头的变量和配置 docker 命令行客户端的变量类似。如果使用 <code>docker-machine</code>的话，<code>eval &quot;$(docker-machine env my-docker-vm)&quot;</code>将为变量设置正确的值。</p>
-<ul>
-<li><code>COMPOSE_PROJECT_NAME</code><blockquote>
-<p>1、设置项目名.该值在启动时会作为容器服务的前缀.比如项目名 myapp,包含两个服务 db 和 web,那么 Compose 启动的容器名为 myapp_db_1 和 myapp_web_1.<br>2、默认时项目文件夹的根目录名。</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_FILE</code><blockquote>
-<p>1、指定 Compose 文件路径。如果未指定，Compose 将在当前文件夹查询 docker-compose.yml 文件，如果不存在将继续遍历父目录直到找到。<br>2、支持使用文件路径分隔符(Linux &amp; MacOS [:] Windows [;]).比如 <code>COMPOSE_FILE=docker-compose.yml:docker-compose.prod.yml</code>,路径分隔符可以通过 <code>COMPOSE_PATH_SEPARATOR</code> 自定义</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_API_VERSION</code><blockquote>
-<p>1、Docker API 仅支持来自指定版本客户端的请求。使用 docker-compose 时出现 <code>client and server don&#39;t have same version</code> 错误，那么可以通过设置该变量解决。<br>2、设置该变量主要针对临时的运行客户端和服务端版本不一致的情况。</p>
-</blockquote>
-</li>
-<li><code>DOCKER_HOST</code><blockquote>
-<p>1、为 docker daemon 设置 URL.和 docker 客户端一样，默认为 <code>unix:///var/run/docker.sock</code></p>
-</blockquote>
-</li>
-<li><code>DOCKER_TLS_VERIFY</code><blockquote>
-<p>1、设置空字符以外的任何值时，开启 TLS.</p>
-</blockquote>
-</li>
-<li><code>DOCKER_CERT_PATH</code><blockquote>
-<p>1、配置 <code>ca.pem,cert.pem,key.pem</code> 的路径。默认 <code>~/.docker</code></p>
-</blockquote>
-</li>
-<li><code>COMPOSE_HTTP_TIMEOUT</code><blockquote>
-<p>1、超时时间(秒).默认 60s</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_TLS_VERSION</code><blockquote>
-<p>1、TLS 版本.默认 TLSv1. 可供选项 TLSv1, TLSv1_1, TLSv1_2</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_CONVERT_WINDOWS_PATH</code><blockquote>
-<p>1、是否开启把 Windos-style 的路径转为 Unix-style 的卷定义。在 Windos 上使用 Docker Machine 和 Docker Toolbox 时总是要设置该变量。默认 0。 true&#x2F;1 代表开启，false&#x2F;0 代表关闭.</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_PATH_SEPARATOR</code><blockquote>
-<p>1、如果设置，COMPOSE_FILE 值将使用此处的定义作为分隔符。</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_FORCE_WINDOWS_HOST</code><blockquote>
-<p>1、如果设置，即使 Compose 运行在 Unix-based 系统上，卷定义也将使用简略语法解析为假设运行在 Windows 上的路径。true&#x2F;a,false&#x2F;0</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_IGNORE_ORPHANS</code><blockquote>
-<p>1、如果设置，Compose 不会试着对项目的单独容器检测。true&#x2F;1,false&#x2F;0</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_PARALLEL_LIMIT</code><blockquote>
-<p>1、并行执行的限制。默认 64，绝不能低于 2.</p>
-</blockquote>
-</li>
-<li><code>COMPOSE_INTERACTIVE_NO_CLI</code><blockquote>
-<p>1、如果设置，Compose 不会尝试使用 Docker CLI 和 run exec 操作交互。true&#x2F;1,false&#x2F;0</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="Compose-file"><a href="#Compose-file" class="headerlink" title="Compose file"></a>Compose file</h3><h4 id="version-3"><a href="#version-3" class="headerlink" title="version 3"></a>version 3</h4><h5 id="build"><a href="#build" class="headerlink" title="build"></a>build</h5><p>配置选项在编译期生效。<br>build 可以指定一个路径</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">webapp:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./dir</span></span><br></pre></td></tr></table></figure>
-
-<p>或者是一个在指定 context 下的路径对象，同时可包含 Dockerfile 和 args</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">webapp:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./dir</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">Dockerfile-alternate</span></span><br><span class="line">      <span class="attr">args:</span></span><br><span class="line">        <span class="attr">buildno:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p>如果同时也指定了 image,Compose 使用 webapp 和 image 中指定的可选的 tag 命名最终生成的镜像名</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span> <span class="string">./dir</span></span><br><span class="line"><span class="attr">image:</span> <span class="string">webapp:tag</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>swarm mode 不支持。docker stack 命令只接受预编译的镜像.</p>
-</blockquote>
-<h6 id="CONTEXT"><a href="#CONTEXT" class="headerlink" title="CONTEXT"></a>CONTEXT</h6><p>可以是包含 Dockerfile 文件的路径，或 git 仓库的 url.<br>如果是相对路径，那么被解析为相对于当前 Compose 文件的路径。此文件夹同时也是发送到 Docker daemon 的编译上下文。</p>
-<h6 id="DOCKERFILE"><a href="#DOCKERFILE" class="headerlink" title="DOCKERFILE"></a>DOCKERFILE</h6><p>可选<br>此处必须指定编译路径</p>
-<h6 id="ARGS"><a href="#ARGS" class="headerlink" title="ARGS"></a>ARGS</h6><p>只有在编译过程中可访问的环境变量。<br>首先，在 Dokcerfile 中指定参数:</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">ARG</span> <span class="string">buildno</span></span><br><span class="line"><span class="string">ARG</span> <span class="string">gitcommithash</span></span><br><span class="line"></span><br><span class="line"><span class="string">RUN</span> <span class="string">echo</span> <span class="string">&quot;Build number: $buildno&quot;</span></span><br><span class="line"><span class="string">RUN</span> <span class="string">echo</span> <span class="string">&quot;Bashed on commit: $gitcommithash&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后在 build 下给该参数复制（可以是键值对列表）：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">args:</span></span><br><span class="line">    <span class="attr">buildno:</span> <span class="number">1</span></span><br><span class="line">    <span class="attr">gitcommithash:</span> <span class="string">cdc3b19</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">args:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">buildno=1</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">gitcommithash=cdc3b19</span></span><br></pre></td></tr></table></figure>
-
-<p>你也可以不指定值，它的值就是编译时 Compose 当前运行环境的值.</p>
-<blockquote>
-<p>YAML 布尔值(true,false,yes,no,on,off)应该使用引号应用，这样解析器才能把它们解析为 string</p>
-</blockquote>
-<h6 id="CACHE-FROM"><a href="#CACHE-FROM" class="headerlink" title="CACHE_FROM"></a>CACHE_FROM</h6><blockquote>
-<p>v3.2+</p>
-</blockquote>
-<p>指定 engine 可以缓存的镜像列表</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">cache_from:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">alpine:latest</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">corp/webapp:3.14</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="LABELS"><a href="#LABELS" class="headerlink" title="LABELS"></a>LABELS</h6><blockquote>
-<p>v3.3+</p>
-</blockquote>
-<p>向生成的镜像添加元数据。可以是数组或目录<br>推荐使用反向 DNS 标记以避免和其他软件冲突</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">com.example.description:</span> <span class="string">&quot;Accounting webapp&quot;</span></span><br><span class="line">    <span class="attr">com.example.department:</span> <span class="string">&quot;Finance&quot;</span></span><br><span class="line">    <span class="attr">com.example.label-with-empty-value:</span> <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.description=Accounting webapp&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.department=Finance&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;com.example.label-with-empty-value&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="SHM-SIZE"><a href="#SHM-SIZE" class="headerlink" title="SHM_SIZE"></a>SHM_SIZE</h6><blockquote>
-<p>v3.5+</p>
-</blockquote>
-<p>设置编译生成容器 <code>dev/shm&#39;</code> 分区大小。int 值单位为 byte. string 可以携带单位</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">shm_size:</span> <span class="string">&#x27;2gb&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">shm_size:</span> <span class="number">10000000</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="TARGET"><a href="#TARGET" class="headerlink" title="TARGET"></a>TARGET</h6><blockquote>
-<p>v3.4+</p>
-</blockquote>
-<p>编译 Dockerfile 中定义的指定版本</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">build:</span></span><br><span class="line">  <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">  <span class="attr">target:</span> <span class="string">prod</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="cap-add-cap-drop"><a href="#cap-add-cap-drop" class="headerlink" title="cap_add,cap_drop"></a>cap_add,cap_drop</h5><p>添加或删除容器的容量。<code>man 7 capabilities</code> 查看可用列表</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cap_add:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">ALL</span></span><br><span class="line"><span class="attr">cap_drop:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">NET_ADMIN</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">SYS_ADMIN</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>swarm mode 无效</p>
-</blockquote>
-<h5 id="cgroup-parent"><a href="#cgroup-parent" class="headerlink" title="cgroup_parent"></a>cgroup_parent</h5><p>为容器指定可选的 cgroup parent</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cgroup_parent:</span> <span class="string">m-executor-abcd</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>swarm mode 无效</p>
-</blockquote>
-<h5 id="command"><a href="#command" class="headerlink" title="command"></a>command</h5><p>覆盖默认的命令</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">command:</span> <span class="string">bundle</span> <span class="string">exec</span> <span class="string">thin</span> <span class="string">-p</span> <span class="number">3000</span></span><br></pre></td></tr></table></figure>
-
-<p>也可以是列表</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">command:</span> [<span class="string">&quot;bundle&quot;</span>, <span class="string">&quot;exec&quot;</span>, <span class="string">&quot;thin&quot;</span>, <span class="string">&quot;-p&quot;</span>, <span class="string">&quot;3000&quot;</span>]</span><br></pre></td></tr></table></figure>
-
-<h5 id="configs"><a href="#configs" class="headerlink" title="configs"></a>configs</h5><h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><ul>
-<li>共享文件夹，卷，绑定挂载<blockquote>
-<p>如果你的项目不在 <code>Users</code>目录(<code>cd ~</code>),那么你需要共享驱动器或 Dockerfile 所在位置和当前正在使用的卷。如果出现运行时错误表示文件未找到，那么就是一个挂载卷的请求被拒绝，或服务启动失败，试着共享文件或驱动。挂载卷要求共享项目不在 <code>C:\Users (Windows)</code>,或 <code>/Users (Mac)</code> 的驱动，并且如果是运行在 <code>Dokcer Desktop for Windows</code> 的 Linux 容器上的所有应用都需要共享。</p>
-</blockquote>
-</li>
-<li>如果改变了一个服务的 Dockerfile 或者编译文件夹里的内容，运行 <code>docker-compose build</code>重新编译</li>
-</ul>
-<h3 id="官方示例"><a href="#官方示例" class="headerlink" title="官方示例"></a>官方示例</h3><h4 id="Compose-WordPress"><a href="#Compose-WordPress" class="headerlink" title="Compose &amp; WordPress"></a>Compose &amp; WordPress</h4><ul>
-<li>为项目创建空文件夹。该文件夹作为应用的上下文，且只保存构建镜像所需的资源。</li>
-<li>创建 docker-compose.yml</li>
-</ul>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">db_data:/var/lib/mysql</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">somewordpress</span></span><br><span class="line">      <span class="attr">MYSQL_DATABASE:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">MYSQL_USER:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">MYSQL_PASSWORD:</span> <span class="string">wordpress</span></span><br><span class="line">  <span class="attr">wordpress:</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">db</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wordpress:latest</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8000:80&quot;</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_HOST:</span> <span class="string">db:3306</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_USER:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_PASSWORD:</span> <span class="string">wordpress</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_NAME:</span> <span class="string">wordpress</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="attr">db_data:</span> &#123;&#125;</span><br><span class="line"><span class="comment"># db_data 卷会保存任何 WordPress 对数据库的改变。</span></span><br><span class="line"><span class="comment"># WordPress 通常开放 80 和 443 端口.</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>docker-compose up -d</code>.<blockquote>
-<p>如果使用 Docker Machine, 那么运行 <code>docker-machine ip MACHINE_VM</code> 获取运行地址。如果是 destop 版，<a href="http://localhost/">http://localhost</a> 即可.</p>
-</blockquote>
-</li>
-<li><code>docker-compose down</code> 移除容器，默认的网络，保留 WordPress 和数据库。<code>docker-compose down --volumes</code> 全部移除。</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>docker</tag>
-        <tag>学习笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2691,6 +2691,25 @@
       </tags>
   </entry>
   <entry>
+    <title>macOS Monterey V12 如何共享 sambda</title>
+    <url>/2023/02/25/57/</url>
+    <content><![CDATA[<p>关于如何在 macOS Monterey 12 上开启 smdba 文件共享的步骤</p>
+<span id="more"></span>
+
+
+<p>1、添加共享用户</p>
+<p>打开用户与群组, 点击 + 新建用户, 新账户选择: 仅限共享<br><img src="http://picbed.dang8080.cn/202302252337775.png"/></p>
+<p>2、共享</p>
+<p>进入设置 -&gt; 共享, 1、打开文件共享选项 2、添加共享文件夹 3、添加刚才新建的共享用户</p>
+<img src="http://picbed.dang8080.cn/202302252347284.png"/>
+
+<p>接下来点击选项，勾选共享用户，即可通过 smdba 和共享用户访问共享文件夹了.</p>
+<img src="http://picbed.dang8080.cn/202302252348813.png"/>]]></content>
+      <tags>
+        <tag>日常</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>libgit2 android交叉编译</title>
     <url>/2020/04/25/13/</url>
     <content><![CDATA[<p>libgit2 是一个跨平台、可在自己应用中链接的 git 实现库.</p>
@@ -2772,25 +2791,6 @@ NDKr21
 ]]></content>
   </entry>
   <entry>
-    <title>macOS Monterey V12 如何共享 sambda</title>
-    <url>/2023/02/25/57/</url>
-    <content><![CDATA[<p>关于如何在 macOS Monterey 12 上开启 smdba 文件共享的步骤</p>
-<span id="more"></span>
-
-
-<p>1、添加共享用户</p>
-<p>打开用户与群组, 点击 + 新建用户, 新账户选择: 仅限共享<br><img data-src="http://picbed.dang8080.cn/202302252337775.png"/></p>
-<p>2、共享</p>
-<p>进入设置 -&gt; 共享, 1、打开文件共享选项 2、添加共享文件夹 3、添加刚才新建的共享用户</p>
-<img data-src="http://picbed.dang8080.cn/202302252347284.png"/>
-
-<p>接下来点击选项，勾选共享用户，即可通过 smdba 和共享用户访问共享文件夹了.</p>
-<img data-src="http://picbed.dang8080.cn/202302252348813.png"/>]]></content>
-      <tags>
-        <tag>日常</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>nginx(docker) 如何更新 letsencrypt 证书</title>
     <url>/2023/02/25/16/</url>
     <content><![CDATA[<p>当前的个人主页是运行在 docker nginx 上的。为了安全起见，把所有的 http 请求已经转发到了 https, 免费的 SSL 证书过期了，所以使用了 letsencrypt 的免费证书来签名。但是它默认的是 3 个月有效期，所以必须得定期去更新。否则就会导致 nginx 服务不可用了。以下为如何在 docker 上更新 letsencrypt 证书.</p>
@@ -2809,7 +2809,7 @@ NDKr21
 <p>那么在 nginx 中就可以直接访问 couchdb 了.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">location /couchdb &#123;</span><br><span class="line">  rewrite /couchdb(.*) $1 break;</span><br><span class="line">  proxy_pass http://couchdb:5984;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="http://picbed.dang8080.cn/nginx-letsencrypt.png" alt="docker sidecar arch"></p>
+<p><img src="http://picbed.dang8080.cn/nginx-letsencrypt.png" alt="docker sidecar arch"></p>
 <h3 id="使用-letsencrypt-生成证书"><a href="#使用-letsencrypt-生成证书" class="headerlink" title="使用 letsencrypt 生成证书"></a>使用 letsencrypt 生成证书</h3><p>首先看下 letsencrypt 的 docker-compose</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.6&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">certbot:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">certbot/certbot:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">home_certbot</span></span><br><span class="line">    <span class="comment">#ports:</span></span><br><span class="line">    <span class="comment">#  - 80:80</span></span><br><span class="line">    <span class="comment">#  - 443:443</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./letsencrypt:/etc/letsencrypt:rw</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./log:/var/log:rw</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">certonly</span> <span class="string">-n</span> <span class="string">--webroot</span> <span class="string">-w=/etc/letsencrypt</span> <span class="string">--email</span> <span class="string">dang8080@qq.com</span> <span class="string">-d</span> <span class="string">dang8080.cn</span>  <span class="string">--agree-tos</span> <span class="string">--force-renewal</span></span><br><span class="line">    <span class="comment"># command: auth --standalone -m dang8080@qq.com --agree-tos -d dang8080.cn # 自动开启一个web服务，且外部能访问</span></span><br></pre></td></tr></table></figure>
 
@@ -2836,7 +2836,7 @@ NDKr21
 <p>–standalone 就是 certbot 开启一个新的 http 服务.</p>
 </blockquote>
 <p>执行完后就能在本地看到生成的 ssl 证书了</p>
-<p><img data-src="http://picbed.dang8080.cn/202302261012588.png"></p>
+<p><img src="http://picbed.dang8080.cn/202302261012588.png"></p>
 <h3 id="配置-nginx"><a href="#配置-nginx" class="headerlink" title="配置 nginx"></a>配置 nginx</h3><p>因为 nginx 运行在 docker 中，而生成的 ssl 证书在其他目录，所以需要将 ssl 证书目录也映射到 ngixn 容器中.</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="string">./certbot/letsencrypt/live:/etc/letsencrypt/live:rw</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">./certbot/letsencrypt/archive:/etc/letsencrypt/archive:rw</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">./certbot/dhparam-2048.pem:/etc/letsencrypt/dhparam-2048.pem:rw</span></span><br></pre></td></tr></table></figure>
 
@@ -3005,7 +3005,7 @@ NDKr21
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 nodejs</span></span><br><span class="line">VERSION=v10.15.2</span><br><span class="line">DISTRO=linux-x64</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">checkNode</span></span>() &#123;</span><br><span class="line">  ISNODESUCCEED=$(node -v)</span><br><span class="line">  <span class="keyword">if</span> [ ISNODESUCCEED != <span class="variable">$VERSION</span> ]; <span class="keyword">then</span></span><br><span class="line">    installNode</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;NodeJS已安装&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">insallNode</span></span>() &#123;</span><br><span class="line">  <span class="built_in">mkdir</span> -p /usr/local/lib/nodejs</span><br><span class="line">  tar -xJf /data/teamcity_agent/others/node-<span class="variable">$VERSION</span>-<span class="variable">$DISTRO</span> <span class="comment"># -v 会输出解压日志，此处太多，所以关闭</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">export</span> PATH=/usr/local/lib/nodejs/node-<span class="variable">$VERSION</span>-<span class="variable">$DISTRO</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">source</span> ~/.profile</span><br><span class="line"></span><br><span class="line">  checkNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">checkNode</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">npm i</span><br><span class="line"><span class="comment"># 生成public文件</span></span><br><span class="line">./node_modules/hexo/bin/hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为 github.io 配置 CNAME</span></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="string">&quot;/CNAME&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;blog.dang8080.cn&quot;</span> &gt; CNAME</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 git</span></span><br><span class="line"></span><br><span class="line">git config --global credential.helper store <span class="comment"># 保存 github 提交者信息，下次不用再输密码</span></span><br><span class="line">git config --global user.name <span class="string">&quot;Humphrey&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;dang8080@qq.com&quot;</span></span><br><span class="line"></span><br><span class="line">git add --all</span><br><span class="line">git commit -m <span class="string">&quot;TeamCity CI 提交部署: <span class="subst">$(date)</span>&quot;</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
 
 <h3 id="问题"><a href="#问题" class="headerlink" title="问题:"></a>问题:</h3><blockquote>
-<p>所以问题来了,配置完了点击 <code>run</code> 查看 Build log 会发现 push 失败。因为通过 https 向 github 提交代码需要交互式输入用户密码。而此处没有提供，将密码硬编码到此 shell 里提交到 github 也不安全。<br>或者即使是通过修改 VCS root 使用 <a href="mailto:&#103;&#x69;&#x74;&#64;&#103;&#105;&#x74;&#x68;&#117;&#98;&#46;&#99;&#x6f;&#x6d;">&#103;&#x69;&#x74;&#64;&#103;&#105;&#x74;&#x68;&#117;&#98;&#46;&#99;&#x6f;&#x6d;</a> ssh checkout 的代码，也无法推送到 github.</p>
+<p>所以问题来了,配置完了点击 <code>run</code> 查看 Build log 会发现 push 失败。因为通过 https 向 github 提交代码需要交互式输入用户密码。而此处没有提供，将密码硬编码到此 shell 里提交到 github 也不安全。<br>或者即使是通过修改 VCS root 使用 <a href="mailto:&#103;&#105;&#x74;&#x40;&#103;&#105;&#x74;&#104;&#117;&#x62;&#x2e;&#x63;&#x6f;&#x6d;">&#103;&#105;&#x74;&#x40;&#103;&#105;&#x74;&#104;&#117;&#x62;&#x2e;&#x63;&#x6f;&#x6d;</a> ssh checkout 的代码，也无法推送到 github.</p>
 </blockquote>
 <h4 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位:"></a>问题定位:</h4><blockquote>
 <p>TeamCity SSH agent 使用本机(Linux&#x2F;MacOS)的 OpenSSH 管理 SSH,对于 Windows,需要手动安装 OpenSSH (CygWin,MinGW,Git for Windows).<br>SSH agent 必须添加到 <code>$PATH</code> 中.<br>第一次连接到远程地址时，SSH agent 会询问是否保存远程地址的 fingerprint 到地址数据库 <code>~/.ssh/known_hosts</code>中.<br>为了避免询问，可以提前配置。如果相信该远程地址，可以禁用远程地址检查</p>
@@ -3083,6 +3083,25 @@ NDKr21
     <content><![CDATA[<span id="more"></span>
 <h2 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h2><h3 id="gradle-completion"><a href="#gradle-completion" class="headerlink" title="gradle-completion"></a>gradle-completion</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install gradle-completion</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$fpath</span> | grep <span class="string">&quot;/usr/local/share/zsh/site-functions&quot;</span></span><br><span class="line"><span class="comment"># 执行结果</span></span><br><span class="line">Add the following line to your ~/.bash_profile:</span><br><span class="line">  [[ -r <span class="string">&quot;/usr/local/etc/profile.d/bash_completion.sh&quot;</span> ]] &amp;&amp; . <span class="string">&quot;/usr/local/etc/profile.d/bash_completion.sh&quot;</span></span><br><span class="line"></span><br><span class="line">Bash completion has been installed to:</span><br><span class="line">  /usr/local/etc/bash_completion.d</span><br><span class="line">==&gt; gradle-completion</span><br><span class="line">Bash completion has been installed to:</span><br><span class="line">  /usr/local/etc/bash_completion.d</span><br><span class="line"></span><br><span class="line">zsh completions have been installed to:</span><br><span class="line">  /usr/local/share/zsh/site-functions</span><br></pre></td></tr></table></figure>
 ]]></content>
+  </entry>
+  <entry>
+    <title>移动优先的响应式网页设计</title>
+    <url>/2019/04/12/33/</url>
+    <content><![CDATA[<p><a href="https://www.html5rocks.com/en/mobile/responsivedesign/">原文</a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文将探索如何创建移动优先的网页设计体验。</p>
+<ul>
+<li>为什么我们需要创建移动优先，响应式，适应式网页设计体验?</li>
+<li>如何针对适应式站点组织 HTML 结构以便优化性能，优先考虑灵活性?</li>
+<li>如何书写优先定义共享样式、针对大屏和媒体查询构建、使用相对单位的 CSS?</li>
+<li>如何编写不引人注目的 Javascript 来有条件地加载内容片段，利用触摸事件和地理定位</li>
+<li>我们可以做些什么来进一步增强我们的适应性体验<span id="more"></span></li>
+</ul>
+<h2 id="适应性的必要性"><a href="#适应性的必要性" class="headerlink" title="适应性的必要性"></a>适应性的必要性</h2><p>随着网络环境越来越复杂，为越来越多的环境提供可靠的网络体验变得极为重要.幸运的是，响应式 web 设计给 web 开发者提供了一些可以匹配任意大小屏幕的工具来组织布局.</p>
+]]></content>
+      <tags>
+        <tag>翻译</tag>
+        <tag>web</tag>
+      </tags>
   </entry>
   <entry>
     <title>译-Kotlin-Coroutine(1) case)</title>
@@ -3198,29 +3217,10 @@ NDKr21
       </tags>
   </entry>
   <entry>
-    <title>移动优先的响应式网页设计</title>
-    <url>/2019/04/12/33/</url>
-    <content><![CDATA[<p><a href="https://www.html5rocks.com/en/mobile/responsivedesign/">原文</a></p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文将探索如何创建移动优先的网页设计体验。</p>
-<ul>
-<li>为什么我们需要创建移动优先，响应式，适应式网页设计体验?</li>
-<li>如何针对适应式站点组织 HTML 结构以便优化性能，优先考虑灵活性?</li>
-<li>如何书写优先定义共享样式、针对大屏和媒体查询构建、使用相对单位的 CSS?</li>
-<li>如何编写不引人注目的 Javascript 来有条件地加载内容片段，利用触摸事件和地理定位</li>
-<li>我们可以做些什么来进一步增强我们的适应性体验<span id="more"></span></li>
-</ul>
-<h2 id="适应性的必要性"><a href="#适应性的必要性" class="headerlink" title="适应性的必要性"></a>适应性的必要性</h2><p>随着网络环境越来越复杂，为越来越多的环境提供可靠的网络体验变得极为重要.幸运的是，响应式 web 设计给 web 开发者提供了一些可以匹配任意大小屏幕的工具来组织布局.</p>
-]]></content>
-      <tags>
-        <tag>翻译</tag>
-        <tag>web</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>[译]-LiveData with SnackBar,Navigation and other events(the SingleLiveEvent case)</title>
     <url>/2019/02/28/11/</url>
     <content><![CDATA[<p><a href="https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150">原文</a></p>
-<p>view(activity&#x2F;fragment) 和 ViewModel 交流的比较好的方式是 LiveData observables. view 订阅 LiveData 的改变且随时响应。这适用于连续不断的显示在一个屏幕的数据。<br><img data-src="http://qiniu.picbed.dang8080.cn/20190228202711.png" alt="LiveData"><br>但是某些数据却更应该被消费一次，比如 Snackbar 消息，navigation 事件 或 dialog 触发器。<br><img data-src="http://qiniu.picbed.dang8080.cn/20190228202852.png" alt="LiveData once"><br>与其试着通过扩展 Architecture Components 扩展或库解决这个问题，不如我们可以直面这是个设计缺陷。我们推荐你把你的事件看作是状态的一部分。本文我们将列举一些常见的错误和推荐的解决方案。</p>
+<p>view(activity&#x2F;fragment) 和 ViewModel 交流的比较好的方式是 LiveData observables. view 订阅 LiveData 的改变且随时响应。这适用于连续不断的显示在一个屏幕的数据。<br><img src="http://qiniu.picbed.dang8080.cn/20190228202711.png" alt="LiveData"><br>但是某些数据却更应该被消费一次，比如 Snackbar 消息，navigation 事件 或 dialog 触发器。<br><img src="http://qiniu.picbed.dang8080.cn/20190228202852.png" alt="LiveData once"><br>与其试着通过扩展 Architecture Components 扩展或库解决这个问题，不如我们可以直面这是个设计缺陷。我们推荐你把你的事件看作是状态的一部分。本文我们将列举一些常见的错误和推荐的解决方案。</p>
 <span id="more"></span>
 <h3 id="❌-Bad-1-对事件使用-LiveData"><a href="#❌-Bad-1-对事件使用-LiveData" class="headerlink" title="❌ Bad: 1. 对事件使用 LiveData"></a>❌ Bad: 1. 对事件使用 LiveData</h3><p>在 LiveData 对象内部直接持有 Snackbar 消息或 navigation 信号。原则上普通的 LiveData 对象可以这样使用，但实际上会暴露一些问题。<br>在 master&#x2F;detail 架构的 app 中，如下是 maters 的 ViewModel</p>
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 请不要对事件这样用</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ListViewModel</span> : <span class="type">ViewModel</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> _navigateToDetails = MutableLiveData&lt;<span class="built_in">Boolean</span>&gt;()</span><br><span class="line">  <span class="keyword">val</span> navigateToDetails : LiveData&lt;<span class="built_in">Boolean</span>&gt;</span><br><span class="line">      <span class="keyword">get</span>() = _navigateToDetails</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">fun</span> <span class="title">userClicksOnButton</span><span class="params">()</span></span> &#123;</span><br><span class="line">    _navigateToDetails.value = <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -3251,14 +3251,14 @@ NDKr21
 
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// SingleLiveEvent</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingleLiveEvent</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">MutableLiveData</span>&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">TAG</span> <span class="operator">=</span> <span class="string">&quot;SingleLiveEvent&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">AtomicBoolean</span> <span class="variable">mPending</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicBoolean</span>(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@MainThread</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">observe</span><span class="params">(LifecycleOwner owner, <span class="keyword">final</span> Observer&lt;T&gt; observer)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (hasActiveObservers()) &#123;</span><br><span class="line">            Log.w(TAG, <span class="string">&quot;Multiple observers registered but only one will be notified of changes.&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Observe the internal MutableLiveData</span></span><br><span class="line">        <span class="built_in">super</span>.observe(owner, <span class="keyword">new</span> <span class="title class_">Observer</span>&lt;T&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onChanged</span><span class="params">(<span class="meta">@Nullable</span> T t)</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (mPending.compareAndSet(<span class="literal">true</span>, <span class="literal">false</span>)) &#123;</span><br><span class="line">                    observer.onChanged(t);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@MainThread</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(<span class="meta">@Nullable</span> T t)</span> &#123;</span><br><span class="line">        mPending.set(<span class="literal">true</span>);</span><br><span class="line">        <span class="built_in">super</span>.setValue(t);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Used for cases where T is Void, to make calls cleaner.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@MainThread</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">call</span><span class="params">()</span> &#123;</span><br><span class="line">        setValue(<span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>此方案的不足之处在于只有一个订阅者。如果你有多个观察者，那么只有一个被调用且不保证顺序。<br><img data-src="http://qiniu.picbed.dang8080.cn/20190303082724.png" alt="SingleLiveEvent"></p>
+<p>此方案的不足之处在于只有一个订阅者。如果你有多个观察者，那么只有一个被调用且不保证顺序。<br><img src="http://qiniu.picbed.dang8080.cn/20190303082724.png" alt="SingleLiveEvent"></p>
 <h3 id="✅-推荐：使用-Event-Wrapper"><a href="#✅-推荐：使用-Event-Wrapper" class="headerlink" title="✅ 推荐：使用 Event Wrapper"></a>✅ 推荐：使用 Event Wrapper</h3><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="keyword">class</span> <span class="title class_">Event</span>&lt;<span class="type">out T</span>&gt;(<span class="keyword">private</span> <span class="keyword">val</span> content: T) &#123;</span><br><span class="line">  <span class="keyword">val</span> hasBeenHandled = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">set</span> <span class="comment">// 只读属性</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 返回 content, 阻止其再次调用</span></span><br><span class="line"><span class="comment">  fun getContentIfNotHandled(): T? &#123;</span></span><br><span class="line"><span class="comment">    return if (hasBeenHandled) &#123;</span></span><br><span class="line"><span class="comment">        null</span></span><br><span class="line"><span class="comment">    &#125; else &#123;</span></span><br><span class="line"><span class="comment">        hasBeenHandled = true</span></span><br><span class="line"><span class="comment">        content</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">  fun peekContent(): T = content</span></span><br><span class="line"><span class="comment">&#125;</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ListViewModel</span> : <span class="type">ViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> _navigateToDetails = MutableLiveData&lt;Event&lt;String&gt;&gt;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> navigateToDetails : LiveData&lt;Event&lt;String&gt;&gt;</span><br><span class="line">        <span class="keyword">get</span>() = _navigateToDetails</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">userClicksOnButton</span><span class="params">(itemId: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">        _navigateToDetails.value = Event(itemId)  <span class="comment">// Trigger the event by setting a new Event as a new value</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ListViewModel</span> : <span class="type">ViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> _navigateToDetails = MutableLiveData&lt;Event&lt;String&gt;&gt;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> navigateToDetails : LiveData&lt;Event&lt;String&gt;&gt;</span><br><span class="line">        <span class="keyword">get</span>() = _navigateToDetails</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">userClicksOnButton</span><span class="params">(itemId: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">        _navigateToDetails.value = Event(itemId)  <span class="comment">// Trigger the event by setting a new Event as a new value</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>此方案的优势是用户需要使用 <code>getContentIfNotHandled() 或 peekContent()</code>指定意图。此方法把事件抽象为 state 的一部分：变成仅表示是否被消费的消息。<br><img data-src="http://qiniu.picbed.dang8080.cn/20190303074902.png" alt="使用 Event wrapper,可以在单一用户事件上添加多个观察者"></p>
+<p>此方案的优势是用户需要使用 <code>getContentIfNotHandled() 或 peekContent()</code>指定意图。此方法把事件抽象为 state 的一部分：变成仅表示是否被消费的消息。<br><img src="http://qiniu.picbed.dang8080.cn/20190303074902.png" alt="使用 Event wrapper,可以在单一用户事件上添加多个观察者"></p>
 <h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><p>总之，把事件作为状态的一部分。<br>使用这个 EventObserver 在大量事件结束后移除它</p>
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EventObserver</span>&lt;<span class="type">T</span>&gt;(<span class="keyword">private</span> <span class="keyword">val</span> onEventUnhandledContent: (T) -&gt; <span class="built_in">Unit</span>) : Observer&lt;Event&lt;T&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onChanged</span><span class="params">(event: <span class="type">Event</span>&lt;<span class="type">T</span>&gt;?)</span></span> &#123;</span><br><span class="line">        event?.getContentIfNotHandled()?.let &#123; value -&gt;</span><br><span class="line">            onEventUnhandledContent(value)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
