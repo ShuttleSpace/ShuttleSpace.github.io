@@ -5,7 +5,7 @@
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
-    "server": "hexo server"
+    "serve": "hexo server"
   },
   "hexo": {
     "version": "7.3.0"
@@ -24,16 +24,12 @@
     "hexo-renderer-marked": "^6.3.0",
     "hexo-server": "^3.0.0",
     "hexo-symbols-count-time": "^0.7.1",
-    "hexo-theme-anzhiyu": "^1.6.12",
-    "hexo-theme-butterfly": "^4.13.0",
-    "hexo-theme-landscape": "^1.0.0",
-    "hexo-theme-next": "^8.20.0",
-    "hexo-theme-solitude": "^2.0.9",
+    "hexo-theme-anzhiyu": "^1.6.14",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@babel/preset-env": "^7.25.3",
+    "@babel/core": "^7.25.8",
+    "@babel/preset-env": "^7.25.8",
     "gulp": "^5.0.0",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.3.0",
