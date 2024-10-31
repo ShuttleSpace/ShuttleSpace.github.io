@@ -30,12 +30,12 @@ nav:
       item:
         - name: 博客
           link: https://blog.dang8080.cn/
-          icon: http://cdn.dang8080.cn/blog/favicon.ico
+          icon: img/favicon.ico
     - title: 晚照霞
       item:
         - name: 主页
           link: https://dang8080.cn/
-          icon: http://cdn.dang8080.cn/blog/favicon.ico
+          icon: img/favicon.ico
 # mourn （哀悼日，指定日期网站简单变灰，不包括滚动条）
 # 注意： 仅网站首页变灰，其他页面正常显示
 mourn:
@@ -152,10 +152,10 @@ avatar:
 disable_top_img: false
 
 # The banner image of home page
-index_img: "background: url('http://cdn.dang8080.cn/blog/banner.jpg') top / cover no-repeat" # "background: url() top / cover no-repeat"
+index_img: "background: url('img/banner.jpg') top / cover no-repeat" # "background: url() top / cover no-repeat"
 
 # If the banner of page not setting, it will show the top_img
-default_top_img: 'http://cdn.dang8080.cn/blog/banner.jpg'
+default_top_img: 'img/banner.jpg'
 
 cover:
   # display the cover or not (是否显示文章封面)
@@ -167,17 +167,17 @@ cover:
   position: left
   # When cover is not set, the default cover is displayed (当没有设置cover时，默认的封面显示)
   default_cover:
-    - http://cdn.dang8080.cn/blog/default_cover.jpg
+    - img/default_cover.jpg
 
 # Replace Broken Images (替换无法显示的图片)
 error_img:
   flink: img/friend_404.gif
-  post_page: http://cdn.dang8080.cn/blog/404.gif
+  post_page: img/404.gif
 # A simple 404 page
 error_404:
   enable: true
   subtitle: "请尝试站内搜索寻找文章"
-  background: http://cdn.dang8080.cn/blog/404.gif
+  background: img/404.gif
 
 post_meta:
   page: # Home Page
@@ -250,10 +250,10 @@ post_copyright:
 reward:
   enable: true
   QR_code:
-    - img: http://picbed.dang8080.cn/site/wechatpay.png
+    - img: img/site/wechatpay.png
       link:
       text: 微信
-    - img: http://picbed.dang8080.cn/site/wechatpay.png
+    - img: img/site/alipay.png
       link:
       text: 支付宝
 
@@ -421,9 +421,9 @@ footer:
   runtime:
     enable: true
     launch_time: 01/01/2018 00:00:00 # 网站上线时间
-    work_img: http://cdn.dang8080.cn/blog/good-night.jpg
+    work_img: img/offduty_img.png
     work_description: stay hungry, stay foolish~
-    offduty_img: https://npm.elemecdn.com/anzhiyu-blog@2.0.4/img/badge/安知鱼-下班啦.svg
+    offduty_img: img/work_img.png
     offduty_description: 下班了就该开开心心的玩耍，嘿嘿~
   # 徽标部分配置项 https://shields.io/
   # https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr
@@ -1066,7 +1066,7 @@ home_top:
   banner:
     tips: Flutter
     title: Flutter Crate
-    image: http://cdn.dang8080.cn/blog/gundamcat.png
+    image: img/gundamcat.png
     link: https://blog.dang8080.cn/
 
 # 朋友圈配置
