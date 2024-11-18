@@ -30,12 +30,12 @@ nav:
       item:
         - name: 博客
           link: https://blog.dang8080.cn/
-          icon: img/favicon.ico
+          icon: /img/favicon.ico
     - title: 晚照霞
       item:
         - name: 主页
           link: https://dang8080.cn/
-          icon: img/favicon.ico
+          icon: /img/favicon.ico
 # mourn （哀悼日，指定日期网站简单变灰，不包括滚动条）
 # 注意： 仅网站首页变灰，其他页面正常显示
 mourn:
@@ -145,7 +145,7 @@ favicon: http://cdn.dang8080.cn/blog/favicon.ico
 
 # Avatar (头像)
 avatar:
-  img: img/avatar.jpeg
+  img: /img/avatar.jpeg
   effect: true
 
 # Disable all banner image
@@ -155,7 +155,7 @@ disable_top_img: false
 index_img: "background: url('img/banner.jpg') top / cover no-repeat" # "background: url() top / cover no-repeat"
 
 # If the banner of page not setting, it will show the top_img
-default_top_img: 'img/banner.jpg'
+default_top_img: '/img/banner.jpg'
 
 cover:
   # display the cover or not (是否显示文章封面)
@@ -167,7 +167,7 @@ cover:
   position: left
   # When cover is not set, the default cover is displayed (当没有设置cover时，默认的封面显示)
   default_cover:
-    - img/default_cover.jpg
+    - /img/default_cover.jpg
 
 # Replace Broken Images (替换无法显示的图片)
 error_img:
@@ -250,10 +250,10 @@ post_copyright:
 reward:
   enable: true
   QR_code:
-    - img: img/site/wechatpay.png
+    - img: /img/site/wechatpay.png
       link:
       text: 微信
-    - img: img/site/alipay.png
+    - img: /img/site/alipay.png
       link:
       text: 支付宝
 
@@ -417,13 +417,13 @@ footer:
   owner:
     enable: true
     since: 2018
-  custom_text:
+  custom_text: stay hungry, stay foolish~
   runtime:
     enable: true
     launch_time: 01/01/2018 00:00:00 # 网站上线时间
-    work_img: img/offduty_img.png
+    work_img: /img/offduty_img.png
     work_description: stay hungry, stay foolish~
-    offduty_img: img/work_img.png
+    offduty_img: /img/work_img.png
     offduty_description: 下班了就该开开心心的玩耍，嘿嘿~
   # 徽标部分配置项 https://shields.io/
   # https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr
