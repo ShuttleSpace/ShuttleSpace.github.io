@@ -285,7 +285,7 @@
 <p>我们的自定义 email scalar 类型将</p>
 <ul>
 <li>调用 <code>parseValue</code> 将 <code>$mainContact</code>变量转为运行时对象.</li>
-<li>调用 <code>parseLiteral</code> 将 AST <code>graphql.language.StringValue</code> “<a href="mailto:&#98;&#97;&#99;&#x6b;&#117;&#112;&#x40;&#99;&#x6f;&#109;&#x70;&#x61;&#x6e;&#x79;&#46;&#99;&#x6f;&#109;">&#98;&#97;&#99;&#x6b;&#117;&#112;&#x40;&#99;&#x6f;&#109;&#x70;&#x61;&#x6e;&#x79;&#46;&#99;&#x6f;&#109;</a>“ 转换为运行时对象.</li>
+<li>调用 <code>parseLiteral</code> 将 AST <code>graphql.language.StringValue</code> “<a href="mailto:&#98;&#97;&#x63;&#107;&#117;&#x70;&#64;&#x63;&#x6f;&#109;&#x70;&#97;&#x6e;&#121;&#x2e;&#99;&#x6f;&#x6d;">&#98;&#97;&#x63;&#107;&#117;&#x70;&#64;&#x63;&#x6f;&#109;&#x70;&#97;&#x6e;&#121;&#x2e;&#99;&#x6f;&#x6d;</a>“ 转换为运行时对象.</li>
 <li>调用 <code>serialize</code> 将 mainContactEmial 运行时实现转为输出对象形式.</li>
 </ul>
 <h3 id="输入输出校验"><a href="#输入输出校验" class="headerlink" title="输入输出校验"></a>输入输出校验</h3><p>例如我们的 email scalar 将会校验输入输出是否是真是的 email 地址.<br><code>graphql.schema.Coercing</code> 协议如下:</p>
@@ -1494,7 +1494,7 @@
   </entry>
   <entry>
     <title>每个JS开发者都应该知道的 Unicode</title>
-    <url>/2024/11/30/51/</url>
+    <url>/2024/11/30/25/</url>
     <content><![CDATA[<blockquote><p>What every JavaScript developer should know about Unicode</p>
 <footer><strong>原文</strong><cite><a href="https://dmitripavlutin.com/what-every-javascript-developer-should-know-about-unicode/">dmitripavlutin.com/what-every-javascript-developer-should-know-about-unicode</a></cite></footer></blockquote>
 <p>本文起源于一个忏悔：我对 Unicode 已经恐惧很久了。当实际工作中需要 Unicode 知识时，我一般仅针对问题搜索答案，而不会对其原理进行深入探究。</p>
@@ -2336,6 +2336,38 @@
       </tags>
   </entry>
   <entry>
+    <title>libgit2 NDK cross-compile</title>
+    <url>/2022/02/08/26/</url>
+    <content><![CDATA[<p>libgit2 最近升级到了 v1.3,然后自己也想利用这个库在安卓上开发个小工具，所以需要 NDK 交叉编译一下。</p>
+<span id="more"></span>
+<p>1、代码</p>
+<p>首先下载 libgit2 源码，然后切换到 <code>git checkout v1.3.0</code>(这里的目的是锁住代码版本，否则在 master 分支，每次重新编译的代码可能会有所差异)</p>
+<p>2、准备 ndk 工具链</p>
+<p>打开 AndroidStudio 下载 NDK. 这里使用的版本是最新的 <code>24.0.7956693</code></p>
+<p>3、依赖库准备</p>
+<p>libgit2 有几个依赖库，在 <code>deps</code> 目录下。实际中 libgit2 有使用到 openssl 库，因为是交叉编译，所以也需要我们自己用 ndk 编译 openssl, 而不是直接使用本机上的 openssl</p>
+<ul>
+<li>下载 openssl 源码到 deps 目录下</li>
+<li>根据 openssl 目录下的 NOTES-ANDROID.md 提示编译即可</li>
+</ul>
+<p>4、cmake android cross-compile 准备</p>
+<p>在 libgit2 项目根目录下新建 <code>CMakeLists.android.txt</code> 文件.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SET(CMAKE_SYSTEM_NAME Android) # 交叉编译时为 Android</span><br><span class="line">SET(CMAKE_ANDROID_ARCH_ABI  arm64-v8a) # arm64-v8a、Armeabi-v7a、armeabi-v6、armeabi、mips、mips64、x86、x86_64, 自动设置默认 armeabi.</span><br><span class="line">SET(CMAKE_ANDROID_NDK /Users/shuttle/Library/Android/sdk/ndk/24.0.7956693) # ndk 绝对路径</span><br><span class="line"></span><br><span class="line">SET(NDK_HOME /Users/shuttle/Library/Android/sdk/ndk/24.0.7956693)</span><br><span class="line">SET(OPENSSL_DYHOME /Users/shuttle/Project/Native/libgit2/deps/openssl)</span><br><span class="line"></span><br><span class="line">SET(OPENSSL_ROOT_DIR $&#123;OPENSSL_DYHOME&#125;)</span><br><span class="line">SET(OPENSSL_INCLUDE_DIR $&#123;OPENSSL_DYHOME&#125;/include)</span><br><span class="line">SET(OPENSSL_CRYPTO_LIBRARY $&#123;OPENSSL_DYHOME&#125;/libcrypto.so) # # Could NOT find OpenSSL, try to set the path to OpenSSL root folder in the system variable OPENSSL_ROOT_DIR (missing: OPENSSL_CRYPTO_LIBRARY) </span><br><span class="line">SET(OPENSSL_SSL_LIBRARY $&#123;OPENSSL_DYHOME&#125;/libssl.so)</span><br><span class="line">SET(OPENSSL_LIBRARIES $&#123;OPENSSL_DYHOME&#125;)</span><br><span class="line"></span><br><span class="line">add_definitions(&quot;--sysroot=$&#123;CMAKE_FIND_ROOT_PATH&#125; -Wall -g&quot;)</span><br><span class="line"></span><br><span class="line">SET(USE_SHA1 OpenSSL)</span><br><span class="line">SET(USE_HTTPS OpenSSL)</span><br><span class="line">SET(BUILD_TESTS OFF)</span><br></pre></td></tr></table></figure>
+
+<p>5、cmake configure</p>
+<p><code>cmake -S. -Bbuild_arm64 -GNinja -DCMAKE_TOOLCHAIN_FILE=CMakeLists.android.txt</code></p>
+<p>6、cmake compile</p>
+<p><code>cmake --build build_arm64</code></p>
+<p>大功告成!</p>
+<blockquote>
+<p><a href="https://cmake.org/cmake/help/v3.12/manual/cmake-toolchains.7.html#cross-compiling-for-android-with-the-ndk">cmake android cross-compile</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>cmake</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>gradle</title>
     <url>/2019/03/28/38/</url>
     <content><![CDATA[<p>gradle</p>
@@ -2659,38 +2691,6 @@
       </tags>
   </entry>
   <entry>
-    <title>libgit2 NDK cross-compile</title>
-    <url>/2022/02/08/26/</url>
-    <content><![CDATA[<p>libgit2 最近升级到了 v1.3,然后自己也想利用这个库在安卓上开发个小工具，所以需要 NDK 交叉编译一下。</p>
-<span id="more"></span>
-<p>1、代码</p>
-<p>首先下载 libgit2 源码，然后切换到 <code>git checkout v1.3.0</code>(这里的目的是锁住代码版本，否则在 master 分支，每次重新编译的代码可能会有所差异)</p>
-<p>2、准备 ndk 工具链</p>
-<p>打开 AndroidStudio 下载 NDK. 这里使用的版本是最新的 <code>24.0.7956693</code></p>
-<p>3、依赖库准备</p>
-<p>libgit2 有几个依赖库，在 <code>deps</code> 目录下。实际中 libgit2 有使用到 openssl 库，因为是交叉编译，所以也需要我们自己用 ndk 编译 openssl, 而不是直接使用本机上的 openssl</p>
-<ul>
-<li>下载 openssl 源码到 deps 目录下</li>
-<li>根据 openssl 目录下的 NOTES-ANDROID.md 提示编译即可</li>
-</ul>
-<p>4、cmake android cross-compile 准备</p>
-<p>在 libgit2 项目根目录下新建 <code>CMakeLists.android.txt</code> 文件.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SET(CMAKE_SYSTEM_NAME Android) # 交叉编译时为 Android</span><br><span class="line">SET(CMAKE_ANDROID_ARCH_ABI  arm64-v8a) # arm64-v8a、Armeabi-v7a、armeabi-v6、armeabi、mips、mips64、x86、x86_64, 自动设置默认 armeabi.</span><br><span class="line">SET(CMAKE_ANDROID_NDK /Users/shuttle/Library/Android/sdk/ndk/24.0.7956693) # ndk 绝对路径</span><br><span class="line"></span><br><span class="line">SET(NDK_HOME /Users/shuttle/Library/Android/sdk/ndk/24.0.7956693)</span><br><span class="line">SET(OPENSSL_DYHOME /Users/shuttle/Project/Native/libgit2/deps/openssl)</span><br><span class="line"></span><br><span class="line">SET(OPENSSL_ROOT_DIR $&#123;OPENSSL_DYHOME&#125;)</span><br><span class="line">SET(OPENSSL_INCLUDE_DIR $&#123;OPENSSL_DYHOME&#125;/include)</span><br><span class="line">SET(OPENSSL_CRYPTO_LIBRARY $&#123;OPENSSL_DYHOME&#125;/libcrypto.so) # # Could NOT find OpenSSL, try to set the path to OpenSSL root folder in the system variable OPENSSL_ROOT_DIR (missing: OPENSSL_CRYPTO_LIBRARY) </span><br><span class="line">SET(OPENSSL_SSL_LIBRARY $&#123;OPENSSL_DYHOME&#125;/libssl.so)</span><br><span class="line">SET(OPENSSL_LIBRARIES $&#123;OPENSSL_DYHOME&#125;)</span><br><span class="line"></span><br><span class="line">add_definitions(&quot;--sysroot=$&#123;CMAKE_FIND_ROOT_PATH&#125; -Wall -g&quot;)</span><br><span class="line"></span><br><span class="line">SET(USE_SHA1 OpenSSL)</span><br><span class="line">SET(USE_HTTPS OpenSSL)</span><br><span class="line">SET(BUILD_TESTS OFF)</span><br></pre></td></tr></table></figure>
-
-<p>5、cmake configure</p>
-<p><code>cmake -S. -Bbuild_arm64 -GNinja -DCMAKE_TOOLCHAIN_FILE=CMakeLists.android.txt</code></p>
-<p>6、cmake compile</p>
-<p><code>cmake --build build_arm64</code></p>
-<p>大功告成!</p>
-<blockquote>
-<p><a href="https://cmake.org/cmake/help/v3.12/manual/cmake-toolchains.7.html#cross-compiling-for-android-with-the-ndk">cmake android cross-compile</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>cmake</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>libgit2 android交叉编译</title>
     <url>/2020/04/25/13/</url>
     <content><![CDATA[<p>libgit2 是一个跨平台、可在自己应用中链接的 git 实现库.</p>
@@ -2862,7 +2862,7 @@ NDKr21
   </entry>
   <entry>
     <title>[object Object]</title>
-    <url>/2024/11/30/51/</url>
+    <url>/2024/11/30/25/</url>
     <content><![CDATA[<p>之前的个人博客是在本机上使用 hexo 搭建的.每次编辑文章,都要打开电脑先写 markdown, 然后执行 hexo 命令发布到 github page.<br>这样的操作很难发挥个人积极性,毕竟要写笔记、还要写博客.最近正在看 obsidian dateview, 然后就想如果笔记 obsidian 和 hexo 结合起来,那不就完美了.</p>
 <p>所以本文就是在 obsidian 中写 markdown 文章,然后交由 github action 执行 hexo 发布到 github page.</p>
 <h3 id="1、hexo-生成站点"><a href="#1、hexo-生成站点" class="headerlink" title="1、hexo 生成站点"></a>1、hexo 生成站点</h3><p>这一步省略,之前我的站点已经生成好了,使用的 anzhiyu 主题,看着还不错.而且编辑好了</p>
@@ -2890,6 +2890,11 @@ NDKr21
 </li>
 </ol>
 ]]></content>
+      <tags>
+        <tag>obsidian</tag>
+        <tag>hexo</tag>
+        <tag>github-action</tag>
+      </tags>
   </entry>
   <entry>
     <title>parcel + react</title>
@@ -3036,7 +3041,7 @@ NDKr21
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 nodejs</span></span><br><span class="line">VERSION=v10.15.2</span><br><span class="line">DISTRO=linux-x64</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">checkNode</span></span>() &#123;</span><br><span class="line">  ISNODESUCCEED=$(node -v)</span><br><span class="line">  <span class="keyword">if</span> [ ISNODESUCCEED != <span class="variable">$VERSION</span> ]; <span class="keyword">then</span></span><br><span class="line">    installNode</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;NodeJS已安装&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">insallNode</span></span>() &#123;</span><br><span class="line">  <span class="built_in">mkdir</span> -p /usr/local/lib/nodejs</span><br><span class="line">  tar -xJf /data/teamcity_agent/others/node-<span class="variable">$VERSION</span>-<span class="variable">$DISTRO</span> <span class="comment"># -v 会输出解压日志，此处太多，所以关闭</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">export</span> PATH=/usr/local/lib/nodejs/node-<span class="variable">$VERSION</span>-<span class="variable">$DISTRO</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">source</span> ~/.profile</span><br><span class="line"></span><br><span class="line">  checkNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">checkNode</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">npm i</span><br><span class="line"><span class="comment"># 生成public文件</span></span><br><span class="line">./node_modules/hexo/bin/hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为 github.io 配置 CNAME</span></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="string">&quot;/CNAME&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;blog.dang8080.cn&quot;</span> &gt; CNAME</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 git</span></span><br><span class="line"></span><br><span class="line">git config --global credential.helper store <span class="comment"># 保存 github 提交者信息，下次不用再输密码</span></span><br><span class="line">git config --global user.name <span class="string">&quot;Humphrey&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;dang8080@qq.com&quot;</span></span><br><span class="line"></span><br><span class="line">git add --all</span><br><span class="line">git commit -m <span class="string">&quot;TeamCity CI 提交部署: <span class="subst">$(date)</span>&quot;</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
 
 <h3 id="问题"><a href="#问题" class="headerlink" title="问题:"></a>问题:</h3><blockquote>
-<p>所以问题来了,配置完了点击 <code>run</code> 查看 Build log 会发现 push 失败。因为通过 https 向 github 提交代码需要交互式输入用户密码。而此处没有提供，将密码硬编码到此 shell 里提交到 github 也不安全。<br>或者即使是通过修改 VCS root 使用 <a href="mailto:&#x67;&#105;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#98;&#x2e;&#99;&#x6f;&#109;">&#x67;&#105;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#98;&#x2e;&#99;&#x6f;&#109;</a> ssh checkout 的代码，也无法推送到 github.</p>
+<p>所以问题来了,配置完了点击 <code>run</code> 查看 Build log 会发现 push 失败。因为通过 https 向 github 提交代码需要交互式输入用户密码。而此处没有提供，将密码硬编码到此 shell 里提交到 github 也不安全。<br>或者即使是通过修改 VCS root 使用 <a href="mailto:&#x67;&#105;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#98;&#x2e;&#x63;&#x6f;&#109;">&#x67;&#105;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#98;&#x2e;&#x63;&#x6f;&#109;</a> ssh checkout 的代码，也无法推送到 github.</p>
 </blockquote>
 <h4 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位:"></a>问题定位:</h4><blockquote>
 <p>TeamCity SSH agent 使用本机(Linux&#x2F;MacOS)的 OpenSSH 管理 SSH,对于 Windows,需要手动安装 OpenSSH (CygWin,MinGW,Git for Windows).<br>SSH agent 必须添加到 <code>$PATH</code> 中.<br>第一次连接到远程地址时，SSH agent 会询问是否保存远程地址的 fingerprint 到地址数据库 <code>~/.ssh/known_hosts</code>中.<br>为了避免询问，可以提前配置。如果相信该远程地址，可以禁用远程地址检查</p>
@@ -3073,8 +3078,8 @@ NDKr21
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get install tcl tk expect</span><br><span class="line"><span class="comment"># 下面是 shell</span></span><br><span class="line"><span class="comment">#! /usr/bin/expect -f</span></span><br><span class="line"><span class="built_in">set</span> context <span class="variable">$PWD</span></span><br><span class="line"><span class="comment"># 删除旧key</span></span><br><span class="line">spawn <span class="built_in">rm</span> -f <span class="string">&quot;<span class="variable">$context</span>/id_rsa&quot;</span> <span class="string">&quot;<span class="variable">$context</span>/id_rsa.pub&quot;</span></span><br><span class="line">expect&#123;&#125;</span><br><span class="line"><span class="comment"># 生成新key</span></span><br><span class="line">spawn ssh-keygen -t rsa</span><br><span class="line">expect&#123;</span><br><span class="line">  <span class="string">&quot;*save the key*&quot;</span> &#123; send <span class="string">&quot;<span class="variable">$context</span>/id_rsa\r&quot;</span>;exp_continue &#125;</span><br><span class="line">  <span class="string">&quot;*passphrase*&quot;</span> &#123; send <span class="string">&quot;\r&quot;</span>;exp_continue &#125;</span><br><span class="line">  <span class="string">&quot;*again*&quot;</span> &#123; send <span class="string">&quot;\r&quot;</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line">spawn ssh-add <span class="string">&quot;<span class="variable">$context</span>/id_rsa&quot;</span></span><br><span class="line">sshcheck=$(ssh -vT git@github.com)</span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$sshcheck</span> =~ <span class="string">&quot;successfully authenticated&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;ssh 配置成功&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;ssh 配置失败&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="comment"># 复制 pub</span></span><br><span class="line">pubkey=$(<span class="built_in">cat</span> <span class="string">&quot;<span class="variable">$context</span>/id_rsa)</span></span><br><span class="line"><span class="string">curl -H &quot;</span>Content-Type:application/json<span class="string">&quot; -X POST --data &#x27;&#123; &quot;</span>title<span class="string">&quot;:&quot;</span>TeamCityAgentAuto<span class="string">&quot;,&quot;</span>key<span class="string">&quot;:&quot;</span><span class="variable">$pubkey</span><span class="string">&quot;&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
-        <tag>teamcity</tag>
         <tag>hexo</tag>
+        <tag>teamcity</tag>
       </tags>
   </entry>
   <entry>
