@@ -135,7 +135,12 @@ jobs:
 因为 hexo 创建文章是有模版的, 一般是在 `scaffolds/post.md`. 所以这里配置 `Templater` 插件将 `60 🌲 🍍/ShuttleSpace.github.io/source/_posts` 目录下创建 md 的模版设置为 `60 🌲 🍍/ShuttleSpace.github.io/scaffolds/post.md`
 
 ### 4、编辑发布
-然后在 `60 🌲 🍍/ShuttleSpace.github.io/source/_posts/` 目录新建文章, git 提交即可
+然后在 `60 🌲 🍍/ShuttleSpace.github.io/source/_posts/` 目录新建文章,`command + p` 调用 `git: commit and sync` 提交即可
+
+
+## <font color="#ff0000">好处</font>
+
+可以随时编辑文档,然后同步 obsidian 文档(这里使用 Remote Savely + COS). 等到了电脑上调用 `Obsidian: git commit and sync` 即可触发 github action 构建发布.
 
 ### 问题
 1、`github action deploy 报错 invalid username or passwd`
