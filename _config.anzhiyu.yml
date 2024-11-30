@@ -141,7 +141,7 @@ katex:
 # --------------------------------------
 
 # Favicon（网站图标）
-favicon: http://cdn.dang8080.cn/blog/favicon.ico
+favicon: img/favicon.ico
 
 # Avatar (头像)
 avatar:
@@ -779,7 +779,7 @@ preloader:
   # else all
   source: 2
   # pace theme (see https://codebyzach.github.io/pace/)
-  pace_css_url: http://picbed.dang8080.cn/site/loading-bar.css
+  pace_css_url: css/loading-bar.css
   avatar: img/avatar.jpeg # 自定加载动画义头像
 
 # aside (侧边栏)
