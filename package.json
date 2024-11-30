@@ -2,7 +2,7 @@
   "name": "hexo-site",
   "private": true,
   "scripts": {
-    "build": "hexo generate",
+    "build": "hexo generate --debug && gulp",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "serve": "hexo server"
