@@ -7,20 +7,21 @@ import imagemin, { gifsicle, mozjpeg, optipng, svgo } from "gulp-imagemin";
 import babel from "gulp-babel";
 
 // 压缩css文件
-gulp.task("minify-css", function (done) {
-  return gulp
+gulp.task("minify-css", (done) => {
+  gulp
     .src("./public/**/*.css")
     .pipe(cleanCSS())
     .on("error", (e) => done(e))
-    .pipe(gulp.dest("./public"));
+    .pipe(gulp.dest("./public"))
+    .on("error", (e) => done(e));
+  done();
 });
 
 // 压缩html文件
-gulp.task("minify-html", function (done) {
-  return gulp
+gulp.task("minify-html", (done) => {
+  gulp
     .src("./public/**/*.html")
     .pipe(htmlclean())
-    .on("error", (e) => done(e))
     .pipe(
       htmlmin({
         continueOnParseError: true,
@@ -33,11 +34,12 @@ gulp.task("minify-html", function (done) {
     )
     .on("error", (e) => done(e))
     .pipe(gulp.dest("./public"));
+  done();
 });
 
 // 压缩js文件
-gulp.task("minify-js", function (done) {
-  return gulp
+gulp.task("minify-js", (done) => {
+  gulp
     .src(["./public/**/*.js", "!./public/**/*.min.js"])
     .pipe(
       babel({
@@ -46,33 +48,21 @@ gulp.task("minify-js", function (done) {
         presets: ["@babel/preset-env"],
       })
     )
-    .on("error", (e) => done(e))
+    .on("error", (e) => done("babel: " + e))
     .pipe(uglify())
-    .on("error", (e) => done(e))
+    .on("error", (e) => done("uglify: " + e))
     .pipe(gulp.dest("./public"));
+  done();
 });
-console.log(imagemin);
 // 压缩 public/images 目录内图片(Version>3)
-gulp.task("minify-images", function (done) {
-  const opts = { verbose: true };
+gulp.task("minify-images", done => {
   gulp
-    .src("./public/images/**/*.*")
+    .src("./public/img/*")
     .pipe(
-      imagemin(
-        [
-          gifsicle({ interlaced: true }),
-          mozjpeg({ quality: 70, progressive: true }),
-          optipng({ optimizationLevel: 5 }),
-          svgo({
-            plugins: [{ removeViewBox: true }, { cleanupIDs: false }],
-          }),
-        ],
-        opts
-      )
+      imagemin([mozjpeg(), optipng(), svgo()], { verbose: true }) // gifsicle will cause WritableStream Error.
     )
     .on("error", (e) => done(e))
-    .pipe(gulp.dest("./public/images"));
-  // .on('end', () => done())
+    .pipe(gulp.dest("./public/img"));
   done();
 });
 
@@ -82,7 +72,5 @@ gulp.task("minify-images", function (done) {
 // 执行 gulp 命令时执行的任务
 gulp.task(
   "default",
-  gulp.series(
-    gulp.parallel("minify-html", "minify-css", "minify-js", "minify-images")
-  )
+  gulp.parallel("minify-html", "minify-css", "minify-js", "minify-images")
 );
