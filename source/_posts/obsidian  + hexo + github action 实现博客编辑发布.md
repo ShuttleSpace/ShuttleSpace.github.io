@@ -1,15 +1,21 @@
 ---
-title: {{ title }}
-date: {{ date }}
-updated: {{ date }}
-permalink:
+title:
+  "{ title }": 
+date:
+  "{ date }": 
+updated:
+  "{ date }": 
+permalink: 
 top: 0
-comments:
+comments: 
 copyright: true
 tags:
-categories:
-keywords:
-description:
+  - obsidian
+  - hexo
+  - github-action
+categories: 
+keywords: obsidian, hexo, github-action
+description: 使用 obsidian + github action 实现 hexo 博客的编辑与发布
 ---
 之前的个人博客是在本机上使用 hexo 搭建的.每次编辑文章,都要打开电脑先写 markdown, 然后执行 hexo 命令发布到 github page. 
 这样的操作很难发挥个人积极性,毕竟要写笔记、还要写博客.最近正在看 obsidian dateview, 然后就想如果笔记 obsidian 和 hexo 结合起来,那不就完美了.
