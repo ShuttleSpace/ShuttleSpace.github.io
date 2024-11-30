@@ -41,3 +41,4 @@ jobs:
           token: ${{ secrets.HEXO_TOKEN }}
           branch: gh-pages # The branch the action should deploy to.
           folder: public/ # The folder the action should deploy.
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
