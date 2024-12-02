@@ -1,6 +1,11 @@
 ---
 title: 每个JS开发者都应该知道的 Unicode
-tags: 翻译,JS,Unicode
+tags:
+  - 翻译
+  - JS
+  - Unicode
+date: 2022-02-26T09:05:00
+update: 2022-02-26
 ---
 
 {% blockquote 原文 https://dmitripavlutin.com/what-every-javascript-developer-should-know-about-unicode/ %}
