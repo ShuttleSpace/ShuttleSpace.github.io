@@ -1,10 +1,7 @@
 ---
-title:
-  "{ title }": 
-date:
-  "{ date }": 
-updated:
-  "{ date }": 
+title: 安卓发布纯 so 库到 maven
+date: 2024-12-02T15:35:00
+updated: 2024-12-02T15:35:00
 permalink: 
 top: 0
 comments: 

@@ -1,10 +1,7 @@
 ---
-title:
-  "{ title }": 
-date:
-  "{ date }": 
-updated:
-  "{ date }": 
+title: flutter ffi plugin with pure prebuilt binary and without glue code
+date: 2024-12-02T15:35:00
+updated: 2024-12-02T15:35:00
 permalink: 
 top: 0
 comments: 
