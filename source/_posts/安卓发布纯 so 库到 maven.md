@@ -139,11 +139,11 @@ POM_DEVELOPER_EMAIL=dang8080@qq.com
 
 RELEASE_SIGNING_ENABLED=true
 # maven central account
-mavenCentralUsername=g80ts7Pp
-mavenCentralPassword=vQAC+wqFTsk4Rj4lxGJY6oqcIyvYj8nmCuqYI8T/ETbo
+mavenCentralUsername=xxx
+mavenCentralPassword=xxx
 
-signing.keyId=1E0F5A0E
-signing.password=LocalHost9080
+signing.keyId=xxx
+signing.password=xxx
 signing.secretKeyRingFile= /Users/humphrey/.gnupg/secring.gpg
 ```
 
