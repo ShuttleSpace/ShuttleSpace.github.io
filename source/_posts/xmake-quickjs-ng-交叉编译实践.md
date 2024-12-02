@@ -396,6 +396,8 @@ target("qjs")
   end)
 ```
 
+具体代码可以参考[flujs_libs_quickjs](https://gitee.com/flujs/flujs_libs_quickjs)
+
 ### 参考
 
 [xmake plugin_task](https://xmake.io/mirror/manual/plugin_task.html#:~:text=Xmake%20can%20implement%20custom%20tasks,plugins%20are%20implemented%20with%20task%20.)
