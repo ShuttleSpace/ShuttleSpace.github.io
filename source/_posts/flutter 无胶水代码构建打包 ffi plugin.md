@@ -1,7 +1,7 @@
 ---
-title: flutter ffi plugin with pure prebuilt binary and without glue code
-date: 2024-12-02T15:35:00
-updated: 2024-12-02T15:35:00
+title: flutter 无胶水代码构建打包 ffi plugin
+date: 2024-12-02T09:35:00
+updated: 2024-12-02T09:40:00
 permalink: 
 top: 0
 comments: 

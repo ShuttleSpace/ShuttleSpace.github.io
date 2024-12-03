@@ -1,7 +1,7 @@
 ---
 title: obsidian + hexo + github action 实现博客编辑发布
-date: 2024-12-02T15:35:00
-updated: 2024-12-02T15:35:00
+date: 2024-12-03T11:35:00
+updated: 2024-12-03T11:40:00
 permalink: 
 top: 0
 comments: 
