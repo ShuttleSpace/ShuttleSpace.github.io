@@ -135,8 +135,51 @@ jobs:
 
 然后下载 obsidian-git 插件,配置 git 的根目录为 `60 🌲 🍍/ShuttleSpace.github.io`
 
-因为 hexo 创建文章是有模版的, 一般是在 `scaffolds/post.md`. 所以这里配置 `Templater` 插件将 `60 🌲 🍍/ShuttleSpace.github.io/source/_posts` 目录下创建 md 的模版设置为 `60 🌲 🍍/ShuttleSpace.github.io/scaffolds/post.md`
+因为 hexo 创建文章是有模版的, 一般是在 `scaffolds/post.md`. ~~所以这里配置 `Templater` 插件将 `60 🌲 🍍/ShuttleSpace.github.io/source/_posts` 目录下创建 md 的模版设置为 `60 🌲 🍍/ShuttleSpace.github.io/scaffolds/post.md`~~
+> 由于 hexo 的模版格式和 obsidian templater 不一样,所以这里的模版需要修改下
 
+```
+☕️ tpl
+	hexo
+		post.md
+```
+
+```md
+---
+title: <% tp.file.title %>
+date: <% tp.file.creation_date("HH:mm dddd, MMMM Do YYYY") %>
+updated: <% tp.file.last_modified_date("HH:mm dddd, MMMM Do YYYY") %>
+permalink:
+top: 0
+comments:
+copyright: true
+tags:
+categories:
+keywords:
+description:
+---
+<%*
+let newTitle = tp.file.title;
+if (newTitle.startsWith("Untitled") || newTitle.startsWith("未命名")) {
+    newTitle = await tp.system.prompt("Title");
+    if (!newTitle) {
+        new Notice("Title is required!");
+        return;
+    }
+}
+await tp.file.rename(newTitle);
+console.log('[post]', tp.config.target_file, app.workspace.getActiveFile())
+tp.hooks.on_all_templates_executed(async () => {
+	await app.fileManager.processFrontMatter(tp.file.find_tfile(tp.file.path(true)), (frontmatter) => {
+		console.log('[post] frontmatter: ', frontmatter)
+		 frontmatter['title'] = newTitle;
+	});
+})
+-%>
+```
+> 这里主要使用 templater 修改了文件名,并且修改 frontmatter 的 title 属性.否则 hexo 渲染出来的网页标题就是 `[object Object]`
+
+> 同时注意: 修改 frontmatter 需要在 `tp.hooks.on_all_templates_executed` 回调中执行,否则修改是没有效果的.
 ### 4、编辑发布
 然后在 `60 🌲 🍍/ShuttleSpace.github.io/source/_posts/` 目录新建文章,`command + p` 调用 `git: commit and sync` 提交即可
 
