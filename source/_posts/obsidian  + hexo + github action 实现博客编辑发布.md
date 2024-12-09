@@ -1,5 +1,5 @@
 ---
-title: obsidian + hexo + github action 实现博客编辑发布
+title: obsidian  + hexo + github action 实现博客编辑发布
 date: 2024-12-03T11:35:00
 updated: 2024-12-03T11:40:00
 permalink: 
@@ -146,9 +146,9 @@ jobs:
 
 ```md
 ---
-title: <% tp.file.title %>
-date: <% tp.file.creation_date("HH:mm dddd, MMMM Do YYYY") %>
-updated: <% tp.file.last_modified_date("HH:mm dddd, MMMM Do YYYY") %>
+title: obsidian  + hexo + github action 实现博客编辑发布
+date: 17:20 星期二, 十二月 3日 2024
+updated: 17:20 星期二, 十二月 3日 2024
 permalink:
 top: 0
 comments:
@@ -158,24 +158,6 @@ categories:
 keywords:
 description:
 ---
-<%*
-let newTitle = tp.file.title;
-if (newTitle.startsWith("Untitled") || newTitle.startsWith("未命名")) {
-    newTitle = await tp.system.prompt("Title");
-    if (!newTitle) {
-        new Notice("Title is required!");
-        return;
-    }
-}
-await tp.file.rename(newTitle);
-console.log('[post]', tp.config.target_file, app.workspace.getActiveFile())
-tp.hooks.on_all_templates_executed(async () => {
-	await app.fileManager.processFrontMatter(tp.file.find_tfile(tp.file.path(true)), (frontmatter) => {
-		console.log('[post] frontmatter: ', frontmatter)
-		 frontmatter['title'] = newTitle;
-	});
-})
--%>
 ```
 > 这里主要使用 templater 修改了文件名,并且修改 frontmatter 的 title 属性.否则 hexo 渲染出来的网页标题就是 `[object Object]`
 

@@ -13,7 +13,7 @@ categories: flutter
 keywords: flutter
 description:
 ---
-flutter ffi plugin 开发有3中模式:
+flutter ffi plugin 开发有3种模式:
 - 有 ffi 源码, flutter 可以直接打包构建
 - 没有 ffi 源码,只有预购建好的库或者二进制文件
 - 有 ffi 源码,也有二进制
