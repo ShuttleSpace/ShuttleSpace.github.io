@@ -1,0 +1,385 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>在 macOS 的 linux 虚拟机上开发环境配置 | HumphreyIO</title><meta name="keywords" content="Android,Java,Kotlin,JS,Rust,Electron,Golang,Flutter,Dart,TS,kubernetes,k8s"><meta name="author" content="HumphreyDan"><meta name="copyright" content="HumphreyDan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="在 macOS 的 linux 虚拟机上开发环境配置"><meta name="application-name" content="在 macOS 的 linux 虚拟机上开发环境配置"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta name="description" content="VirtualBox + Ubuntu VirtualBox 新建虚拟机 虚拟机挂载 share folder 打开终端,配置环境  1234567891011121314151617181920212223# ----- 配置代理# &amp;lt;bash 代理&amp;gt;# export http_pro"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://shuttlespace.github.io/2022/08/10/00/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: undefined,
+  postHeadAiDescription: undefined,
+  diytitle: undefined,
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":2},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: {"mode":"api","api":"https://img2color-go.vercel.app/api?img=","cover_change":true},
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":true,"limitCount":50,"languages":{"author":"作者: HumphreyDan","link":"链接: ","source":"来源: HumphreyIO","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"bottom-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: {"enable":true,"delay":100,"shiftDelay":200},
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'HumphreyIO',
+  title: '在 macOS 的 linux 虚拟机上开发环境配置',
+  postAI: '',
+  pageFillDescription: 'VirtualBox + Ubuntu, VirtualBox + Deepinx2FUOS, Parllels Desktop 真香（除了有点贵 土豪请随意）, 重大利好, VMWare Funsion 12, Deepinx2FUOS, KylinV10 麒麟V10, QampA, 参考新建虚拟机虚拟机挂载打开终端配置环境配置代理代理或者或者代理版本管理器可以设置代理代理安装或者为挂载目录项目添加可读写权限添加当前用户到用户组挂载目录如执行运行脚本如上类似除了挂载目录首先打开菜单栏管理虚拟介质管理点击虚拟光盘栏然后新建虚拟光盘创建虚拟机后在其设置里添加此虚拟光盘即可真香除了有点贵土豪请随意重大利好有开发者开发了一款可以无限期试用的软件也可以继续使用了上的源代码仓库因为原因被了且行且珍惜现在已经免费向个人用户开放了只需要在官网注册好账号获取一个永久免费的授权码就能激活使用安装好后先对虚拟机进行设置微调兼容性选择硬件版本处理器选择多核打开高级选项的开关高级勾选停用侧通道缓解接下来如果还想要在虚拟机里运行模式就需要挂载共享文件夹如图选择共享文件夹后实际上还是无法在虚拟机打开共享目录需要如下配置按照黄色提示需要在虚拟机中安装工具按照官方文档有三种方式菜单安装可以看到这里实际已经安装了但是虚拟机无法识别出来挂载安装在官网搜索下载只能找到和的安装工具包实际是没有的这里我们可以从主机安装的里面找如图将此拖动或者通过下载到虚拟机中挂载然后执行结果也无效命令行安装通过谷歌搜索我们找到了最新的工具依赖包其中包含了执行中会发现系统提示我们这个工具已经安装过了即使重新也是没有效果最后终于找到了可用的方案是因为我已经在设置里面把共享目录挂载上了在最后一行添加成功虚拟机中共享目录的挂载点为系统盘麒麟挂载共享目录方法打开虚拟机浏览器下载这个库或者直接下载包后解压权限执行如果创建失败可以试试其他路径如下面也是一样在目录下新建执行如下命令在最后一行添加重启如果安装过程中出现之类的错误使用对应报错文件的文件夹添加权限报这个错手动删掉文件夹重新运行如果因为安装版本比较旧的使用更新源失败报错找不到可以使用以下方法替换源地址备份原始文件源可选备份原始文件安装完成后如果不能随拖动而自动放大缩小虚拟机界面大小则点击菜单栏设备安装增强功能有的会弹出包含打算自动启动的软件的提示窗有的需要进入到挂载目录终端运行脚本重启即可实现自动拖动放大缩小效果在虚拟机中执行下载项目依赖时很容易出现的错误这是下载的时候依赖库未下载完整原因待排查可以通过以下方法快速结果在机器上如的项目根目录执行目的是在上下载好的依赖库但是不执行的默认行为即编译依赖库里的模块然后执行即可如果还是缺少某依赖库那么手动下载对应依赖库即可执行时报错下载失败网络问题一是查看代理是否正确如果代理设置正确还是无法访问则手动通过浏览器下载此文件然后执行文件即可启动弹窗报错网络设置可以通过设置网络适配器来实现访问内网运行一段时间后虚拟机在主机上生成的文件占用比较大可以进入虚拟机执行来压缩磁盘占用或者删除快照参考',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2024-12-15 03:45:04',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><link rel="stylesheet" href="/css/loading-bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">晴江雪</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.dang8080.cn/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">晚照霞</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://dang8080.cn/" title="主页"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/favicon.ico" alt="主页"/><span class="back-menu-item-text">主页</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">HumphreyIO</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/img/site/wechatpay.png" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/site/wechatpay.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/site/alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/site/alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Architecture-Components/" style="font-size: 1.05rem;">Architecture Components<sup>1</sup></a><a href="/tags/Dart/" style="font-size: 1.05rem;">Dart<sup>1</sup></a><a href="/tags/DataFetcher/" style="font-size: 1.05rem;">DataFetcher<sup>1</sup></a><a href="/tags/JS/" style="font-size: 1.05rem;">JS<sup>1</sup></a><a href="/tags/Kotlin/" style="font-size: 1.05rem;">Kotlin<sup>1</sup></a><a href="/tags/Kotlin-%E5%8D%8F%E7%A8%8B/" style="font-size: 1.05rem;">Kotlin 协程<sup>1</sup></a><a href="/tags/LiveData/" style="font-size: 1.05rem;">LiveData<sup>1</sup></a><a href="/tags/Navigation/" style="font-size: 1.05rem;">Navigation<sup>1</sup></a><a href="/tags/ObjectBox/" style="font-size: 1.05rem;">ObjectBox<sup>18</sup></a><a href="/tags/Room/" style="font-size: 1.05rem;">Room<sup>1</sup></a><a href="/tags/Unicode/" style="font-size: 1.05rem;">Unicode<sup>1</sup></a><a href="/tags/android/" style="font-size: 1.05rem;">android<sup>1</sup></a><a href="/tags/cmake/" style="font-size: 1.05rem;">cmake<sup>1</sup></a><a href="/tags/container/" style="font-size: 1.05rem;">container<sup>1</sup></a><a href="/tags/docker/" style="font-size: 1.05rem;">docker<sup>1</sup></a><a href="/tags/ffi/" style="font-size: 1.05rem;">ffi<sup>1</sup></a><a href="/tags/flutter/" style="font-size: 1.05rem;">flutter<sup>2</sup></a><a href="/tags/git/" style="font-size: 1.05rem;">git<sup>1</sup></a><a href="/tags/github-action/" style="font-size: 1.05rem;">github-action<sup>1</sup></a><a href="/tags/gradle/" style="font-size: 1.05rem;">gradle<sup>2</sup></a><a href="/tags/hexo/" style="font-size: 1.05rem;">hexo<sup>2</sup></a><a href="/tags/java/" style="font-size: 1.05rem;">java<sup>1</sup></a><a href="/tags/kotlin/" style="font-size: 1.05rem;">kotlin<sup>2</sup></a><a href="/tags/obsidian/" style="font-size: 1.05rem;">obsidian<sup>1</sup></a><a href="/tags/teamcity/" style="font-size: 1.05rem;">teamcity<sup>1</sup></a><a href="/tags/web/" style="font-size: 1.05rem;">web<sup>1</sup></a><a href="/tags/xmake-cross-compile/" style="font-size: 1.05rem;">xmake, cross compile<sup>1</sup></a><a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 1.05rem;">多线程<sup>1</sup></a><a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">学习笔记<sup>1</sup></a><a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 1.05rem;">并发<sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 1.05rem;">数据库<sup>19</sup></a><a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 1.05rem;">日常<sup>1</sup></a><a href="/tags/%E6%9E%84%E5%BB%BA/" style="font-size: 1.05rem;">构建<sup>1</sup></a><a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 1.05rem;">翻译<sup>4</sup></a><a href="/tags/%E8%AF%91/" style="font-size: 1.05rem;">译<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="anzhiyufont anzhiyu-icon-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/12/"><span class="card-archive-list-date">十二月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">4</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/11/"><span class="card-archive-list-date">十一月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">二月 2023</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">3</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/08/"><span class="card-archive-list-date">八月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/03/"><span class="card-archive-list-date">三月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">5</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/02/"><span class="card-archive-list-date">二月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">3</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/04/"><span class="card-archive-list-date">四月 2020</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/03/"><span class="card-archive-list-date">三月 2020</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="anzhiyu.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="anzhiyufont anzhiyu-icon-keyboard"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="article-meta tags"></span></div></div><h1 class="post-title" itemprop="name headline">在 macOS 的 linux 虚拟机上开发环境配置<a class="post-edit-link" href="undefined_posts/在 macOS 的 linux 虚拟机上开发环境配置.md" title="在 GitHub 上编辑 - 在 macOS 的 linux 虚拟机上开发环境配置" target="_blank"><i class="anzhiyufont anzhiyu-icon-pencil"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2022-08-10T03:44:00.000Z" title="发表于 2022-08-10 11:44:00">2022-08-10</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-12-14T19:45:04.000Z" title="更新于 2024-12-15 03:45:04">2024-12-15</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">1.8k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为华夏"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>华夏</span></div></div></div><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="/img/default_cover.jpg"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://shuttlespace.github.io/2022/08/10/00/"><header><h1 id="CrawlerTitle" itemprop="name headline">在 macOS 的 linux 虚拟机上开发环境配置</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">HumphreyDan</span><time itemprop="dateCreated datePublished" datetime="2022-08-10T03:44:00.000Z" title="发表于 2022-08-10 11:44:00">2022-08-10</time><time itemprop="dateCreated datePublished" datetime="2024-12-14T19:45:04.000Z" title="更新于 2024-12-15 03:45:04">2024-12-15</time></header><h2 id="VirtualBox-Ubuntu"><a href="#VirtualBox-Ubuntu" class="headerlink" title="VirtualBox + Ubuntu"></a>VirtualBox + Ubuntu</h2><ol>
+<li>VirtualBox 新建虚拟机</li>
+<li>虚拟机挂载 share folder</li>
+<li>打开终端,配置环境</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ----- 配置代理</span></span><br><span class="line"><span class="comment"># &lt;bash 代理&gt;</span></span><br><span class="line"><span class="comment"># export http_proxy=http://dev-proxy.oa.com:8080</span></span><br><span class="line"><span class="comment"># export https_proxy=http://dev-proxy.oa.com:8080</span></span><br><span class="line"><span class="comment"># 或者 http://web-proxy.tencent.com:8080 或者 http://r.tnpm.oa.com:8080</span></span><br><span class="line"><span class="comment"># &lt;apt 代理&gt;</span></span><br><span class="line"><span class="comment"># /etc/apt/apt.conf</span></span><br><span class="line"><span class="comment"># Acquire::http::proxy &quot;https_proxy=http://dev-proxy.oa.com:8080&quot;;</span></span><br><span class="line"><span class="comment"># Acquire::https::proxy &quot;https_proxy=http://dev-proxy.oa.com:8080&quot;;</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get update</span><br><span class="line"><span class="built_in">sudo</span> apt-get install g++ build-essential python curl</span><br><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash <span class="comment"># Nodejs 版本管理器</span></span><br><span class="line"><span class="comment"># 可以设置 shell 代理</span></span><br><span class="line">nvm install 13.8.0</span><br><span class="line">nvm use 13.8.0</span><br><span class="line"><span class="comment"># &lt;npm 代理&gt;</span></span><br><span class="line"><span class="comment"># npm config set proxy=http://dev-proxy.oa.com:8080</span></span><br><span class="line"><span class="comment"># npm config set https_proxy=http://dev-proxy.oa.com:8080</span></span><br><span class="line"><span class="comment"># npm config set registry=https://mirrors.tencent.com/npm/</span></span><br><span class="line">npm config <span class="built_in">set</span> strict_ssl <span class="literal">false</span></span><br><span class="line"><span class="comment"># 安装 tnpm</span></span><br><span class="line">npm i -g @tencent/tnpm</span><br><span class="line"><span class="comment"># 或者 npm i -g @tencent/tnpm --registry=http://r.tnpm.oa.com</span></span><br></pre></td></tr></table></figure>
+<p>4、为挂载目录&#x2F;项目添加可读写权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> adduser <span class="variable">$USER</span> vboxsf <span class="comment"># 添加当前用户到 vboxsf 用户组</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chown</span> -R <span class="variable">$USER</span> [挂载目录] <span class="comment"># 如 /media/sf_Shared/wechat_work</span></span><br></pre></td></tr></table></figure>
+<p>5、执行运行脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./brl.sh dev/build</span><br></pre></td></tr></table></figure>
+<h2 id="VirtualBox-Deepin-UOS"><a href="#VirtualBox-Deepin-UOS" class="headerlink" title="VirtualBox + Deepin&#x2F;UOS"></a>VirtualBox + Deepin&#x2F;UOS</h2><p>如上类似，除了挂载目录.</p>
+<p>1、首先打开菜单栏 管理 -&gt; 虚拟介质管理</p>
+<p>2、点击虚拟光盘 tab 栏，然后新建虚拟光盘.</p>
+<p>3、创建虚拟机后在其设置里添加此虚拟光盘即可.</p>
+<h2 id="Parllels-Desktop-真香（除了有点贵-土豪请随意）"><a href="#Parllels-Desktop-真香（除了有点贵-土豪请随意）" class="headerlink" title="Parllels Desktop 真香（除了有点贵, 土豪请随意）"></a>Parllels Desktop 真香（除了有点贵, 土豪请随意）</h2><h3 id="重大利好"><a href="#重大利好" class="headerlink" title="重大利好"></a>重大利好</h3><pre><code>有开发者开发了一款可以无限期试用 PD 的软件 [PDRunner](https://gitee.com/lihaoyun/PD-Runner), s(qiongbi)VIP 也可以继续使用了.（ps: github 上的源代码仓库因为 DCMA 原因被 ban 了，且行且珍惜）
+</code></pre>
+<h2 id="VMWare-Funsion-12"><a href="#VMWare-Funsion-12" class="headerlink" title="VMWare Funsion 12"></a>VMWare Funsion 12</h2><p>vmware funsion 12 现在已经免费向个人用户开放了，只需要在官网注册好账号，获取一个永久免费的授权码就能激活使用。</p>
+<h4 id="Deepin-UOS"><a href="#Deepin-UOS" class="headerlink" title="Deepin&#x2F;UOS"></a>Deepin&#x2F;UOS</h4><p>安装好后，先对虚拟机进行设置微调:<br>1、兼容性：选择硬件版本19<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="http://picbed.dang8080.cn/image-1641521104551.png" alt="harware version"><br>2、处理器：选择多核、打开高级选项的开关<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="http://picbed.dang8080.cn/image-1641521154891.png" alt="cpu"><br>3、高级：勾选停用侧通道缓解<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="http://picbed.dang8080.cn/image-1641521195773.png" alt="side path release"></p>
+<p><strong>接下来如果还想要在虚拟机里运行 dev 模式，就需要挂载共享文件夹</strong><br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="http://picbed.dang8080.cn/image-1641521410618.png" alt="share folder"><br>如图选择共享文件夹后，实际上还是无法在虚拟机打开共享目录，需要如下配置。<br>按照黄色提示：需要在虚拟机中安装 VMware Tools 工具。按照官方文档，有三种方式<br>1）菜单安装<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="http://picbed.dang8080.cn/image-1641521751085.png" alt="menu"><br>可以看到，这里实际已经安装了，但是虚拟机无法识别出来<br>2）挂载 iso 安装，在官网搜索 VMware tools 下载，只能找到 windows 和 mac 的安装工具包（实际是 iso），没有 linux 的。这里我们可以从 mac host 主机安装的 VMware Funsion app 里面找<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="http://picbed.dang8080.cn/image-1641521907311.png" alt="path"><br>如图，将此 iso 拖动或者通过 http 下载到 linux 虚拟机中，挂载然后执行 shell<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="http://picbed.dang8080.cn/image-1641521969700.png" alt="path7000"><br>结果也无效<br>3）命令行安装，通过谷歌搜索，我们找到了最新的 VMware tools 工具依赖包: open-vm-tools-desktop(其中包含了 open-vm-tools)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install -y open-vm-tools-desktop</span><br></pre></td></tr></table></figure>
+<p>执行中会发现系统提示我们，这个工具已经安装过了，即使重新 reinstall 也是没有效果<br><strong>最后，终于找到了可用的方案</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /mnt/hgfs</span><br><span class="line">sudo mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o nonempty,allow_other # nonempty 是因为我已经在设置GUI里面把共享目录挂载上了</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">sudo</span> vim /etc/fstab <span class="comment"># 在最后一行添加</span></span></span><br><span class="line">.host:/ /mnt/hgfs fuse.vmhgfs-fuse allow_other 0 0</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">成功！！！</span></span><br></pre></td></tr></table></figure>
+<p>虚拟机中共享目录的挂载点为：!!!#ff0000 !!#f3f3f3 系统盘&#x2F;mnt&#x2F;hgfs&#x2F;!!!!!</p>
+<h4 id="KylinV10-麒麟V10"><a href="#KylinV10-麒麟V10" class="headerlink" title="KylinV10 麒麟V10"></a>KylinV10 麒麟V10</h4><p>挂载共享目录方法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1、打开虚拟机浏览器，下载 `git clone https://github.com/rasa/vmware-tools-patches.git` 这个库，或者直接下载 zip 包后解压</span><br><span class="line">2、sudo 权限执行 `sudo bash ./patched-open-vm-tools.sh`</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果创建 /mnt/hgfs 失败，可以试试其他路径，如 /media/hgfs, 下面也是一样</span></span><br><span class="line">3、在 /mnt 目录下新建 `sudo mkdir -p /mnt/hgfs`</span><br><span class="line">4、执行如下命令: `sudo vmhgfs-fuse -o nonempty,allow_other .host:/ /mnt/hgfs`</span><br><span class="line">5、在 `/etc/fstab` 最后一行添加 `.host:/shared     /mnt/hgfs       fuse.vmhgfs-fuse     allow_other  0  0`</span><br><span class="line">6、重启</span><br></pre></td></tr></table></figure>
+
+<h2 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><p>1.（ubuntu） 如果安装过程中出现 <code>no permission</code> 之类的错误,使用 <code>sudo adduser [username] vboxsf;sudo chown -R $USER [对应报错文件的文件夹]</code> 添加权限<br>2. （ubuntu）<code>error An unexpected error occurred: &quot;Unknown system error -75: Unknown system error -75, unlink &#39;/media/sf_Shared/wechat_work/node_modules/electron/dist/chrome_100_percent.pak&#39;&quot;.</code> 报这个错,手动删掉 node_modules 文件夹重新运行<br>3. （ubuntu）如果因为安装版本比较旧的 linux 使用 <code>sudo apt update</code> 更新源失败: 报错 xxx Release 找不到,可以使用以下方法替换源地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  # 备份原始文件</span><br><span class="line">sudo sed -i -r &#x27;s/([a-z]&#123;2&#125;\.)?archive.ubuntu.com/old-releases.ubuntu.com/g&#x27; /etc/apt/sources.list</span><br><span class="line">sudo sed -i -r &#x27;s/security.ubuntu.com/old-releases.ubuntu.com/g&#x27; /etc/apt/sources.list</span><br><span class="line">sudo apt-get update</span><br><span class="line"># aliyun源（可选）</span><br><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak  # 备份原始文件</span><br><span class="line">sudo sed -i -r &#x27;s/([a-z]&#123;2&#125;\.)?archive.ubuntu.com/mirrors.aliyun.com/g&#x27; /etc/apt/sources.list</span><br><span class="line">sudo sed -i -r &#x27;s/security.ubuntu.com/mirrors.aliyun.com/g&#x27; /etc/apt/sources.list</span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>（virtualbox）安装完成后，如果 VirtualBox 不能随拖动而自动放大缩小虚拟机界面大小，则点击菜单栏：设备 -&gt; 安装增强功能。有的会弹出 <code>VBox_GAs 包含打算自动启动的软件的提示窗</code>。有的需要进入到 <code>VBox_GAs</code> 挂载目录，终端运行 <code>VBoxLinuAdditions.run</code>脚本。重启即可实现自动拖动放大缩小效果.</li>
+<li>在虚拟机中执行 npm i 下载项目依赖时，很容易出现 <code>xx moudle not found</code> 的错误，这是下载的时候依赖库未下载完整（原因待排查）可以通过以下方法快速结果<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在 host 机器上(如 mac) 的项目根目录执行 </span></span><br><span class="line">tnpm i --ignore-scripts --no-optional </span><br><span class="line"><span class="comment"># 目的是在 mac 上下载好 js 的依赖库，但是不执行 npm install 的默认行为（即编译依赖库里的 node-addon 模块）</span></span><br><span class="line"><span class="comment"># 然后执行 brl.sh 即可</span></span><br><span class="line"><span class="comment"># 如果还是缺少某依赖库，那么手动下载对应依赖库即可.</span></span><br></pre></td></tr></table></figure></li>
+<li>执行 <code>npm i</code> 时报错 <code>node-gyp 下载 https://nodejs.org/13.8.0-headers.tar.gz 失败</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 网络问题一是查看代理是否正确</span></span><br><span class="line"><span class="comment"># 如果代理设置正确还是无法访问, 则手动通过浏览器下载此文件，然后执行 `npx node-gyp rebuild --tarball=[文件]` 即可</span></span><br></pre></td></tr></table></figure></li>
+<li>启动 virtualbox 弹窗报错 <code>Kernel driver not installed (rc=-1908)</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> kmutil load -p <span class="string">&#x27;/Library/Application Support/VirtualBox/VBoxDrv.kext&#x27;</span></span><br></pre></td></tr></table></figure>
+8、网络设置：可以通过设置 《网络适配器》来实现访问内网<br>9、运行一段时间后，虚拟机在 host 主机上生成的 vmdk 文件占用比较大。可以进入虚拟机，执行 <code>sudo vmware-toolbox-cmd disk shrinkonly</code> 来压缩磁盘占用。或者删除快照。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p>kylinV10<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiu0821/p/5946062.html">https://www.cnblogs.com/jiu0821/p/5946062.html</a><br><a target="_blank" rel="noopener" href="https://communities.vmware.com/t5/VMware-Workstation-Pro/How-to-mount-Windows-shares-in-Mint-Linux-18-3/td-p/940439">https://communities.vmware.com/t5/VMware-Workstation-Pro/How-to-mount-Windows-shares-in-Mint-Linux-18-3/td-p/940439</a><br><a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/74650">https://kb.vmware.com/s/article/74650</a><br><a target="_blank" rel="noopener" href="https://github.com/vmware/open-vm-tools/issues/321">https://github.com/vmware/open-vm-tools/issues/321</a><br><a target="_blank" rel="noopener" href="https://xpressubuntu.wordpress.com/2015/05/11/resolving-no-shared-folders-with-vmware-player-7-and-ubuntu-15-04-guest/comment-page-1/#comment-708">https://xpressubuntu.wordpress.com/2015/05/11/resolving-no-shared-folders-with-vmware-player-7-and-ubuntu-15-04-guest/comment-page-1/#comment-708</a><br><a target="_blank" rel="noopener" href="https://askubuntu.com/questions/591664/files-missing-in-mnt-hgfs-on-ubuntu-vm">https://askubuntu.com/questions/591664/files-missing-in-mnt-hgfs-on-ubuntu-vm</a><br>deepin&#x2F;uos<br><a target="_blank" rel="noopener" href="https://docs.vmware.com/en/VMware-Workstation-Pro/16.0/com.vmware.ws.using.doc/GUID-AB5C80FE-9B8A-4899-8186-3DB8201B1758.html">Mounting Shared Folders in a Linux Guest</a><br><a target="_blank" rel="noopener" href="https://communities.vmware.com/t5/VMware-Fusion-Discussions/Shared-folders-no-longer-showing-up-in-guest-OS-Ubuntu-16-04/td-p/509366">Solved: Shared folders no longer showing up in guest OS Ub… - VMware Technology Network VMTN</a><br><a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/1003910">VMware Knowledge Base</a><br><a target="_blank" rel="noopener" href="https://manjaro.site/issue-01-vmware-linux-client-cannot-mount-the-shared-folder-automatically/">Issue #01 - VMware Linux Client Cannot Mount the Shared Folder Automatically - Manjaro dot site</a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/avatar.jpeg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/avatar.jpeg" title="头像" alt="头像"></a><div class="post-copyright__author_name">HumphreyDan</div><div class="post-copyright__author_desc">云青青兮欲雨, 水澹澹兮生烟</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="https://shuttlespace.github.io/2022/08/10/00/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('https://shuttlespace.github.io/2022/08/10/00/')">在 macOS 的 linux 虚拟机上开发环境配置</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/site/wechatpay.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/site/wechatpay.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/site/alipay.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/site/alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="https://shuttlespace.github.io/2022/08/10/00/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://shuttlespace.github.io" target="_blank">HumphreyIO</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"></div></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/03/26/29/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/default_cover.jpg" onerror="onerror=null;src='/img/404.gif'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">使用 NAPI 或者 Context Aware 在渲染进程中加载 native 模块</div></div></a></div><div class="next-post pull-right"><a href="/2023/02/25/57/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/default_cover.jpg" onerror="onerror=null;src='/img/404.gif'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">macOS Monterey V12 如何共享 sambda</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#VirtualBox-Ubuntu"><span class="toc-number">1.</span> <span class="toc-text">VirtualBox + Ubuntu</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VirtualBox-Deepin-UOS"><span class="toc-number">2.</span> <span class="toc-text">VirtualBox + Deepin&#x2F;UOS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parllels-Desktop-%E7%9C%9F%E9%A6%99%EF%BC%88%E9%99%A4%E4%BA%86%E6%9C%89%E7%82%B9%E8%B4%B5-%E5%9C%9F%E8%B1%AA%E8%AF%B7%E9%9A%8F%E6%84%8F%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">Parllels Desktop 真香（除了有点贵, 土豪请随意）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%A4%A7%E5%88%A9%E5%A5%BD"><span class="toc-number">3.1.</span> <span class="toc-text">重大利好</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VMWare-Funsion-12"><span class="toc-number">4.</span> <span class="toc-text">VMWare Funsion 12</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Deepin-UOS"><span class="toc-number">4.0.1.</span> <span class="toc-text">Deepin&#x2F;UOS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#KylinV10-%E9%BA%92%E9%BA%9FV10"><span class="toc-number">4.0.2.</span> <span class="toc-text">KylinV10 麒麟V10</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q-A"><span class="toc-number">5.</span> <span class="toc-text">Q&amp;A</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol></div></div></div></div></div></main><footer id="footer" style="/img/default_cover.jpg"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2024 By HumphreyDan</div><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/offduty_img.png" alt="stay hungry, stay foolish~" title="stay hungry, stay foolish~"/><div id="runtimeTextTip"></div></div><div class="footer_custom_text">stay hungry, stay foolish~</div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">1</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">晴江雪</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.dang8080.cn/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">晚照霞</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://dang8080.cn/" title="主页"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;img/404.gif&quot;" data-lazy-src="/img/favicon.ico" alt="主页"/><span class="back-menu-item-text">主页</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Architecture-Components/" style="font-size: 0.88rem;">Architecture Components<sup>1</sup></a><a href="/tags/Dart/" style="font-size: 0.88rem;">Dart<sup>1</sup></a><a href="/tags/DataFetcher/" style="font-size: 0.88rem;">DataFetcher<sup>1</sup></a><a href="/tags/JS/" style="font-size: 0.88rem;">JS<sup>1</sup></a><a href="/tags/Kotlin/" style="font-size: 0.88rem;">Kotlin<sup>1</sup></a><a href="/tags/Kotlin-%E5%8D%8F%E7%A8%8B/" style="font-size: 0.88rem;">Kotlin 协程<sup>1</sup></a><a href="/tags/LiveData/" style="font-size: 0.88rem;">LiveData<sup>1</sup></a><a href="/tags/Navigation/" style="font-size: 0.88rem;">Navigation<sup>1</sup></a><a href="/tags/ObjectBox/" style="font-size: 0.88rem;">ObjectBox<sup>18</sup></a><a href="/tags/Room/" style="font-size: 0.88rem;">Room<sup>1</sup></a><a href="/tags/Unicode/" style="font-size: 0.88rem;">Unicode<sup>1</sup></a><a href="/tags/android/" style="font-size: 0.88rem;">android<sup>1</sup></a><a href="/tags/cmake/" style="font-size: 0.88rem;">cmake<sup>1</sup></a><a href="/tags/container/" style="font-size: 0.88rem;">container<sup>1</sup></a><a href="/tags/docker/" style="font-size: 0.88rem;">docker<sup>1</sup></a><a href="/tags/ffi/" style="font-size: 0.88rem;">ffi<sup>1</sup></a><a href="/tags/flutter/" style="font-size: 0.88rem;">flutter<sup>2</sup></a><a href="/tags/git/" style="font-size: 0.88rem;">git<sup>1</sup></a><a href="/tags/github-action/" style="font-size: 0.88rem;">github-action<sup>1</sup></a><a href="/tags/gradle/" style="font-size: 0.88rem;">gradle<sup>2</sup></a><a href="/tags/hexo/" style="font-size: 0.88rem;">hexo<sup>2</sup></a><a href="/tags/java/" style="font-size: 0.88rem;">java<sup>1</sup></a><a href="/tags/kotlin/" style="font-size: 0.88rem;">kotlin<sup>2</sup></a><a href="/tags/obsidian/" style="font-size: 0.88rem;">obsidian<sup>1</sup></a><a href="/tags/teamcity/" style="font-size: 0.88rem;">teamcity<sup>1</sup></a><a href="/tags/web/" style="font-size: 0.88rem;">web<sup>1</sup></a><a href="/tags/xmake-cross-compile/" style="font-size: 0.88rem;">xmake, cross compile<sup>1</sup></a><a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 0.88rem;">多线程<sup>1</sup></a><a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem;">学习笔记<sup>1</sup></a><a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 0.88rem;">并发<sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 0.88rem;">数据库<sup>19</sup></a><a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 0.88rem;">日常<sup>1</sup></a><a href="/tags/%E6%9E%84%E5%BB%BA/" style="font-size: 0.88rem;">构建<sup>1</sup></a><a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 0.88rem;">翻译<sup>4</sup></a><a href="/tags/%E8%AF%91/" style="font-size: 0.88rem;">译<sup>1</sup></a></div></div><hr/></div></div><div id="keyboard-tips"><div class="keyboardTitle">博客快捷键</div><div class="keybordList"><div class="keybordItem"><div class="keyGroup"><div class="key">shift K</div></div><div class="keyContent"><div class="content">关闭快捷键功能</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift A</div></div><div class="keyContent"><div class="content">打开/关闭中控台</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift M</div></div><div class="keyContent"><div class="content">播放/暂停音乐</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift D</div></div><div class="keyContent"><div class="content">深色/浅色显示模式</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift S</div></div><div class="keyContent"><div class="content">站内搜索</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift R</div></div><div class="keyContent"><div class="content">随机访问</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift H</div></div><div class="keyContent"><div class="content">返回首页</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift F</div></div><div class="keyContent"><div class="content">友链鱼塘</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift L</div></div><div class="keyContent"><div class="content">友链页面</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift P</div></div><div class="keyContent"><div class="content">关于本站</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift I</div></div><div class="keyContent"><div class="content">原版/本站右键菜单</div></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="is-center" id="loading-database"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.cbd.int/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("01/01/2018 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "/img/work_img.png";
+        img.title = "下班了就该开开心心的玩耍，嘿嘿~";
+        img.alt = "下班了就该开开心心的玩耍，嘿嘿~";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.cbd.int/mermaid@10.2.4/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  anzhiyu.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'WS6xwQjL3YsDPCdcRTqtpdhg-gzGzoHsz',
+      appKey: 'NgSfNQLxbzWKBuQROhn56aP5',
+      avatar: 'mp',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: true
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.cbd.int/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !true) {
+    if (true) anzhiyu.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"></div><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script id="click-heart" src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="true"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
