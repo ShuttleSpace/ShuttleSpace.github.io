@@ -24,13 +24,13 @@ description:
 ```bash
 # ----- 配置代理
 # <bash 代理>
-# export http_proxy=http://dev-proxy.oa.com:8080
-# export https_proxy=http://dev-proxy.oa.com:8080
-# 或者 http://web-proxy.tencent.com:8080 或者 http://r.tnpm.oa.com:8080
+# export http_proxy=http://dev-proxy.dev.com:8080
+# export https_proxy=http://dev-proxy.dev.com:8080
+# 或者 http://web-proxy.humphrey.com:8080 或者 http://r.humphrey.dev.com:8080
 # <apt 代理>
 # /etc/apt/apt.conf
-# Acquire::http::proxy "https_proxy=http://dev-proxy.oa.com:8080";
-# Acquire::https::proxy "https_proxy=http://dev-proxy.oa.com:8080";
+# Acquire::http::proxy "https_proxy=http://dev-proxy.dev.com:8080";
+# Acquire::https::proxy "https_proxy=http://dev-proxy.dev.com:8080";
 sudo apt-get update
 sudo apt-get install g++ build-essential python curl
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash # Nodejs 版本管理器
@@ -38,22 +38,19 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash 
 nvm install 13.8.0
 nvm use 13.8.0
 # <npm 代理>
-# npm config set proxy=http://dev-proxy.oa.com:8080
-# npm config set https_proxy=http://dev-proxy.oa.com:8080
-# npm config set registry=https://mirrors.tencent.com/npm/
+# npm config set proxy=http://dev-proxy.dev.com:8080
+# npm config set https_proxy=http://dev-proxy.dev.com:8080
+# npm config set registry=https://mirrors.humphrey.com/npm/
 npm config set strict_ssl false
-# 安装 tnpm
-npm i -g @tencent/tnpm
-# 或者 npm i -g @tencent/tnpm --registry=http://r.tnpm.oa.com
 ```
 4、为挂载目录/项目添加可读写权限
 ```bash
 sudo adduser $USER vboxsf # 添加当前用户到 vboxsf 用户组
-sudo chown -R $USER [挂载目录] # 如 /media/sf_Shared/wechat_work
+sudo chown -R $USER [挂载目录] # 如 /media/sf_Shared/humphrey
 ```
 5、执行运行脚本
 ```bash
-./brl.sh dev/build
+./run.sh dev/build
 ```
 ## VirtualBox + Deepin/UOS
 如上类似，除了挂载目录.
@@ -103,7 +100,7 @@ sudo mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o nonempty,allow_other # nonem
 .host:/ /mnt/hgfs fuse.vmhgfs-fuse allow_other 0 0
 # 成功！！！
 ```
-虚拟机中共享目录的挂载点为：!!!#ff0000 !!#f3f3f3 系统盘/mnt/hgfs/!!!!!
+虚拟机中共享目录的挂载点为： **系统盘/mnt/hgfs/**
 
 #### KylinV10 麒麟V10
 挂载共享目录方法
@@ -120,7 +117,7 @@ sudo mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o nonempty,allow_other # nonem
 ## Q&amp;A
 
 1.（ubuntu） 如果安装过程中出现 `no permission` 之类的错误,使用 `sudo adduser [username] vboxsf;sudo chown -R $USER [对应报错文件的文件夹]` 添加权限
-2. （ubuntu）`error An unexpected error occurred: "Unknown system error -75: Unknown system error -75, unlink '/media/sf_Shared/wechat_work/node_modules/electron/dist/chrome_100_percent.pak'".` 报这个错,手动删掉 node_modules 文件夹重新运行
+2. （ubuntu）`error An unexpected error occurred: "Unknown system error -75: Unknown system error -75, unlink '/media/sf_Shared/humphrey/node_modules/electron/dist/chrome_100_percent.pak'".` 报这个错,手动删掉 node_modules 文件夹重新运行
 3. （ubuntu）如果因为安装版本比较旧的 linux 使用 `sudo apt update` 更新源失败: 报错 xxx Release 找不到,可以使用以下方法替换源地址
 
 ```
@@ -139,7 +136,7 @@ sudo mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o nonempty,allow_other # nonem
 5. 在虚拟机中执行 npm i 下载项目依赖时，很容易出现 `xx moudle not found` 的错误，这是下载的时候依赖库未下载完整（原因待排查）可以通过以下方法快速结果
 ```bash
 #在 host 机器上(如 mac) 的项目根目录执行 
-tnpm i --ignore-scripts --no-optional 
+pnpm i --ignore-scripts --no-optional 
 # 目的是在 mac 上下载好 js 的依赖库，但是不执行 npm install 的默认行为（即编译依赖库里的 node-addon 模块）
 # 然后执行 brl.sh 即可
 # 如果还是缺少某依赖库，那么手动下载对应依赖库即可.
