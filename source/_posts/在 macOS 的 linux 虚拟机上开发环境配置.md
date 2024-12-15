@@ -6,9 +6,13 @@ permalink:
 top: 0
 comments: 
 copyright: true
-tags: 
-categories: 
-keywords: 
+tags:
+  - electron
+  - vmware
+  - linux
+  - cross-platform
+categories: environment
+keywords: electron, vmware, linux
 description:
 ---
 ## VirtualBox + Ubuntu
