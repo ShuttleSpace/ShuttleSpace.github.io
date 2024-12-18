@@ -21,7 +21,7 @@ description: 使用 obsidian + github action 实现 hexo 博客的编辑与发�
 
 ### 1、hexo 生成站点
 
-这一步省略,之前我的站点已经生成好了,使用的 anzhiyu 主题,看着还不错.而且编辑好了
+这一步省略,之前我的站点已经生成好了,使用的 anzhiyu 主题,看着还不错.
 
 ### 2、github action 配置
 以下是之前配置的 github action
@@ -146,18 +146,50 @@ jobs:
 
 ```md
 ---
-title: obsidian  + hexo + github action 实现博客编辑发布
-date: 17:20 星期二, 十二月 3日 2024
-updated: 17:20 星期二, 十二月 3日 2024
-permalink:
+title: <% tp.file.title %>
+date: <% tp.file.creation_date() %>
+updated: <% tp.file.last_modified_date() %>
+permalink: 
 top: 0
-comments:
+comments: 
 copyright: true
-tags:
-categories:
-keywords:
+tags: 
+categories: 
+keywords: 
 description:
 ---
+<%*
+let newTitle = tp.file.title;
+if (newTitle.startsWith("Untitled") || newTitle.startsWith("未命名")) {
+  newTitle = await tp.system.prompt("Title");
+  if (!newTitle) {
+    new Notice("Title is required!");
+    return;
+  }
+}
+await tp.file.rename(newTitle);
+tp.hooks.on_all_templates_executed(async () => {
+  await app.fileManager.processFrontMatter(
+    tp.file.find_tfile(tp.file.path(true)),
+    (frontmatter) => {
+      frontmatter["title"] = newTitle;
+    }
+  );
+});
+app.workspace.on('editor-change', async (info) => {
+	tp.hooks.on_all_templates_executed(async () => {
+	  await app.fileManager.processFrontMatter(
+	    tp.file.find_tfile(tp.file.path(true)),
+	    (frontmatter) => {
+	      frontmatter["updated"] = tp.file.last_modified_date("");
+	    }
+	  );
+	});
+})
+tp.hooks.on_all_templates_executed(() => {
+  app.commands.executeCommandById("obsidian-linter:lint-file");
+});
+-%>
 ```
 > 这里主要使用 templater 修改了文件名,并且修改 frontmatter 的 title 属性.否则 hexo 渲染出来的网页标题就是 `[object Object]`
 
