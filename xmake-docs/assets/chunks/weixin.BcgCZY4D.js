@@ -1,0 +1,1 @@
+const s="/xmake-docs/assets/paypal.DLHz2Htw.png",a="/xmake-docs/assets/github_sponsor.CE0kvxS4.png",o="/xmake-docs/assets/alipay.BBETeqcy.png",t="/xmake-docs/assets/weixin.ByqlXTT0.png";export{s as _,a,o as b,t as c};

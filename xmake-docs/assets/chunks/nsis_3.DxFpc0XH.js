@@ -1,0 +1,1 @@
+const s="/xmake-docs/assets/qt_vs.z5T-iR4l.png",t="/xmake-docs/assets/property_page_vsxmake.DLPYstcB.png",a="/xmake-docs/assets/nsis_1.CnnU9dlb.png",o="/xmake-docs/assets/nsis_2.CPPcsJnz.png",_="/xmake-docs/assets/nsis_3.CQFlpEzf.png";export{s as _,t as a,a as b,o as c,_ as d};

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>xmake</title>
+    <meta name="description" content="xmake">
+    <meta name="generator" content="VitePress v1.5.0">
+    <link rel="preload stylesheet" href="/xmake-docs/assets/style.D-jDexbL.css" as="style">
+    <link rel="preload stylesheet" href="/xmake-docs/vp-icons.css" as="style">
+    
+    <script type="module" src="/xmake-docs/assets/app.Cui5Sk-b.js"></script>
+    <link rel="preload" href="/xmake-docs/assets/inter-roman-latin.Di8DUHzh.woff2" as="font" type="font/woff2" crossorigin="">
+    <link rel="modulepreload" href="/xmake-docs/assets/chunks/theme.DBDi7wLm.js">
+    <link rel="modulepreload" href="/xmake-docs/assets/chunks/framework.CQcFAaaG.js">
+    <link rel="modulepreload" href="/xmake-docs/assets/zh-cn_features_autogen.md.CHznWras.lean.js">
+    <script id="check-dark-mode">(()=>{const e=localStorage.getItem("vitepress-theme-appearance")||"auto",a=window.matchMedia("(prefers-color-scheme: dark)").matches;(!e||e==="auto"?a:e==="dark")&&document.documentElement.classList.add("dark")})();</script>
+    <script id="check-mac-os">document.documentElement.classList.toggle("mac",/Mac|iPhone|iPod|iPad/i.test(navigator.platform));</script>
+  </head>
+  <body>
+    <div id="app"><div class="Layout" data-v-e7c7f512><!--[--><!--]--><!--[--><span tabindex="-1" data-v-7d046bdd></span><a href="#VPContent" class="VPSkipLink visually-hidden" data-v-7d046bdd> Skip to content </a><!--]--><!----><header class="VPNav" data-v-e7c7f512 data-v-8e32ee44><div class="VPNavBar" data-v-8e32ee44 data-v-fc862fb2><div class="wrapper" data-v-fc862fb2><div class="container" data-v-fc862fb2><div class="title" data-v-fc862fb2><div class="VPNavBarTitle has-sidebar" data-v-fc862fb2 data-v-f561f692><a class="title" href="/xmake-docs/zh-cn/" data-v-f561f692><!--[--><!--]--><!----><span data-v-f561f692>xmake</span><!--[--><!--]--></a></div></div><div class="content" data-v-fc862fb2><div class="content-body" data-v-fc862fb2><!--[--><!--]--><div class="VPNavBarSearch search" data-v-fc862fb2><!--[--><!----><div id="local-search"><button type="button" class="DocSearch DocSearch-Button" aria-label="Search"><span class="DocSearch-Button-Container"><span class="vp-icon DocSearch-Search-Icon"></span><span class="DocSearch-Button-Placeholder">Search</span></span><span class="DocSearch-Button-Keys"><kbd class="DocSearch-Button-Key"></kbd><kbd class="DocSearch-Button-Key">K</kbd></span></button></div><!--]--></div><nav aria-labelledby="main-nav-aria-label" class="VPNavBarMenu menu" data-v-fc862fb2 data-v-5d073a03><span id="main-nav-aria-label" class="visually-hidden" data-v-5d073a03> Main Navigation </span><!--[--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/xmake-docs/zh-cn/about/introduction.html" tabindex="0" data-v-5d073a03 data-v-4bb26b43><!--[--><span data-v-4bb26b43>关于</span><!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/xmake-docs/zh-cn/guide/quickstart.html" tabindex="0" data-v-5d073a03 data-v-4bb26b43><!--[--><span data-v-4bb26b43>指南</span><!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/xmake-docs/zh-cn/package/local_3rd_source_library.html" tabindex="0" data-v-5d073a03 data-v-4bb26b43><!--[--><span data-v-4bb26b43>包</span><!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/xmake-docs/zh-cn/toolchain/builtin_toolchains.html" tabindex="0" data-v-5d073a03 data-v-4bb26b43><!--[--><span data-v-4bb26b43>工具链</span><!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/xmake-docs/zh-cn/manual/builtin_modules.html" tabindex="0" data-v-5d073a03 data-v-4bb26b43><!--[--><span data-v-4bb26b43>手册</span><!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/xmake-docs/zh-cn/plugin/builtin_plugins.html" tabindex="0" data-v-5d073a03 data-v-4bb26b43><!--[--><span data-v-4bb26b43>插件</span><!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/xmake-docs/zh-cn/theme/builtin_themes.html" tabindex="0" data-v-5d073a03 data-v-4bb26b43><!--[--><span data-v-4bb26b43>主题</span><!--]--></a><!--]--><!--]--></nav><div class="VPFlyout VPNavBarTranslations translations" data-v-fc862fb2 data-v-f313a510 data-v-74905087><button type="button" class="button" aria-haspopup="true" aria-expanded="false" aria-label="Change language" data-v-74905087><span class="text" data-v-74905087><span class="vpi-languages option-icon" data-v-74905087></span><!----><span class="vpi-chevron-down text-icon" data-v-74905087></span></span></button><div class="menu" data-v-74905087><div class="VPMenu" data-v-74905087 data-v-767bfffe><!----><!--[--><!--[--><div class="items" data-v-f313a510><p class="title" data-v-f313a510>简体中文</p><!--[--><div class="VPMenuLink" data-v-f313a510 data-v-0a709ceb><a class="VPLink link" href="/xmake-docs/features/autogen.html" data-v-0a709ceb><!--[--><span data-v-0a709ceb>English</span><!--]--></a></div><!--]--></div><!--]--><!--]--></div></div></div><div class="VPNavBarAppearance appearance" data-v-fc862fb2 data-v-b7fa000e><button class="VPSwitch VPSwitchAppearance" type="button" role="switch" title aria-checked="false" data-v-b7fa000e data-v-2a80f125 data-v-511f920b><span class="check" data-v-511f920b><span class="icon" data-v-511f920b><!--[--><span class="vpi-sun sun" data-v-2a80f125></span><span class="vpi-moon moon" data-v-2a80f125></span><!--]--></span></span></button></div><div class="VPSocialLinks VPNavBarSocialLinks social-links" data-v-fc862fb2 data-v-2ec5ce84 data-v-c16b6a19><!--[--><a class="VPSocialLink no-icon" href="https://github.com/xmake-io/xmake" aria-label="github" target="_blank" rel="noopener" data-v-c16b6a19 data-v-d12b2977><span class="vpi-social-github"></span></a><!--]--></div><div class="VPFlyout VPNavBarExtra extra" data-v-fc862fb2 data-v-32105570 data-v-74905087><button type="button" class="button" aria-haspopup="true" aria-expanded="false" aria-label="extra navigation" data-v-74905087><span class="vpi-more-horizontal icon" data-v-74905087></span></button><div class="menu" data-v-74905087><div class="VPMenu" data-v-74905087 data-v-767bfffe><!----><!--[--><!--[--><div class="group translations" data-v-32105570><p class="trans-title" data-v-32105570>简体中文</p><!--[--><div class="VPMenuLink" data-v-32105570 data-v-0a709ceb><a class="VPLink link" href="/xmake-docs/features/autogen.html" data-v-0a709ceb><!--[--><span data-v-0a709ceb>English</span><!--]--></a></div><!--]--></div><div class="group" data-v-32105570><div class="item appearance" data-v-32105570><p class="label" data-v-32105570>Appearance</p><div class="appearance-action" data-v-32105570><button class="VPSwitch VPSwitchAppearance" type="button" role="switch" title aria-checked="false" data-v-32105570 data-v-2a80f125 data-v-511f920b><span class="check" data-v-511f920b><span class="icon" data-v-511f920b><!--[--><span class="vpi-sun sun" data-v-2a80f125></span><span class="vpi-moon moon" data-v-2a80f125></span><!--]--></span></span></button></div></div></div><div class="group" data-v-32105570><div class="item social-links" data-v-32105570><div class="VPSocialLinks social-links-list" data-v-32105570 data-v-c16b6a19><!--[--><a class="VPSocialLink no-icon" href="https://github.com/xmake-io/xmake" aria-label="github" target="_blank" rel="noopener" data-v-c16b6a19 data-v-d12b2977><span class="vpi-social-github"></span></a><!--]--></div></div></div><!--]--><!--]--></div></div></div><!--[--><!--]--><button type="button" class="VPNavBarHamburger hamburger" aria-label="mobile navigation" aria-expanded="false" aria-controls="VPNavScreen" data-v-fc862fb2 data-v-f6958f10><span class="container" data-v-f6958f10><span class="top" data-v-f6958f10></span><span class="middle" data-v-f6958f10></span><span class="bottom" data-v-f6958f10></span></span></button></div></div></div></div><div class="divider" data-v-fc862fb2><div class="divider-line" data-v-fc862fb2></div></div></div><!----></header><div class="VPLocalNav has-sidebar empty" data-v-e7c7f512 data-v-113aaddf><div class="container" data-v-113aaddf><button class="menu" aria-expanded="false" aria-controls="VPSidebarNav" data-v-113aaddf><span class="vpi-align-left menu-icon" data-v-113aaddf></span><span class="menu-text" data-v-113aaddf>Menu</span></button><div class="VPLocalNavOutlineDropdown" style="--vp-vh:0px;" data-v-113aaddf data-v-6c8e534d><button data-v-6c8e534d>Return to top</button><!----></div></div></div><aside class="VPSidebar" data-v-e7c7f512 data-v-6ad18693><div class="curtain" data-v-6ad18693></div><nav class="nav" id="VPSidebarNav" aria-labelledby="sidebar-aria-label" tabindex="-1" data-v-6ad18693><span class="visually-hidden" id="sidebar-aria-label" data-v-6ad18693> Sidebar Navigation </span><!--[--><!--]--><!--[--><div class="no-transition group" data-v-fd868f70><section class="VPSidebarItem level-0 has-active" data-v-fd868f70 data-v-1b49e28c><div class="item" role="button" tabindex="0" data-v-1b49e28c><div class="indicator" data-v-1b49e28c></div><h2 class="text" data-v-1b49e28c>特性</h2><!----></div><div class="items" data-v-1b49e28c><!--[--><div class="VPSidebarItem level-1 is-link" data-v-1b49e28c data-v-1b49e28c><div class="item" data-v-1b49e28c><div class="indicator" data-v-1b49e28c></div><a class="VPLink link link" href="/xmake-docs/zh-cn/features/autogen.html" data-v-1b49e28c><!--[--><p class="text" data-v-1b49e28c>自动生成</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-1b49e28c data-v-1b49e28c><div class="item" data-v-1b49e28c><div class="indicator" data-v-1b49e28c></div><a class="VPLink link link" href="/xmake-docs/zh-cn/features/build_cache.html" data-v-1b49e28c><!--[--><p class="text" data-v-1b49e28c>构建缓存</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-1b49e28c data-v-1b49e28c><div class="item" data-v-1b49e28c><div class="indicator" data-v-1b49e28c></div><a class="VPLink link link" href="/xmake-docs/zh-cn/features/distcc_build.html" data-v-1b49e28c><!--[--><p class="text" data-v-1b49e28c>分布式构建</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-1b49e28c data-v-1b49e28c><div class="item" data-v-1b49e28c><div class="indicator" data-v-1b49e28c></div><a class="VPLink link link" href="/xmake-docs/zh-cn/features/remote_build.html" data-v-1b49e28c><!--[--><p class="text" data-v-1b49e28c>远程构建</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-1b49e28c data-v-1b49e28c><div class="item" data-v-1b49e28c><div class="indicator" data-v-1b49e28c></div><a class="VPLink link link" href="/xmake-docs/zh-cn/features/trybuild.html" data-v-1b49e28c><!--[--><p class="text" data-v-1b49e28c>预构建</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-1b49e28c data-v-1b49e28c><div class="item" data-v-1b49e28c><div class="indicator" data-v-1b49e28c></div><a class="VPLink link link" href="/xmake-docs/zh-cn/features/unity_build.html" data-v-1b49e28c><!--[--><p class="text" data-v-1b49e28c>通用构建</p><!--]--></a><!----></div><!----></div><!--]--></div></section></div><!--]--><!--[--><!--]--></nav></aside><div class="VPContent has-sidebar" id="VPContent" data-v-e7c7f512 data-v-17c4e21f><div class="VPDoc has-sidebar has-aside" data-v-17c4e21f data-v-16f81e94><!--[--><!--]--><div class="container" data-v-16f81e94><div class="aside" data-v-16f81e94><div class="aside-curtain" data-v-16f81e94></div><div class="aside-container" data-v-16f81e94><div class="aside-content" data-v-16f81e94><div class="VPDocAside" data-v-16f81e94 data-v-5b965315><!--[--><!--]--><!--[--><!--]--><nav aria-labelledby="doc-outline-aria-label" class="VPDocAsideOutline" data-v-5b965315 data-v-859a2f35><div class="content" data-v-859a2f35><div class="outline-marker" data-v-859a2f35></div><div aria-level="2" class="outline-title" id="doc-outline-aria-label" role="heading" data-v-859a2f35>On this page</div><ul class="VPDocOutlineItem root" data-v-859a2f35 data-v-f865fa7a><!--[--><!--]--></ul></div></nav><!--[--><!--]--><div class="spacer" data-v-5b965315></div><!--[--><!--]--><!----><!--[--><!--]--><!--[--><!--]--></div></div></div></div><div class="content" data-v-16f81e94><div class="content-container" data-v-16f81e94><!--[--><!--]--><main class="main" data-v-16f81e94><div style="position:relative;" class="vp-doc _xmake-docs_zh-cn_features_autogen" data-v-16f81e94><div><p>对于一份工程源码，可以不用编写makefile，也不用编写各种make相关的工程描述文件（例如：xmake.lua，makefile.am, cmakelist.txt等）</p><p>xmake就可以直接编译他们，这是如何做到的呢，简单来说下实现原理：</p><ol><li>首先扫描当前目录下，xmake所以支持的所有源代码文件</li><li>分析代码，检测哪些代码拥有main入口函数</li><li>所有没有main入口的代码编译成静态库</li><li>带有main入口的代码，编译成可执行程序，同时链接其他静态库程序</li></ol><p>这种代码扫描和智能编译，非常简单，目前xmake还不支持多级目录扫描，只对单级目录的代码进行扫描编译。。</p><h3 id="使用场景" tabindex="-1">使用场景 <a class="header-anchor" href="#使用场景" aria-label="Permalink to &quot;使用场景&quot;">​</a></h3><ol><li>临时快速编译和运行一些零散的测试代码</li><li>尝试对其他开源库做移植编译</li><li>快速基于现有代码创建新xmake工程</li></ol><h3 id="如何使用" tabindex="-1">如何使用 <a class="header-anchor" href="#如何使用" aria-label="Permalink to &quot;如何使用&quot;">​</a></h3><p>直接在带有源码的目录（没有xmake.lua）下执行xmake，然后根据提示操作：</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">$</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> xmake</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">note:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> xmake.lua</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> not</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> found,</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> try</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> generating</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> it</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (pass </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">-y</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> or</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> --confirm=y/n/d</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> to</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> skip</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> confirm</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">?</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">please</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> input:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> n</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (y/n)</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">y</span></span></code></pre></div><p>另外, 当存在其他构建系统标识性文件的时候(比如 CMakeLists.txt), 不会触发自动生成 xmake.lua 的流程, 而是首先触发 <a href="#自动探测构建系统并编译">自动探测构建系统并编译</a>, 如果要强制触发自动扫描生成 xmake.lua 的流程, 可运行:</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">$</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> xmake</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> f</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -y</span></span></code></pre></div><h3 id="开源代码的移植和编译" tabindex="-1">开源代码的移植和编译 <a class="header-anchor" href="#开源代码的移植和编译" aria-label="Permalink to &quot;开源代码的移植和编译&quot;">​</a></h3><p>虽然这种方式，并不是非常智能，限制也不少，但是对于想临时写些代码进行编译运行，或者临时想交叉编译一些简单的开源库代码</p><p>这种方式已经足够使用了，下面看下一个实际的例子：</p><p>我下载了一份zlib-1.2.10的源码，想要编译它，只需要进入zlib的源码目录执行：</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">$</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> cd</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> zlib-1.2.10</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">$</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> xmake</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">note:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> xmake.lua</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> not</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> found,</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> try</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> generating</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> it</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (pass </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">-y</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> or</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> --confirm=y/n/d</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> to</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> skip</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> confirm</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">?</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">please</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> input:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> n</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (y/n)</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">y</span></span></code></pre></div><p>就行了，输入y确认后，输出结果如下：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>target(zlib-1.2): static</span></span>
+<span class="line"><span>    [+]: ./adler32.c</span></span>
+<span class="line"><span>    [+]: ./compress.c</span></span>
+<span class="line"><span>    [+]: ./crc32.c</span></span>
+<span class="line"><span>    [+]: ./deflate.c</span></span>
+<span class="line"><span>    [+]: ./gzclose.c</span></span>
+<span class="line"><span>    [+]: ./gzlib.c</span></span>
+<span class="line"><span>    [+]: ./gzread.c</span></span>
+<span class="line"><span>    [+]: ./gzwrite.c</span></span>
+<span class="line"><span>    [+]: ./infback.c</span></span>
+<span class="line"><span>    [+]: ./inffast.c</span></span>
+<span class="line"><span>    [+]: ./inflate.c</span></span>
+<span class="line"><span>    [+]: ./inftrees.c</span></span>
+<span class="line"><span>    [+]: ./trees.c</span></span>
+<span class="line"><span>    [+]: ./uncompr.c</span></span>
+<span class="line"><span>    [+]: ./zutil.c</span></span>
+<span class="line"><span>xmake.lua generated, scan ok!👌</span></span>
+<span class="line"><span>checking for the architecture ... x86_64</span></span>
+<span class="line"><span>checking for the Xcode SDK version for macosx ... 10.12</span></span>
+<span class="line"><span>checking for the target minimal version ... 10.12</span></span>
+<span class="line"><span>checking for the c compiler (cc) ... xcrun -sdk macosx clang</span></span>
+<span class="line"><span>checking for the c++ compiler (cxx) ... xcrun -sdk macosx clang</span></span>
+<span class="line"><span>checking for the objc compiler (mm) ... xcrun -sdk macosx clang</span></span>
+<span class="line"><span>checking for the objc++ compiler (mxx) ... xcrun -sdk macosx clang++</span></span>
+<span class="line"><span>checking for the swift compiler (sc) ... xcrun -sdk macosx swiftc</span></span>
+<span class="line"><span>checking for the assember (as) ... xcrun -sdk macosx clang</span></span>
+<span class="line"><span>checking for the linker (ld) ... xcrun -sdk macosx clang++</span></span>
+<span class="line"><span>checking for the static library archiver (ar) ... xcrun -sdk macosx ar</span></span>
+<span class="line"><span>checking for the static library extractor (ex) ... xcrun -sdk macosx ar</span></span>
+<span class="line"><span>checking for the shared library linker (sh) ... xcrun -sdk macosx clang++</span></span>
+<span class="line"><span>checking for the debugger (dd) ... xcrun -sdk macosx lldb</span></span>
+<span class="line"><span>checking for the golang compiler (go) ... go</span></span>
+<span class="line"><span>configure</span></span>
+<span class="line"><span>{</span></span>
+<span class="line"><span>    ex = &quot;xcrun -sdk macosx ar&quot;</span></span>
+<span class="line"><span>,   sh = &quot;xcrun -sdk macosx clang++&quot;</span></span>
+<span class="line"><span>,   host = &quot;macosx&quot;</span></span>
+<span class="line"><span>,   ar = &quot;xcrun -sdk macosx ar&quot;</span></span>
+<span class="line"><span>,   buildir = &quot;build&quot;</span></span>
+<span class="line"><span>,   as = &quot;xcrun -sdk macosx clang&quot;</span></span>
+<span class="line"><span>,   plat = &quot;macosx&quot;</span></span>
+<span class="line"><span>,   xcode_dir = &quot;/Applications/Xcode.app&quot;</span></span>
+<span class="line"><span>,   arch = &quot;x86_64&quot;</span></span>
+<span class="line"><span>,   mxx = &quot;xcrun -sdk macosx clang++&quot;</span></span>
+<span class="line"><span>,   go = &quot;go&quot;</span></span>
+<span class="line"><span>,   target_minver = &quot;10.12&quot;</span></span>
+<span class="line"><span>,   ccache = &quot;ccache&quot;</span></span>
+<span class="line"><span>,   mode = &quot;release&quot;</span></span>
+<span class="line"><span>,   clean = true</span></span>
+<span class="line"><span>,   cxx = &quot;xcrun -sdk macosx clang&quot;</span></span>
+<span class="line"><span>,   cc = &quot;xcrun -sdk macosx clang&quot;</span></span>
+<span class="line"><span>,   dd = &quot;xcrun -sdk macosx lldb&quot;</span></span>
+<span class="line"><span>,   kind = &quot;static&quot;</span></span>
+<span class="line"><span>,   ld = &quot;xcrun -sdk macosx clang++&quot;</span></span>
+<span class="line"><span>,   xcode_sdkver = &quot;10.12&quot;</span></span>
+<span class="line"><span>,   sc = &quot;xcrun -sdk macosx swiftc&quot;</span></span>
+<span class="line"><span>,   mm = &quot;xcrun -sdk macosx clang&quot;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>configure ok!</span></span>
+<span class="line"><span>clean ok!</span></span>
+<span class="line"><span>[00%]: cache compiling.release ./adler32.c</span></span>
+<span class="line"><span>[06%]: cache compiling.release ./compress.c</span></span>
+<span class="line"><span>[13%]: cache compiling.release ./crc32.c</span></span>
+<span class="line"><span>[20%]: cache compiling.release ./deflate.c</span></span>
+<span class="line"><span>[26%]: cache compiling.release ./gzclose.c</span></span>
+<span class="line"><span>[33%]: cache compiling.release ./gzlib.c</span></span>
+<span class="line"><span>[40%]: cache compiling.release ./gzread.c</span></span>
+<span class="line"><span>[46%]: cache compiling.release ./gzwrite.c</span></span>
+<span class="line"><span>[53%]: cache compiling.release ./infback.c</span></span>
+<span class="line"><span>[60%]: cache compiling.release ./inffast.c</span></span>
+<span class="line"><span>[66%]: cache compiling.release ./inflate.c</span></span>
+<span class="line"><span>[73%]: cache compiling.release ./inftrees.c</span></span>
+<span class="line"><span>[80%]: cache compiling.release ./trees.c</span></span>
+<span class="line"><span>[86%]: cache compiling.release ./uncompr.c</span></span>
+<span class="line"><span>[93%]: cache compiling.release ./zutil.c</span></span>
+<span class="line"><span>[100%]: archiving.release libzlib-1.2.a</span></span>
+<span class="line"><span>build ok!👌</span></span></code></pre></div><p>通过输出结果，可以看到，xmake会去检测扫描当前目录下的所有.c代码，发现没有main入口，应该是静态库程序，因此执行xmake后，就直接编译成静态库libzlib-1.2.a了</p><p>连xmake.lua都没有编写，其实xmake在扫描完成后，会去自动在当前目录下生成一份xmake.lua，下次编译就不需要重新扫描检测了。</p><p>自动生成的xmake.lua内容如下：</p><div class="language-lua vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">lua</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">-- define target</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">target</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;zlib-1.2&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    -- set kind</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    set_kind</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;static&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    -- add files</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./adler32.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./compress.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./crc32.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./deflate.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./gzclose.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./gzlib.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./gzread.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./gzwrite.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./infback.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./inffast.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./inflate.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./inftrees.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./trees.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./uncompr.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">    add_files</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;./zutil.c&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span></code></pre></div><p>也许你会说，像这种开源库，直接<code>configure; make</code>不就好了吗，他们自己也有提供makefile来直接编译的，的确是这样，我这里只是举个例子而已。。</p><p>当然，很多开源库在交叉编译的时候，通过自带的<code>configure</code>，处理起来还是很繁琐的，用xmake进行交叉编译会更方便些。。</p><h3 id="即时地代码编写和编译运行" tabindex="-1">即时地代码编写和编译运行 <a class="header-anchor" href="#即时地代码编写和编译运行" aria-label="Permalink to &quot;即时地代码编写和编译运行&quot;">​</a></h3><p>xmake的这个扫描代码编译特性，主要的目的：还是为了让我们在临时想写些测试代码的时候，不用考虑太多东西，直接上手敲代码，然后快速执行<code>xmake run</code> 来调试验证结果。。</p><p>例如：</p><p>我想写了个简单的main.c的测试程序，打印<code>hello world!</code>，如果要写makefile或者直接通过gcc命令来，就很繁琐了，你需要：</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">gcc</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ./main.c</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -o</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> demo</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">./demo</span></span></code></pre></div><p>最快速的方式，也需要执行两行命令，而如果用xmake，只需要执行：</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">xmake</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> run</span></span></code></pre></div><p>就行了，它会自动检测到代码后，自动生成对应的xmake.lua，自动编译，自动运行，然后输出：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>hello world!</span></span></code></pre></div><p>如果你有十几个代码文件，用手敲gcc的方式，或者写makefile的方式，这个差距就更明显了，用xmake还是只需要一行命令：</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">xmake</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> run</span></span></code></pre></div><h3 id="多语言支持" tabindex="-1">多语言支持 <a class="header-anchor" href="#多语言支持" aria-label="Permalink to &quot;多语言支持&quot;">​</a></h3><p>这种代码检测和即时编译，是支持多语言的，不仅支持c/c++，还支持objc/swift，后期还会支持golang（正在开发中）</p><p>例如我下载了一份fmdb的ios开源框架代码：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>.</span></span>
+<span class="line"><span>├── FMDB.h</span></span>
+<span class="line"><span>├── FMDatabase.h</span></span>
+<span class="line"><span>├── FMDatabase.m</span></span>
+<span class="line"><span>├── FMDatabaseAdditions.h</span></span>
+<span class="line"><span>├── FMDatabaseAdditions.m</span></span>
+<span class="line"><span>├── FMDatabasePool.h</span></span>
+<span class="line"><span>├── FMDatabasePool.m</span></span>
+<span class="line"><span>├── FMDatabaseQueue.h</span></span>
+<span class="line"><span>├── FMDatabaseQueue.m</span></span>
+<span class="line"><span>├── FMResultSet.h</span></span>
+<span class="line"><span>└── FMResultSet.m</span></span></code></pre></div><p>想要把它编译成ios的静态库，但是又不想写xmake.lua，或者makefile，那么只需要使用xmake的这个新特性，直接执行：</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">$</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> xmake</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> f</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -p</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> iphoneos</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">xmake</span></span></code></pre></div><p>就行了，输出结果如下：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>xmake.lua not found, scanning files ..</span></span>
+<span class="line"><span>target(FMDB): static</span></span>
+<span class="line"><span>    [+]: ./FMDatabase.m</span></span>
+<span class="line"><span>    [+]: ./FMDatabaseAdditions.m</span></span>
+<span class="line"><span>    [+]: ./FMDatabasePool.m</span></span>
+<span class="line"><span>    [+]: ./FMDatabaseQueue.m</span></span>
+<span class="line"><span>    [+]: ./FMResultSet.m</span></span>
+<span class="line"><span>xmake.lua generated, scan ok!👌</span></span>
+<span class="line"><span>checking for the architecture ... armv7</span></span>
+<span class="line"><span>checking for the Xcode SDK version for iphoneos ... 10.1</span></span>
+<span class="line"><span>checking for the target minimal version ... 10.1</span></span>
+<span class="line"><span>checking for the c compiler (cc) ... xcrun -sdk iphoneos clang</span></span>
+<span class="line"><span>checking for the c++ compiler (cxx) ... xcrun -sdk iphoneos clang</span></span>
+<span class="line"><span>checking for the objc compiler (mm) ... xcrun -sdk iphoneos clang</span></span>
+<span class="line"><span>checking for the objc++ compiler (mxx) ... xcrun -sdk iphoneos clang++</span></span>
+<span class="line"><span>checking for the assember (as) ... gas-preprocessor.pl xcrun -sdk iphoneos clang</span></span>
+<span class="line"><span>checking for the linker (ld) ... xcrun -sdk iphoneos clang++</span></span>
+<span class="line"><span>checking for the static library archiver (ar) ... xcrun -sdk iphoneos ar</span></span>
+<span class="line"><span>checking for the static library extractor (ex) ... xcrun -sdk iphoneos ar</span></span>
+<span class="line"><span>checking for the shared library linker (sh) ... xcrun -sdk iphoneos clang++</span></span>
+<span class="line"><span>checking for the swift compiler (sc) ... xcrun -sdk iphoneos swiftc</span></span>
+<span class="line"><span>configure</span></span>
+<span class="line"><span>{</span></span>
+<span class="line"><span>    ex = &quot;xcrun -sdk iphoneos ar&quot;</span></span>
+<span class="line"><span>,   ccache = &quot;ccache&quot;</span></span>
+<span class="line"><span>,   host = &quot;macosx&quot;</span></span>
+<span class="line"><span>,   ar = &quot;xcrun -sdk iphoneos ar&quot;</span></span>
+<span class="line"><span>,   buildir = &quot;build&quot;</span></span>
+<span class="line"><span>,   as = &quot;/usr/local/share/xmake/tools/utils/gas-preprocessor.pl xcrun -sdk iphoneos clang&quot;</span></span>
+<span class="line"><span>,   arch = &quot;armv7&quot;</span></span>
+<span class="line"><span>,   mxx = &quot;xcrun -sdk iphoneos clang++&quot;</span></span>
+<span class="line"><span>,   cxx = &quot;xcrun -sdk iphoneos clang&quot;</span></span>
+<span class="line"><span>,   target_minver = &quot;10.1&quot;</span></span>
+<span class="line"><span>,   xcode_dir = &quot;/Applications/Xcode.app&quot;</span></span>
+<span class="line"><span>,   clean = true</span></span>
+<span class="line"><span>,   sh = &quot;xcrun -sdk iphoneos clang++&quot;</span></span>
+<span class="line"><span>,   cc = &quot;xcrun -sdk iphoneos clang&quot;</span></span>
+<span class="line"><span>,   ld = &quot;xcrun -sdk iphoneos clang++&quot;</span></span>
+<span class="line"><span>,   mode = &quot;release&quot;</span></span>
+<span class="line"><span>,   kind = &quot;static&quot;</span></span>
+<span class="line"><span>,   plat = &quot;iphoneos&quot;</span></span>
+<span class="line"><span>,   xcode_sdkver = &quot;10.1&quot;</span></span>
+<span class="line"><span>,   sc = &quot;xcrun -sdk iphoneos swiftc&quot;</span></span>
+<span class="line"><span>,   mm = &quot;xcrun -sdk iphoneos clang&quot;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>configure ok!</span></span>
+<span class="line"><span>clean ok!</span></span>
+<span class="line"><span>[00%]: cache compiling.release ./FMDatabase.m</span></span>
+<span class="line"><span>[20%]: cache compiling.release ./FMDatabaseAdditions.m</span></span>
+<span class="line"><span>[40%]: cache compiling.release ./FMDatabasePool.m</span></span>
+<span class="line"><span>[60%]: cache compiling.release ./FMDatabaseQueue.m</span></span>
+<span class="line"><span>[80%]: cache compiling.release ./FMResultSet.m</span></span>
+<span class="line"><span>[100%]: archiving.release libFMDB.a</span></span>
+<span class="line"><span>build ok!👌</span></span></code></pre></div><h3 id="同时编译多个可执行文件" tabindex="-1">同时编译多个可执行文件 <a class="header-anchor" href="#同时编译多个可执行文件" aria-label="Permalink to &quot;同时编译多个可执行文件&quot;">​</a></h3><p>输出结果的开头部分，就是对代码的分析结果，虽然目前只支持单级目录结构的代码扫描，但是还是可以同时支持检测和编译多个可执行文件的</p><p>我们以libjpeg的开源库为例：</p><p>我们进入jpeg-6b目录后，执行：</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">$</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> xmake</span></span></code></pre></div><p>输出如下：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>xmake.lua not found, scanning files ..</span></span>
+<span class="line"><span>target(jpeg-6b): static</span></span>
+<span class="line"><span>    [+]: ./cdjpeg.c</span></span>
+<span class="line"><span>    [+]: ./example.c</span></span>
+<span class="line"><span>    [+]: ./jcapimin.c</span></span>
+<span class="line"><span>    [+]: ./jcapistd.c</span></span>
+<span class="line"><span>    [+]: ./jccoefct.c</span></span>
+<span class="line"><span>    [+]: ./jccolor.c</span></span>
+<span class="line"><span>    [+]: ./jcdctmgr.c</span></span>
+<span class="line"><span>    [+]: ./jchuff.c</span></span>
+<span class="line"><span>    [+]: ./jcinit.c</span></span>
+<span class="line"><span>    [+]: ./jcmainct.c</span></span>
+<span class="line"><span>    [+]: ./jcmarker.c</span></span>
+<span class="line"><span>    [+]: ./jcmaster.c</span></span>
+<span class="line"><span>    [+]: ./jcomapi.c</span></span>
+<span class="line"><span>    [+]: ./jcparam.c</span></span>
+<span class="line"><span>    [+]: ./jcphuff.c</span></span>
+<span class="line"><span>    [+]: ./jcprepct.c</span></span>
+<span class="line"><span>    [+]: ./jcsample.c</span></span>
+<span class="line"><span>    [+]: ./jctrans.c</span></span>
+<span class="line"><span>    [+]: ./jdapimin.c</span></span>
+<span class="line"><span>    [+]: ./jdapistd.c</span></span>
+<span class="line"><span>    [+]: ./jdatadst.c</span></span>
+<span class="line"><span>    [+]: ./jdatasrc.c</span></span>
+<span class="line"><span>    [+]: ./jdcoefct.c</span></span>
+<span class="line"><span>    [+]: ./jdcolor.c</span></span>
+<span class="line"><span>    [+]: ./jddctmgr.c</span></span>
+<span class="line"><span>    [+]: ./jdhuff.c</span></span>
+<span class="line"><span>    [+]: ./jdinput.c</span></span>
+<span class="line"><span>    [+]: ./jdmainct.c</span></span>
+<span class="line"><span>    [+]: ./jdmarker.c</span></span>
+<span class="line"><span>    [+]: ./jdmaster.c</span></span>
+<span class="line"><span>    [+]: ./jdmerge.c</span></span>
+<span class="line"><span>    [+]: ./jdphuff.c</span></span>
+<span class="line"><span>    [+]: ./jdpostct.c</span></span>
+<span class="line"><span>    [+]: ./jdsample.c</span></span>
+<span class="line"><span>    [+]: ./jdtrans.c</span></span>
+<span class="line"><span>    [+]: ./jerror.c</span></span>
+<span class="line"><span>    [+]: ./jfdctflt.c</span></span>
+<span class="line"><span>    [+]: ./jfdctfst.c</span></span>
+<span class="line"><span>    [+]: ./jfdctint.c</span></span>
+<span class="line"><span>    [+]: ./jidctflt.c</span></span>
+<span class="line"><span>    [+]: ./jidctfst.c</span></span>
+<span class="line"><span>    [+]: ./jidctint.c</span></span>
+<span class="line"><span>    [+]: ./jidctred.c</span></span>
+<span class="line"><span>    [+]: ./jmemansi.c</span></span>
+<span class="line"><span>    [+]: ./jmemmgr.c</span></span>
+<span class="line"><span>    [+]: ./jmemname.c</span></span>
+<span class="line"><span>    [+]: ./jmemnobs.c</span></span>
+<span class="line"><span>    [+]: ./jquant1.c</span></span>
+<span class="line"><span>    [+]: ./jquant2.c</span></span>
+<span class="line"><span>    [+]: ./jutils.c</span></span>
+<span class="line"><span>    [+]: ./rdbmp.c</span></span>
+<span class="line"><span>    [+]: ./rdcolmap.c</span></span>
+<span class="line"><span>    [+]: ./rdgif.c</span></span>
+<span class="line"><span>    [+]: ./rdppm.c</span></span>
+<span class="line"><span>    [+]: ./rdrle.c</span></span>
+<span class="line"><span>    [+]: ./rdswitch.c</span></span>
+<span class="line"><span>    [+]: ./rdtarga.c</span></span>
+<span class="line"><span>    [+]: ./transupp.c</span></span>
+<span class="line"><span>    [+]: ./wrbmp.c</span></span>
+<span class="line"><span>    [+]: ./wrgif.c</span></span>
+<span class="line"><span>    [+]: ./wrppm.c</span></span>
+<span class="line"><span>    [+]: ./wrrle.c</span></span>
+<span class="line"><span>    [+]: ./wrtarga.c</span></span>
+<span class="line"><span>target(ansi2knr): binary</span></span>
+<span class="line"><span>    [+]: ./ansi2knr.c</span></span>
+<span class="line"><span>target(cjpeg): binary</span></span>
+<span class="line"><span>    [+]: ./cjpeg.c</span></span>
+<span class="line"><span>target(ckconfig): binary</span></span>
+<span class="line"><span>    [+]: ./ckconfig.c</span></span>
+<span class="line"><span>target(djpeg): binary</span></span>
+<span class="line"><span>    [+]: ./djpeg.c</span></span>
+<span class="line"><span>target(jpegtran): binary</span></span>
+<span class="line"><span>    [+]: ./jpegtran.c</span></span>
+<span class="line"><span>target(rdjpgcom): binary</span></span>
+<span class="line"><span>    [+]: ./rdjpgcom.c</span></span>
+<span class="line"><span>target(wrjpgcom): binary</span></span>
+<span class="line"><span>    [+]: ./wrjpgcom.c</span></span>
+<span class="line"><span>xmake.lua generated, scan ok!👌</span></span>
+<span class="line"><span>checking for the architecture ... x86_64</span></span>
+<span class="line"><span>checking for the Xcode SDK version for macosx ... 10.12</span></span>
+<span class="line"><span>checking for the target minimal version ... 10.12</span></span>
+<span class="line"><span>checking for the c compiler (cc) ... xcrun -sdk macosx clang</span></span>
+<span class="line"><span>checking for the c++ compiler (cxx) ... xcrun -sdk macosx clang</span></span>
+<span class="line"><span>checking for the objc compiler (mm) ... xcrun -sdk macosx clang</span></span>
+<span class="line"><span>checking for the objc++ compiler (mxx) ... xcrun -sdk macosx clang++</span></span>
+<span class="line"><span>checking for the swift compiler (sc) ... xcrun -sdk macosx swiftc</span></span>
+<span class="line"><span>checking for the assember (as) ... xcrun -sdk macosx clang</span></span>
+<span class="line"><span>checking for the linker (ld) ... xcrun -sdk macosx clang++</span></span>
+<span class="line"><span>checking for the static library archiver (ar) ... xcrun -sdk macosx ar</span></span>
+<span class="line"><span>checking for the static library extractor (ex) ... xcrun -sdk macosx ar</span></span>
+<span class="line"><span>checking for the shared library linker (sh) ... xcrun -sdk macosx clang++</span></span>
+<span class="line"><span>checking for the debugger (dd) ... xcrun -sdk macosx lldb</span></span>
+<span class="line"><span>checking for the golang compiler (go) ... go</span></span>
+<span class="line"><span>configure</span></span>
+<span class="line"><span>{</span></span>
+<span class="line"><span>    ex = &quot;xcrun -sdk macosx ar&quot;</span></span>
+<span class="line"><span>,   sh = &quot;xcrun -sdk macosx clang++&quot;</span></span>
+<span class="line"><span>,   host = &quot;macosx&quot;</span></span>
+<span class="line"><span>,   ar = &quot;xcrun -sdk macosx ar&quot;</span></span>
+<span class="line"><span>,   buildir = &quot;build&quot;</span></span>
+<span class="line"><span>,   as = &quot;xcrun -sdk macosx clang&quot;</span></span>
+<span class="line"><span>,   plat = &quot;macosx&quot;</span></span>
+<span class="line"><span>,   xcode_dir = &quot;/Applications/Xcode.app&quot;</span></span>
+<span class="line"><span>,   arch = &quot;x86_64&quot;</span></span>
+<span class="line"><span>,   mxx = &quot;xcrun -sdk macosx clang++&quot;</span></span>
+<span class="line"><span>,   go = &quot;go&quot;</span></span>
+<span class="line"><span>,   target_minver = &quot;10.12&quot;</span></span>
+<span class="line"><span>,   ccache = &quot;ccache&quot;</span></span>
+<span class="line"><span>,   mode = &quot;release&quot;</span></span>
+<span class="line"><span>,   clean = true</span></span>
+<span class="line"><span>,   cxx = &quot;xcrun -sdk macosx clang&quot;</span></span>
+<span class="line"><span>,   cc = &quot;xcrun -sdk macosx clang&quot;</span></span>
+<span class="line"><span>,   dd = &quot;xcrun -sdk macosx lldb&quot;</span></span>
+<span class="line"><span>,   kind = &quot;static&quot;</span></span>
+<span class="line"><span>,   ld = &quot;xcrun -sdk macosx clang++&quot;</span></span>
+<span class="line"><span>,   xcode_sdkver = &quot;10.12&quot;</span></span>
+<span class="line"><span>,   sc = &quot;xcrun -sdk macosx swiftc&quot;</span></span>
+<span class="line"><span>,   mm = &quot;xcrun -sdk macosx clang&quot;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>configure ok!</span></span>
+<span class="line"><span>clean ok!</span></span>
+<span class="line"><span>[00%]: cache compiling.release ./cdjpeg.c</span></span>
+<span class="line"><span>[00%]: cache compiling.release ./example.c</span></span>
+<span class="line"><span>[00%]: cache compiling.release ./jcapimin.c</span></span>
+<span class="line"><span>[00%]: cache compiling.release ./jcapistd.c</span></span>
+<span class="line"><span>[00%]: cache compiling.release ./jccoefct.c</span></span>
+<span class="line"><span>[00%]: cache compiling.release ./jccolor.c</span></span>
+<span class="line"><span>[01%]: cache compiling.release ./jcdctmgr.c</span></span>
+<span class="line"><span>[01%]: cache compiling.release ./jchuff.c</span></span>
+<span class="line"><span>[01%]: cache compiling.release ./jcinit.c</span></span>
+<span class="line"><span>[01%]: cache compiling.release ./jcmainct.c</span></span>
+<span class="line"><span>[01%]: cache compiling.release ./jcmarker.c</span></span>
+<span class="line"><span>[02%]: cache compiling.release ./jcmaster.c</span></span>
+<span class="line"><span>[02%]: cache compiling.release ./jcomapi.c</span></span>
+<span class="line"><span>[02%]: cache compiling.release ./jcparam.c</span></span>
+<span class="line"><span>[02%]: cache compiling.release ./jcphuff.c</span></span>
+<span class="line"><span>[02%]: cache compiling.release ./jcprepct.c</span></span>
+<span class="line"><span>[03%]: cache compiling.release ./jcsample.c</span></span>
+<span class="line"><span>[03%]: cache compiling.release ./jctrans.c</span></span>
+<span class="line"><span>[03%]: cache compiling.release ./jdapimin.c</span></span>
+<span class="line"><span>[03%]: cache compiling.release ./jdapistd.c</span></span>
+<span class="line"><span>[03%]: cache compiling.release ./jdatadst.c</span></span>
+<span class="line"><span>[04%]: cache compiling.release ./jdatasrc.c</span></span>
+<span class="line"><span>[04%]: cache compiling.release ./jdcoefct.c</span></span>
+<span class="line"><span>[04%]: cache compiling.release ./jdcolor.c</span></span>
+<span class="line"><span>[04%]: cache compiling.release ./jddctmgr.c</span></span>
+<span class="line"><span>[04%]: cache compiling.release ./jdhuff.c</span></span>
+<span class="line"><span>[05%]: cache compiling.release ./jdinput.c</span></span>
+<span class="line"><span>[05%]: cache compiling.release ./jdmainct.c</span></span>
+<span class="line"><span>[05%]: cache compiling.release ./jdmarker.c</span></span>
+<span class="line"><span>[05%]: cache compiling.release ./jdmaster.c</span></span>
+<span class="line"><span>[05%]: cache compiling.release ./jdmerge.c</span></span>
+<span class="line"><span>[06%]: cache compiling.release ./jdphuff.c</span></span>
+<span class="line"><span>[06%]: cache compiling.release ./jdpostct.c</span></span>
+<span class="line"><span>[06%]: cache compiling.release ./jdsample.c</span></span>
+<span class="line"><span>[06%]: cache compiling.release ./jdtrans.c</span></span>
+<span class="line"><span>[06%]: cache compiling.release ./jerror.c</span></span>
+<span class="line"><span>[07%]: cache compiling.release ./jfdctflt.c</span></span>
+<span class="line"><span>[07%]: cache compiling.release ./jfdctfst.c</span></span>
+<span class="line"><span>[07%]: cache compiling.release ./jfdctint.c</span></span>
+<span class="line"><span>[07%]: cache compiling.release ./jidctflt.c</span></span>
+<span class="line"><span>[07%]: cache compiling.release ./jidctfst.c</span></span>
+<span class="line"><span>[08%]: cache compiling.release ./jidctint.c</span></span>
+<span class="line"><span>[08%]: cache compiling.release ./jidctred.c</span></span>
+<span class="line"><span>[08%]: cache compiling.release ./jmemansi.c</span></span>
+<span class="line"><span>[08%]: cache compiling.release ./jmemmgr.c</span></span>
+<span class="line"><span>[08%]: cache compiling.release ./jmemname.c</span></span>
+<span class="line"><span>[09%]: cache compiling.release ./jmemnobs.c</span></span>
+<span class="line"><span>[09%]: cache compiling.release ./jquant1.c</span></span>
+<span class="line"><span>[09%]: cache compiling.release ./jquant2.c</span></span>
+<span class="line"><span>[09%]: cache compiling.release ./jutils.c</span></span>
+<span class="line"><span>[09%]: cache compiling.release ./rdbmp.c</span></span>
+<span class="line"><span>[10%]: cache compiling.release ./rdcolmap.c</span></span>
+<span class="line"><span>[10%]: cache compiling.release ./rdgif.c</span></span>
+<span class="line"><span>[10%]: cache compiling.release ./rdppm.c</span></span>
+<span class="line"><span>[10%]: cache compiling.release ./rdrle.c</span></span>
+<span class="line"><span>[10%]: cache compiling.release ./rdswitch.c</span></span>
+<span class="line"><span>[11%]: cache compiling.release ./rdtarga.c</span></span>
+<span class="line"><span>[11%]: cache compiling.release ./transupp.c</span></span>
+<span class="line"><span>[11%]: cache compiling.release ./wrbmp.c</span></span>
+<span class="line"><span>[11%]: cache compiling.release ./wrgif.c</span></span>
+<span class="line"><span>[11%]: cache compiling.release ./wrppm.c</span></span>
+<span class="line"><span>[12%]: cache compiling.release ./wrrle.c</span></span>
+<span class="line"><span>[12%]: cache compiling.release ./wrtarga.c</span></span>
+<span class="line"><span>[12%]: archiving.release libjpeg-6b.a</span></span>
+<span class="line"><span>[12%]: cache compiling.release ./wrjpgcom.c</span></span>
+<span class="line"><span>[25%]: linking.release wrjpgcom</span></span>
+<span class="line"><span>[25%]: cache compiling.release ./ansi2knr.c</span></span>
+<span class="line"><span>[37%]: linking.release ansi2knr</span></span>
+<span class="line"><span>[37%]: cache compiling.release ./jpegtran.c</span></span>
+<span class="line"><span>[50%]: linking.release jpegtran</span></span>
+<span class="line"><span>[50%]: cache compiling.release ./djpeg.c</span></span>
+<span class="line"><span>[62%]: linking.release djpeg</span></span>
+<span class="line"><span>[62%]: cache compiling.release ./ckconfig.c</span></span>
+<span class="line"><span>[75%]: linking.release ckconfig</span></span>
+<span class="line"><span>[75%]: cache compiling.release ./rdjpgcom.c</span></span>
+<span class="line"><span>[87%]: linking.release rdjpgcom</span></span>
+<span class="line"><span>[87%]: cache compiling.release ./cjpeg.c</span></span>
+<span class="line"><span>[100%]: linking.release cjpeg</span></span>
+<span class="line"><span>build ok!👌</span></span></code></pre></div><p>可以看到，处理静态库，xmake还分析出了很多可执行的测试程序，剩下的代码统一编译成一个 libjpeg.a 的静态库，供哪些测试程序链接使用。。</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>target(ansi2knr): binary</span></span>
+<span class="line"><span>    [+]: ./ansi2knr.c</span></span>
+<span class="line"><span>target(cjpeg): binary</span></span>
+<span class="line"><span>    [+]: ./cjpeg.c</span></span>
+<span class="line"><span>target(ckconfig): binary</span></span>
+<span class="line"><span>    [+]: ./ckconfig.c</span></span>
+<span class="line"><span>target(djpeg): binary</span></span>
+<span class="line"><span>    [+]: ./djpeg.c</span></span>
+<span class="line"><span>target(jpegtran): binary</span></span>
+<span class="line"><span>    [+]: ./jpegtran.c</span></span>
+<span class="line"><span>target(rdjpgcom): binary</span></span>
+<span class="line"><span>    [+]: ./rdjpgcom.c</span></span>
+<span class="line"><span>target(wrjpgcom): binary</span></span>
+<span class="line"><span>    [+]: ./wrjpgcom.c</span></span></code></pre></div><h3 id="遇到的一些问题和限制" tabindex="-1">遇到的一些问题和限制 <a class="header-anchor" href="#遇到的一些问题和限制" aria-label="Permalink to &quot;遇到的一些问题和限制&quot;">​</a></h3><p>当前xmake的这种自动分析检测还不是非常智能，对于：</p><ol><li>需要特殊的编译选项</li><li>需要依赖其他目录的头文件搜索</li><li>需要分条件编译不同源文件</li><li>同目录需要生成多个静态库</li><li>需要多级目录支持的源码库</li></ol><p>以上这些情况，xmake暂时还没发自动化的智能处理，其中限制1，2还是可以解决的，通过半手动的方式，例如：</p><div class="language-bash vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">bash</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">$</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> xmake</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> f</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> --cxflags=</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> --ldflags=</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> --includedirs=</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> --linkdirs=</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">xmake</span></span></code></pre></div><p>在自动检测编译的时候，手动配置这个源码工程需要的特殊编译选项，就可以直接通过编译了</p><p>而限制3，暂时只能通过删源代码来解决了，就像刚才编译jpeg的代码，其实它的目录下面同时存在了：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>jmemdos.c</span></span>
+<span class="line"><span>jmemmac.c</span></span>
+<span class="line"><span>jmemansi.c</span></span></code></pre></div><p>其中两个是没法编译过的，需要删掉后才行。。</p></div></div></main><footer class="VPDocFooter" data-v-16f81e94 data-v-b5ecb25e><!--[--><!--]--><!----><nav class="prev-next" aria-labelledby="doc-footer-aria-label" data-v-b5ecb25e><span class="visually-hidden" id="doc-footer-aria-label" data-v-b5ecb25e>Pager</span><div class="pager" data-v-b5ecb25e><!----></div><div class="pager" data-v-b5ecb25e><a class="VPLink link pager-link next" href="/xmake-docs/zh-cn/features/build_cache.html" data-v-b5ecb25e><!--[--><span class="desc" data-v-b5ecb25e>Next page</span><span class="title" data-v-b5ecb25e>构建缓存</span><!--]--></a></div></nav></footer><!--[--><!--]--></div></div></div><!--[--><!--]--></div></div><!----><!--[--><!--]--></div></div>
+    <script>window.__VP_HASH_MAP__=JSON.parse("{\"about_awesome.md\":\"DuXiACTt\",\"about_changelog.md\":\"sDlp4tzQ\",\"about_contact.md\":\"wfABNupu\",\"about_introduction.md\":\"hnpNoeH6\",\"about_sponsor.md\":\"CXofUzBp\",\"about_technical_support.md\":\"B0-NdQCs\",\"about_who_is_using_xmake.md\":\"BY1xqFPl\",\"coverpage.md\":\"BHjlIxsf\",\"features_autogen.md\":\"CTZqgach\",\"features_build_cache.md\":\"D25koAzV\",\"features_distcc_build.md\":\"CMAmAAtw\",\"features_remote_build.md\":\"DWlG4m1e\",\"features_trybuild.md\":\"B8OxwN13\",\"features_unity_build.md\":\"Cku1L6we\",\"getting_started.md\":\"Bn39SAec\",\"guide_build_policies.md\":\"D8GWrZR6\",\"guide_configuration.md\":\"YfDAV1Hk\",\"guide_faq.md\":\"BIfVuyY5\",\"guide_installation.md\":\"D6gxM45Q\",\"guide_project_examples.md\":\"NaJphWJW\",\"guide_quickstart.md\":\"BBPBEmog\",\"guide_syntax_description.md\":\"BtSSONID\",\"index.md\":\"DU5HDuRu\",\"manual_builtin_modules.md\":\"C7Ms_9y1\",\"manual_builtin_variables.md\":\"CRunOu4v\",\"manual_conditions.md\":\"D3mKZgv0\",\"manual_configuration_option.md\":\"CT9L7LEQ\",\"manual_custom_rule.md\":\"Bhlhj907\",\"manual_custom_toolchain.md\":\"BGzaEG82\",\"manual_extension_modules.md\":\"Cu3cStNH\",\"manual_global_interfaces.md\":\"BQY-jqs9\",\"manual_helper_interfaces.md\":\"B47-3g0M\",\"manual_native_modules.md\":\"BricKftC\",\"manual_option_instance.md\":\"B2Ha5odb\",\"manual_package_dependencies.md\":\"DIkf4q0Y\",\"manual_package_instance.md\":\"Dqwj6sRX\",\"manual_plugin_task.md\":\"DbbLQtAx\",\"manual_project_target.md\":\"3U1Tf_Yh\",\"manual_specification.md\":\"C583UsPd\",\"manual_target_instance.md\":\"B0FOqVs1\",\"manual_xpack.md\":\"CUDSir-Z\",\"navbar.md\":\"BT39ocpg\",\"package_local_3rd_source_library.md\":\"Bwh1NNP8\",\"package_local_package.md\":\"DzOQUd85\",\"package_local_package_old.md\":\"Zwbw3Rzk\",\"package_remote_package.md\":\"B7E0NX-m\",\"package_system_package.md\":\"BFd_bFkE\",\"plugin_builtin_plugins.md\":\"CPAgjsOE\",\"plugin_more_plugins.md\":\"CZ2Hh5ry\",\"plugin_plugin_development.md\":\"1NjZWY0-\",\"readme.md\":\"CU6QG7G_\",\"sidebar.md\":\"B3lzyVTo\",\"theme_builtin_themes.md\":\"CzecGW86\",\"theme_switch_theme.md\":\"C4iYiYyo\",\"toolchain_builtin_toolchains.md\":\"AX3Y5hEt\",\"toolchain_remote_toolchain.md\":\"CxNLJKyw\",\"zh-cn__coverpage.md\":\"vHu2PW8X\",\"zh-cn__navbar.md\":\"DiKAFyeg\",\"zh-cn__sidebar.md\":\"-pL8Cog1\",\"zh-cn_about_awesome.md\":\"BkeU3l96\",\"zh-cn_about_changelog.md\":\"BUOwDdyG\",\"zh-cn_about_contact.md\":\"oU61voD3\",\"zh-cn_about_course.md\":\"BgpHX_mz\",\"zh-cn_about_introduction.md\":\"3kNh_mQu\",\"zh-cn_about_peripheral_items.md\":\"Dbonm3_6\",\"zh-cn_about_sponsor.md\":\"BMHFzk5C\",\"zh-cn_about_technical_support.md\":\"oQd7TrRZ\",\"zh-cn_about_who_is_using_xmake.md\":\"DjZyYrxb\",\"zh-cn_features_autogen.md\":\"CHznWras\",\"zh-cn_features_build_cache.md\":\"BgTV_8fb\",\"zh-cn_features_distcc_build.md\":\"DYmwJ5Wj\",\"zh-cn_features_remote_build.md\":\"CQwbuA12\",\"zh-cn_features_trybuild.md\":\"c0VCSw8t\",\"zh-cn_features_unity_build.md\":\"DHtJElo4\",\"zh-cn_getting_started.md\":\"BRIbGCPx\",\"zh-cn_guide_build_policies.md\":\"CnSe7tEv\",\"zh-cn_guide_configuration.md\":\"Bq5GT4vV\",\"zh-cn_guide_faq.md\":\"BKE1H2qR\",\"zh-cn_guide_installation.md\":\"BGKuAxOE\",\"zh-cn_guide_project_examples.md\":\"xnPrimPe\",\"zh-cn_guide_quickstart.md\":\"sqXAXuVR\",\"zh-cn_guide_syntax_description.md\":\"Cpw82jd3\",\"zh-cn_index.md\":\"A4Kyyc7y\",\"zh-cn_manual_builtin_modules.md\":\"B3yXtI5p\",\"zh-cn_manual_builtin_variables.md\":\"BHDFr8qr\",\"zh-cn_manual_conditions.md\":\"_f_yEIxo\",\"zh-cn_manual_configuration_option.md\":\"Dp5PiJ3p\",\"zh-cn_manual_custom_rule.md\":\"B7Zlyu5Z\",\"zh-cn_manual_custom_toolchain.md\":\"Bdn1qCTI\",\"zh-cn_manual_extension_modules.md\":\"Cyr7W1lX\",\"zh-cn_manual_global_interfaces.md\":\"Br--EE3H\",\"zh-cn_manual_helper_interfaces.md\":\"HGZ7MeL1\",\"zh-cn_manual_native_modules.md\":\"zO60EpbK\",\"zh-cn_manual_option_instance.md\":\"ChRUt_E8\",\"zh-cn_manual_package_dependencies.md\":\"Bd_fFE2n\",\"zh-cn_manual_package_instance.md\":\"CJveEhjN\",\"zh-cn_manual_plugin_task.md\":\"C0dbY-Pl\",\"zh-cn_manual_project_target.md\":\"uP3v3vnt\",\"zh-cn_manual_specification.md\":\"vSpfmz-y\",\"zh-cn_manual_target_instance.md\":\"urouHVai\",\"zh-cn_manual_xpack.md\":\"BhIaUbSr\",\"zh-cn_package_local_3rd_source_library.md\":\"DgJj8ohl\",\"zh-cn_package_local_package.md\":\"BNFTtNm6\",\"zh-cn_package_local_package_old.md\":\"C5BU5nFv\",\"zh-cn_package_remote_package.md\":\"kREMq_xD\",\"zh-cn_package_system_package.md\":\"C9JtavUd\",\"zh-cn_plugin_builtin_plugins.md\":\"DHYN_Srj\",\"zh-cn_plugin_more_plugins.md\":\"BU-lO5vQ\",\"zh-cn_plugin_plugin_development.md\":\"DVw10MbH\",\"zh-cn_readme.md\":\"DYMHvjb7\",\"zh-cn_theme_builtin_themes.md\":\"DaOKDWgG\",\"zh-cn_theme_switch_theme.md\":\"GAUHDsak\",\"zh-cn_toolchain_builtin_toolchains.md\":\"BDzg6gV2\",\"zh-cn_toolchain_remote_toolchain.md\":\"BvrWAPdv\"}");window.__VP_SITE_DATA__=JSON.parse("{\"lang\":\"en-US\",\"dir\":\"ltr\",\"title\":\"xmake\",\"description\":\"xmake\",\"base\":\"/xmake-docs/\",\"head\":[],\"router\":{\"prefetchLinks\":true},\"appearance\":true,\"themeConfig\":{\"search\":{\"provider\":\"local\"},\"socialLinks\":[{\"icon\":\"github\",\"link\":\"https://github.com/xmake-io/xmake\"}]},\"locales\":{\"root\":{\"label\":\"English\",\"themeConfig\":{\"nav\":[{\"text\":\"About\",\"link\":\"/about/introduction\",\"activeMatch\":\"/about/\"},{\"text\":\"Guide\",\"link\":\"/guide/quickstart\",\"activeMatch\":\"/guide/\"},{\"text\":\"Package\",\"link\":\"/package/local_3rd_source_library\",\"activeMatch\":\"/package/\"},{\"text\":\"Toolchain\",\"link\":\"/toolchain/builtin_toolchains\",\"activeMatch\":\"/toolchain/\"},{\"text\":\"Manual\",\"link\":\"/manual/builtin_modules\",\"activeMatch\":\"/manual/\"},{\"text\":\"Plugin\",\"link\":\"/plugin/builtin_plugins\",\"activeMatch\":\"/plugin/\"},{\"text\":\"Theme\",\"link\":\"/theme/builtin_themes\",\"activeMatch\":\"/theme/\"}],\"sidebar\":{\"/about/\":{\"base\":\"/about\",\"items\":[{\"text\":\"About\",\"items\":[{\"text\":\"awesome\",\"link\":\"/awesome\"},{\"text\":\"changelog\",\"link\":\"/changelog\"},{\"text\":\"contact\",\"link\":\"/contact\"},{\"text\":\"sponsor\",\"link\":\"/sponsor\"},{\"text\":\"technical_support\",\"link\":\"/technical_support\"},{\"text\":\"who_is_using_xmake\",\"link\":\"/who_is_using_xmake\"}]}]},\"/guide/\":{\"base\":\"/guide\",\"items\":[{\"text\":\"Guide\",\"items\":[{\"text\":\"quickstart\",\"link\":\"/quickstart\"},{\"text\":\"installation\",\"link\":\"/installation\"},{\"text\":\"configuration\",\"link\":\"/configuration\"},{\"text\":\"build_policies\",\"link\":\"/build_policies\"},{\"text\":\"project_examples\",\"link\":\"/project_examples\"},{\"text\":\"syntax_description\",\"link\":\"/syntax_description\"},{\"text\":\"faq\",\"link\":\"/faq\"}]}]},\"/features/\":{\"base\":\"/features\",\"items\":[{\"text\":\"Features\",\"items\":[{\"text\":\"autogen\",\"link\":\"/autogen\"},{\"text\":\"build_cache\",\"link\":\"/build_cache\"},{\"text\":\"distcc_build\",\"link\":\"/distcc_build\"},{\"text\":\"remote_build\",\"link\":\"/remote_build\"},{\"text\":\"trybuild\",\"link\":\"/trybuild\"},{\"text\":\"unity_build\",\"link\":\"/unity_build\"}]}]},\"/package/\":{\"base\":\"/package\",\"items\":[{\"text\":\"Package\",\"items\":[{\"text\":\"local_3rd_source_library\",\"link\":\"/local_3rd_source_library\"},{\"text\":\"local_package_old\",\"link\":\"/local_package_old\"},{\"text\":\"local_package\",\"link\":\"/local_package\"},{\"text\":\"remote_package\",\"link\":\"/remote_package\"},{\"text\":\"system_package\",\"link\":\"/system_package\"}]}]},\"/toolchain/\":{\"base\":\"/toolchain\",\"items\":[{\"text\":\"Toolchain\",\"items\":[{\"text\":\"builtin_toolchains\",\"link\":\"/builtin_toolchains\"},{\"text\":\"remote_toolchain\",\"link\":\"/remote_toolchain\"}]}]},\"/manual/\":{\"base\":\"/manual\",\"items\":[{\"text\":\"Manual\",\"items\":[{\"text\":\"builtin_modules\",\"link\":\"/builtin_modules\"},{\"text\":\"builtin_variables\",\"link\":\"/builtin_variables\"},{\"text\":\"conditions\",\"link\":\"/conditions\"},{\"text\":\"configuration_option\",\"link\":\"/configuration_option\"},{\"text\":\"custom_rule\",\"link\":\"/custom_rule\"},{\"text\":\"custom_toolchain\",\"link\":\"/custom_toolchain\"},{\"text\":\"extension_modules\",\"link\":\"/extension_modules\"},{\"text\":\"global_interfaces\",\"link\":\"/global_interfaces\"},{\"text\":\"helper_interfaces\",\"link\":\"/helper_interfaces\"},{\"text\":\"native_modules\",\"link\":\"/native_modules\"},{\"text\":\"option_instance\",\"link\":\"/option_instance\"},{\"text\":\"package_dependencies\",\"link\":\"/package_dependencies\"},{\"text\":\"package_instance\",\"link\":\"/package_instance\"},{\"text\":\"plugin_task\",\"link\":\"/plugin_task\"},{\"text\":\"project_target\",\"link\":\"/project_target\"},{\"text\":\"specification\",\"link\":\"/specification\"},{\"text\":\"target_instance\",\"link\":\"/target_instance\"},{\"text\":\"xpack\",\"link\":\"/xpack\"}]}]},\"/plugin/\":{\"base\":\"/plugin\",\"items\":[{\"text\":\"Plugin\",\"items\":[{\"text\":\"builtin_plugins\",\"link\":\"/builtin_plugins\"},{\"text\":\"more_plugins\",\"link\":\"/more_plugins\"},{\"text\":\"plugin_development\",\"link\":\"/plugin_development\"}]}]},\"/theme/\":{\"base\":\"/theme\",\"items\":[{\"text\":\"Theme\",\"items\":[{\"text\":\"builtin_themes\",\"link\":\"/builtin_themes\"},{\"text\":\"switch_theme\",\"link\":\"/switch_theme\"}]}]}}}},\"zh-cn\":{\"label\":\"简体中文\",\"themeConfig\":{\"nav\":[{\"text\":\"关于\",\"link\":\"/zh-cn/about/introduction\",\"activeMatch\":\"/zh-cn/about/\"},{\"text\":\"指南\",\"link\":\"/zh-cn/guide/quickstart\",\"activeMatch\":\"/zh-cn/guide/\"},{\"text\":\"包\",\"link\":\"/zh-cn/package/local_3rd_source_library\",\"activeMatch\":\"/zh-cn/package/\"},{\"text\":\"工具链\",\"link\":\"/zh-cn/toolchain/builtin_toolchains\",\"activeMatch\":\"/zh-cn/toolchain/\"},{\"text\":\"手册\",\"link\":\"/zh-cn/manual/builtin_modules\",\"activeMatch\":\"/zh-cn/manual/\"},{\"text\":\"插件\",\"link\":\"/zh-cn/plugin/builtin_plugins\",\"activeMatch\":\"/zh-cn/plugin/\"},{\"text\":\"主题\",\"link\":\"/zh-cn/theme/builtin_themes\",\"activeMatch\":\"/zh-cn/theme/\"}],\"sidebar\":{\"/zh-cn/about/\":{\"base\":\"/zh-cn/about\",\"items\":[{\"text\":\"关于\",\"items\":[{\"text\":\"案例\",\"link\":\"/awesome\"},{\"text\":\"更新日志\",\"link\":\"/changelog\"},{\"text\":\"联系我\",\"link\":\"/contact\"},{\"text\":\"赞助者\",\"link\":\"/sponsor\"},{\"text\":\"技术支持\",\"link\":\"/technical_support\"},{\"text\":\"谁正在使用xmake\",\"link\":\"/whos_is_using_xmake\"}]}]},\"/zh-cn/guide/\":{\"base\":\"/zh-cn/guide\",\"items\":[{\"text\":\"指南\",\"items\":[{\"text\":\"快速开始\",\"link\":\"/quickstart\"},{\"text\":\"安装\",\"link\":\"/installation\"},{\"text\":\"配置\",\"link\":\"/configuration\"},{\"text\":\"构建规则\",\"link\":\"/build_policies\"},{\"text\":\"项目示例\",\"link\":\"/project_examples\"},{\"text\":\"语法描述\",\"link\":\"/syntax_description\"},{\"text\":\"常见问题\",\"link\":\"/faq\"}]}]},\"/zh-cn/features/\":{\"base\":\"/zh-cn/features\",\"items\":[{\"text\":\"特性\",\"items\":[{\"text\":\"自动生成\",\"link\":\"/autogen\"},{\"text\":\"构建缓存\",\"link\":\"/build_cache\"},{\"text\":\"分布式构建\",\"link\":\"/distcc_build\"},{\"text\":\"远程构建\",\"link\":\"/remote_build\"},{\"text\":\"预构建\",\"link\":\"/trybuild\"},{\"text\":\"通用构建\",\"link\":\"/unity_build\"}]}]},\"/zh-cn/package/\":{\"base\":\"/zh-cn/package\",\"items\":[{\"text\":\"包\",\"items\":[{\"text\":\"本地第三方源码库\",\"link\":\"/local_3rd_source_library\"},{\"text\":\"本地包(旧)\",\"link\":\"/local_package_old\"},{\"text\":\"本地包\",\"link\":\"/local_package\"},{\"text\":\"远程包\",\"link\":\"/remote_package\"},{\"text\":\"系统包\",\"link\":\"/system_package\"}]}]},\"/zh-cn/toolchain/\":{\"base\":\"/zh-cn/toolchain\",\"items\":[{\"text\":\"工具链\",\"items\":[{\"text\":\"内置工具链\",\"link\":\"/builtin_toolchains\"},{\"text\":\"远程工具链\",\"link\":\"/remote_toolchain\"}]}]},\"/zh-cn/manual/\":{\"base\":\"/zh-cn/manual\",\"items\":[{\"text\":\"手册\",\"items\":[{\"text\":\"内置模块\",\"link\":\"/builtin_modules\"},{\"text\":\"内置变量\",\"link\":\"/builtin_variables\"},{\"text\":\"条件\",\"link\":\"/conditions\"},{\"text\":\"配置选项\",\"link\":\"/configuration_option\"},{\"text\":\"自定义规则\",\"link\":\"/custom_rule\"},{\"text\":\"自定义工具链\",\"link\":\"/custom_toolchain\"},{\"text\":\"扩展模块\",\"link\":\"/extension_modules\"},{\"text\":\"全局接口\",\"link\":\"/global_interfaces\"},{\"text\":\"帮助接口\",\"link\":\"/helper_interfaces\"},{\"text\":\"选项实例\",\"link\":\"/option_instance\"},{\"text\":\"包依赖\",\"link\":\"/package_dependencies\"},{\"text\":\"包实例\",\"link\":\"/package_instance\"},{\"text\":\"插件任务\",\"link\":\"/plugin_task\"},{\"text\":\"项目目标\",\"link\":\"/project_target\"},{\"text\":\"规范\",\"link\":\"/specification\"},{\"text\":\"目标实例\",\"link\":\"/target_instance\"}]}]},\"/zh-cn/plugin/\":{\"base\":\"/zh-cn/plugin\",\"items\":[{\"text\":\"插件\",\"items\":[{\"text\":\"内置插件\",\"link\":\"/builtin_plugins\"},{\"text\":\"更多插件\",\"link\":\"/more_plugins\"},{\"text\":\"插件开发\",\"link\":\"/plugin_development\"}]}]},\"/zh-cn/theme/\":{\"base\":\"/zh-cn/theme\",\"items\":[{\"text\":\"主题\",\"items\":[{\"text\":\"内置主题\",\"link\":\"/builtin_themes\"},{\"text\":\"切换主题\",\"link\":\"/switch_theme\"}]}]}}}}},\"scrollOffset\":134,\"cleanUrls\":false}");</script>
+    
+  </body>
+</html>
