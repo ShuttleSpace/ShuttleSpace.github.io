@@ -3,7 +3,7 @@ menu:
     隧道: /archives/ || anzhiyu-icon-box-archive
     分类: /categories/ || anzhiyu-icon-shapes
     标签: /tags/ || anzhiyu-icon-tags
-
+    xmake: /xmake-docs || anzhiyu-icon-fish
   友链:
   #   友人帐: /link/ || anzhiyu-icon-link
   #   朋友圈: /fcircle/ || anzhiyu-icon-artstation
@@ -167,7 +167,7 @@ cover:
   position: left
   # When cover is not set, the default cover is displayed (当没有设置cover时，默认的封面显示)
   default_cover:
-    - /img/default_cover.jpg
+    - /img/gundamcat.png
 
 # Replace Broken Images (替换无法显示的图片)
 error_img:
@@ -1066,7 +1066,7 @@ home_top:
   banner:
     tips: xmake-docs
     title: xmake-docs
-    image: img/gundamcat.png
+    image: img/default_cover.jpg
     link: /xmake-docs/index.html
 
 # 朋友圈配置
