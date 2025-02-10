@@ -28,7 +28,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.8",
+    "@babel/core": "^7.26.8",
     "@babel/preset-env": "^7.25.8",
     "gulp": "^5.0.0",
     "gulp-babel": "^8.0.0",
