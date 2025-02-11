@@ -190,12 +190,13 @@ ssl_dhparam /etc/letsencrypt/dhparam-2048.pem;
 rewnew.sh
 
 ```shell
-#! /usr/bin/env sh
+#!/bin/bash
 
-pushd ~/[]/certbot &&
-sudo docker-compose up -d &&
-sudo docker kill --signal=HUP [] &&
-sudo docker-compose down
+cd ~/homepage/certbot &&
+sudo docker compose up -d &&
+sudo docker kill --signal=HUP certbot &&
+sudo docker compose down &&
+cd -
 ```
 
 或者
@@ -207,7 +208,7 @@ sudo docker run -it --rm \
   -v /home/[]certbot/letsencrypt:/etc/letsencrypt \
   -v /home/[]certbot/log:/var/log \
   certbot/certbot \
-  renew --webroot -w /etc/letsencrypt --quiet && sudo docker kill --signal=HUP []
+  renew --webroot -w /etc/letsencrypt --quiet && sudo docker kill --signal=HUP certbot
 ```
 
 编辑 crontab: `crontab -e`
