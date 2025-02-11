@@ -216,3 +216,18 @@ sudo docker run -it --rm \
 ```shell
 0 1 * * 0 ~/homepage/certbot/renew.sh
 ```
+
+注意: 如果是 crontab 定期更新证书,那么需要修改上面的 nginx 配置.以确保非 `/.well-known/acme-challenge/` 请求不会被转发到 https(这时候 https 肯定是不可用的)
+```
+    # 处理 Let's Encrypt 验证请求
+    location ^~ /.well-known/acme-challenge/ {
+        allow all;
+        default_type "text/plain";
+        root /var/www/$host;
+    }
+
+    # 其他所有请求重定向到 HTTPS
+    location / {
+        return 301 https://$host$request_uri;
+    }
+```
