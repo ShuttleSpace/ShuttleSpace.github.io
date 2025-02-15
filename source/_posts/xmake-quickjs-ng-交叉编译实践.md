@@ -121,6 +121,430 @@ xmake b
 
 xmake 提供了自定义 task 的功能,可以实现如 `xmake [taks]` 执行命令.下面就来实现一下.
 
+#### 方案一: 全局配置自定义插件
+
+xmake 安装后,在`home/.xmake`目录下可以配置全局参数,比如自定义插件
+
+```sh
+~/.xmake
+-- cache
+-- plugins
+	-- xcframework
+		-- xmake.lua
+	-- xross
+		-- xmake.lua
+-- repositories
+-- rules
+	-- xcode_framework2
+		-- xmake.lua
+```
+
+> `~/.xmake/plugins/xross/xmake.lua` on working!!!
+```lua
+task("xcframework")
+set_category("plugin")
+
+local pari = {
+  iphoneos = { "arm64",  },
+  watchos = { "arm64_32", "armv7k" },
+  appletvos = { "arm64" },
+  iphonesimulator = { "arm64", "x86_64" },
+  watchsimulator = { "arm64", "x86_64" },
+  appletvsimulator = { "arm64", "x86_64" },
+  macosx = { "x86_64" },
+}
+
+set_menu({
+  usage = "xmake xcframework [platform] [arch]",
+  description = "build xcframework",
+  options = {}
+})
+
+local function printTable(t, indent)
+  indent = indent or 0
+  local indentStr = string.rep("  ", indent)
+  
+  if type(t) ~= "table" then
+      print(indentStr .. tostring(t))
+      return
+  end
+
+  print(indentStr .. "{")
+  for k, v in pairs(t) do
+      local keyStr = tostring(k)
+      if type(v) == "table" then
+          print(indentStr .. "  " .. keyStr .. " = ")
+          printTable(v, indent + 1)
+      else
+          local valueStr = tostring(v)
+          print(indentStr .. "  " .. keyStr .. " = " .. valueStr)
+      end
+  end
+  print(indentStr .. "}")
+end
+
+on_run(function ()
+  import("core.base.option")
+  import("core.project.project")
+  import("core.tool.toolchain")
+  
+  local output_dir = path.join(os.curdir(), "build", "xcframework")
+  os.mkdir(output_dir)
+
+  local frameworks = {}
+  for _, arch in ipairs(pari['iphoneos']) do
+    table.insert(frameworks, " -framework " .. path.join("build/iphoneos", arch, "release/qjs.framework"))
+  end
+  for _, arch in ipairs(pari['macosx']) do
+    table.insert(frameworks, " -framework " .. path.join("build/macosx", arch, "release/qjs.framework"))
+  end
+
+  printTable(frameworks)
+  print(table.concat(frameworks, " "))
+  local xcframework_path = path.join(output_dir, "qjs.xcframework")
+  os.execv("xcodebuild -create-xcframework -output " .. xcframework_path .. " " .. table.concat(frameworks, " ") )
+  print("🌹XCFramework created at: " .. xcframework_path)
+end)
+```
+
+
+> `~/.xmake/plugins/xross/xmake.lua`
+```lua
+local g_platform = nil
+local g_arch = nil
+local g_mode = nil
+local g_verbose = false
+local g_execv = nil -- 非 script lifecyle hook scope, 非 on_run 函数无法获取到 os 模块的扩展函数
+
+local g_platform_arch = {
+  iphoneos = { "armv7", "armv7s", "arm64", "i386", "x86_64" },
+  watchos = { "arm64_32", "armv7k" },
+  appletvos = { "arm64" },
+  iphonesimulator = { "arm64", "x86_64" },
+  watchsimulator = { "arm64", "x86_64" },
+  appletvsimulator = { "arm64", "x86_64" },
+  linux = { "arm64", "x86_64" },
+  macosx = { "arm64", "x86_64" },
+  mingw = {  "arm64", "x86_64" },
+  android = { "armeabi", "arm64-v8a", "armeabi-v7a", "x86_64", "x86", } -- "mips", "mips64"
+}
+
+
+task("xross")
+set_category("plugin")
+
+
+set_menu({
+  usage = "xmake xross [platform] [arch]",
+  description = "build cross platform",
+  options = {
+    {'p', "platform", "v", nil, "target platform.\n\tiphoneos|linux|macosx|mingw|android"},
+    {'a', "arch", "v", nil, "target arch.\n\tiphoneos: armv7|armv7s|arm64|i386|x86_64\n\tlinux: arm64|x86_64\n\tmacosx: arm64|x86_64\n\tmingw: arm64|x86_64\n\tandroid: arm64-v8a|armeabi-v7a|x86_64"},
+    {'ar', "archive", "k", nil, "xcode archive"},
+    {'d', "debug", "k", "debug mode", "debug build mode. (default relase)"},
+    {'v', "verbose", "k", nil, "verbose mode."},
+  }
+})
+
+-- help function
+local function indexOf(array, value)
+  for i, v in ipairs(array) do
+      if v == value then
+          return i  
+      end
+  end
+  return nil
+end
+
+local function printTable(t, indent)
+  indent = indent or 0
+  local indentStr = string.rep("  ", indent)
+  
+  if type(t) ~= "table" then
+      print(indentStr .. tostring(t))
+      return
+  end
+
+  print(indentStr .. "{")
+  for k, v in pairs(t) do
+      local keyStr = tostring(k)
+      if type(v) == "table" then
+          print(indentStr .. "  " .. keyStr .. " = ")
+          printTable(v, indent + 1)
+      else
+          local valueStr = tostring(v)
+          print(indentStr .. "  " .. keyStr .. " = " .. valueStr)
+      end
+  end
+  print(indentStr .. "}")
+end
+-- help function -- end
+
+local function xmakeBuild()
+  if g_platform and g_arch then
+    print("🔥 ".. g_platform .. "🌹 " .. g_arch)
+  end
+  local config = { "f" }
+  if g_platform then
+    table.insert(config, "-p")
+    table.insert(config, g_platform)
+  end
+  if g_arch then
+    table.insert(config, "-a")
+    table.insert(config, g_arch)
+  end
+  if g_mode then
+    table.insert(config, "-m")
+    table.insert(config, "debug")
+  end
+  print("⛰️ xmakeBuild: " .. table.concat(config, ", "))
+  -- printTable(os)
+  -- printTable(sudo)
+  g_execv("xmake", config)
+
+  local package = {"package", "-P", "."}
+  if g_verbose then
+    table.insert(package, "-v")
+  end
+  g_execv("xmake", package) 
+end
+
+local function buildForPlatformArch()
+  local hasTarget = false
+  local target_arch = g_platform_arch[g_platform]
+  if target_arch then
+    if g_arch then
+      -- build specific arch
+      if indexOf(target_arch, g_arch) then
+        xmakeBuild()
+        hasTarget = true
+      end
+    else
+      -- build all arch
+      for _, arch in ipairs(target_arch) do
+        g_arch = arch
+        xmakeBuild()
+      end
+      hasTarget = true
+    end
+  end
+  if not hasTarget then
+    p = g_platform or "Unknown platform"
+    a = g_arch or "Unknown architecture"
+    print("🍄" .. p .. "-".. a .. " not supported!") 
+  end
+end
+
+on_run(function()
+  import("core.base.option")
+  g_platform = option.get("platform")
+  g_arch = option.get("arch")
+  g_mode = option.get("debug")
+  g_verbose = option.get("verbose")
+  g_execv = os.execv
+  -- printTable(os)
+  if g_platform or g_arch then
+    buildForPlatformArch() 
+  else
+    xmakeBuild()
+  end
+end)
+```
+
+> `~/.xmake/plugins/xross/xmake.lua`
+```lua
+--!A cross-platform build utility based on Lua
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+--
+-- Copyright (C) 2015-present, TBOOX Open Source Group.
+--
+-- @author      ruki
+-- @file        xmake.lua
+--
+
+-- define rule: xcode framework
+rule("xcode.framework2")
+
+    -- support add_files("Info.plist")
+    add_deps("xcode.info_plist")
+
+    -- we must set kind before target.on_load(), may we will use target in on_load()
+    on_load(function (target)
+        print('[🍎] framework2...')
+        -- get framework directory
+        local targetdir = target:targetdir()
+        local bundledir = path.join(targetdir, target:basename() .. ".framework")
+        target:data_set("xcode.bundle.rootdir", bundledir)
+
+        -- get contents and resources directory
+        local contentsdir = target:is_plat("macosx") and path.join(bundledir, "Versions", "A") or bundledir
+        local resourcesdir = path.join(contentsdir, "Resources")
+        target:data_set("xcode.bundle.contentsdir", contentsdir)
+        target:data_set("xcode.bundle.resourcesdir", resourcesdir)
+
+        -- set target info for framework
+        if not target:get("kind") then
+            target:set("kind", "shared")
+        end
+        target:set("filename", target:basename())
+
+        -- export frameworks for `add_deps()`
+        target:data_set("inherit.links", false) -- disable to inherit links, @see rule("utils.inherit.links")
+        target:add("frameworks", target:basename(), {interface = true})
+        target:add("frameworkdirs", targetdir, {interface = true})
+        target:add("includedirs", path.join(contentsdir, "Headers.tmp"), {interface = true})
+
+        -- register clean files for `xmake clean`
+        target:add("cleanfiles", bundledir)
+    end)
+
+    before_build(function (target)
+
+        -- get framework directory
+        local bundledir = path.absolute(target:data("xcode.bundle.rootdir"))
+        local contentsdir = path.absolute(target:data("xcode.bundle.contentsdir"))
+        local headersdir = path.join(contentsdir, "Headers.tmp", target:basename())
+
+        -- copy header files to the framework directory
+        local srcheaders, dstheaders = target:headerfiles(headersdir)
+        if srcheaders and dstheaders then
+            local i = 1
+            for _, srcheader in ipairs(srcheaders) do
+                local dstheader = dstheaders[i]
+                if dstheader then
+                    os.vcp(srcheader, dstheader)
+                end
+                i = i + 1
+            end
+        end
+        if not os.isdir(headersdir) then
+            os.mkdir(headersdir)
+        end
+    end)
+
+    after_build(function (target, opt)
+
+        -- imports
+        import("core.base.option")
+        import("core.theme.theme")
+        import("core.project.depend")
+        import("private.tools.codesign")
+        import("utils.progress")
+
+        -- get framework directory
+        local bundledir = path.absolute(target:data("xcode.bundle.rootdir"))
+        local contentsdir = target:data("xcode.bundle.contentsdir")
+        local resourcesdir = target:data("xcode.bundle.resourcesdir")
+        local headersdir = path.join(contentsdir, "Headers")
+
+        -- do build if changed
+        depend.on_changed(function ()
+
+            -- trace progress info
+            progress.show(opt.progress, "${color.build.target}generating.xcode.$(mode) %s", path.filename(bundledir))
+
+            -- copy target file
+            if not os.isdir(contentsdir) then
+                os.mkdir(contentsdir)
+            end
+            os.vcp(target:targetfile(), contentsdir)
+
+            if target:is_shared() then
+                -- change rpath
+                -- @see https://github.com/xmake-io/xmake/issues/2679#issuecomment-1221839215
+                local filename = path.filename(target:targetfile())
+                local targetfile = path.join(contentsdir, filename)
+                local rpath = path.relative(contentsdir, path.directory(bundledir))
+                os.vrunv("install_name_tool", {"-id", path.join("@rpath", rpath, filename), targetfile})
+            end
+
+            -- move header files
+            os.tryrm(headersdir)
+            os.mv(path.join(contentsdir, "Headers.tmp", target:basename()), headersdir)
+            os.rm(path.join(contentsdir, "Headers.tmp"))
+
+            -- copy resource files
+            local srcfiles, dstfiles = target:installfiles(resourcesdir)
+            if srcfiles and dstfiles then
+                local i = 1
+                for _, srcfile in ipairs(srcfiles) do
+                    local dstfile = dstfiles[i]
+                    if dstfile then
+                        os.vcp(srcfile, dstfile)
+                    end
+                    i = i + 1
+                end
+            end
+
+            -- link Versions/Current -> Versions/A
+            -- only for macos, @see https://github.com/xmake-io/xmake/issues/2765
+            if target:is_plat("macosx") then
+                local oldir = os.cd(path.join(bundledir, "Versions"))
+                os.tryrm("Current")
+                os.ln("A", "Current")
+
+                -- link bundledir/* -> Versions/Current/*
+                local target_filename = path.filename(target:targetfile())
+                os.cd(bundledir)
+                os.tryrm("Headers")
+                os.tryrm("Resources")
+                os.tryrm(target_filename)
+                os.tryrm("Info.plist")
+                os.ln("Versions/Current/Headers", "Headers")
+                if os.isdir(resourcesdir) then
+                    os.ln("Versions/Current/Resources", "Resources")
+                end
+                os.ln(path.join("Versions/Current", target_filename), target_filename)
+                os.cd(oldir)
+            end
+
+            -- do codesign, only for dynamic library
+            local codesign_skip = target:values("xcode.codesign_skip") or get_config("xcode_codesign_skip")
+            if target:is_shared() and not codesign_skip then
+                local codesign_identity = target:values("xcode.codesign_identity") or get_config("xcode_codesign_identity")
+                if target:is_plat("macosx") or (target:is_plat("iphoneos") and target:is_arch("x86_64", "i386")) then
+                    codesign_identity = nil
+                end
+                codesign(contentsdir, codesign_identity)
+            end
+        end, {dependfile = target:dependfile(bundledir), files = {bundledir, target:targetfile()}, changed = target:is_rebuilt()})
+    end)
+
+    on_install(function (target)
+        import("xcode.application.build", {alias = "appbuild", rootdir = path.join(os.programdir(), "rules")})
+        local bundledir = path.absolute(target:data("xcode.bundle.rootdir"))
+        local installdir = target:installdir()
+        if installdir then
+            if not os.isdir(installdir) then
+                os.mkdir(installdir)
+            end
+            os.vcp(bundledir, installdir, {symlink = true})
+        end
+    end)
+
+    on_uninstall(function (target)
+        local bundledir = path.absolute(target:data("xcode.bundle.rootdir"))
+        local installdir = target:installdir()
+        os.tryrm(path.join(installdir, path.filename(bundledir)))
+    end)
+
+    -- disable package
+    on_package(function (target) end)
+
+
+```
+#### 方案二: 项目根目录配置自定义插件
 首先在项目根目录创建如下文件
 ```
 plugins
@@ -223,7 +647,7 @@ target("qjs")
 
 执行 `xmake xross android`, 一键生成 android arm64-v8a|armeabi-v7a|x86_64 三个CPU架构的产物.
 
-#### 另一种方式
+##### 方案二的变体
 
 上面是通过 `add_plugindirs` 导入自定义 task, 还有一种方式是通过 `includes()`
 
