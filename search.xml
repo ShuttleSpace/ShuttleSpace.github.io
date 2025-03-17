@@ -65,19 +65,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Flutter-Text</title>
-    <url>/2019/06/06/46/</url>
-    <content><![CDATA[<p>字符串根据布局约束可能跨越多行或者只显示在一行.</p>
-<span id="more"></span>
-<p><code>style</code> 参数是可选的.如果忽略,默认使用最近的父组件的 <code>DefaultTextStyle</code>.如果给定的样式 <code>TextStyle.inherit</code> 属性为 true(默认),则给定的样式将和最近的父组件的 <code>DefaultTextStyle</code> 合并.这个合并操作很有用,例如使用默认的 font family 和大小使字体 bold.</p>
-<p>使用 <code>Text.rich</code> 构造方法,<code>Text</code> 组件可以使用不同的 <code>TextSpan</code> 样式显示一段文字.</p>
-<h3 id="交互"><a href="#交互" class="headerlink" title="交互"></a>交互</h3><p>使用 <code>GestureDetector</code> 组件,设置 <code>GestureDetector.onTap</code> 处理器可以使 <code>Text</code> 响应 touch 事件.</p>
-<p>在 material design 设计 app 中,可以使用 <code>FlatButton</code> 代替,如果不适合的话,最少都应该使用 <code>InkWell</code> 代替 <code>GestureDetector</code>.</p>
-<p>为了使文本分部分交互,使用 <code>RichText</code>,在相关部分文本上指定 <code>TapGestureRecognize</code> 作为 <code>TextSpan.recognizer</code>.</p>
-<h3 id="继承-🌲"><a href="#继承-🌲" class="headerlink" title="继承 🌲"></a>继承 🌲</h3><p><code>Object &gt; Diagnosticable &gt; DiiagnosticableTree &gt; Widget &gt; StatelessWidget &gt; Text</code></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Flutter-Row</title>
     <url>/2019/06/04/18/</url>
     <content><![CDATA[<p>以横向数组的方式显示子组件的组件.</p>
@@ -95,6 +82,19 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Flutter-Text</title>
+    <url>/2019/06/06/46/</url>
+    <content><![CDATA[<p>字符串根据布局约束可能跨越多行或者只显示在一行.</p>
+<span id="more"></span>
+<p><code>style</code> 参数是可选的.如果忽略,默认使用最近的父组件的 <code>DefaultTextStyle</code>.如果给定的样式 <code>TextStyle.inherit</code> 属性为 true(默认),则给定的样式将和最近的父组件的 <code>DefaultTextStyle</code> 合并.这个合并操作很有用,例如使用默认的 font family 和大小使字体 bold.</p>
+<p>使用 <code>Text.rich</code> 构造方法,<code>Text</code> 组件可以使用不同的 <code>TextSpan</code> 样式显示一段文字.</p>
+<h3 id="交互"><a href="#交互" class="headerlink" title="交互"></a>交互</h3><p>使用 <code>GestureDetector</code> 组件,设置 <code>GestureDetector.onTap</code> 处理器可以使 <code>Text</code> 响应 touch 事件.</p>
+<p>在 material design 设计 app 中,可以使用 <code>FlatButton</code> 代替,如果不适合的话,最少都应该使用 <code>InkWell</code> 代替 <code>GestureDetector</code>.</p>
+<p>为了使文本分部分交互,使用 <code>RichText</code>,在相关部分文本上指定 <code>TapGestureRecognize</code> 作为 <code>TextSpan.recognizer</code>.</p>
+<h3 id="继承-🌲"><a href="#继承-🌲" class="headerlink" title="继承 🌲"></a>继承 🌲</h3><p><code>Object &gt; Diagnosticable &gt; DiiagnosticableTree &gt; Widget &gt; StatelessWidget &gt; Text</code></p>
+]]></content>
+  </entry>
+  <entry>
     <title>Flutter desktop support</title>
     <url>/2020/02/18/49/</url>
     <content><![CDATA[<p>当前 Flutter 对桌面开发环境的支持正在开发中.</p>
@@ -105,28 +105,6 @@
 <h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><h3 id="create"><a href="#create" class="headerlink" title="create"></a><code>create</code></h3><p>当前,只有 macOS 支持<code>flutter create</code>.对于 Windows 和 Linux,推荐参考 <code>flutter-desktop-embedding project</code>.</p>
 <h4 id="覆盖目标平台"><a href="#覆盖目标平台" class="headerlink" title="覆盖目标平台"></a>覆盖目标平台</h4><p>大部分应用需要覆盖支持的应用平台对应的值，否则会出现<code>Unknown platform</code> 异常.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import &#x27;package:flutter/foundation.dart&#x27; show debugDefaultTargetPlatformOverride;</span><br><span class="line"></span><br><span class="line">void _setTargetPlatformForDesktop() &#123;</span><br><span class="line">    if (Platform.isLiinux || Platform.isWindows) &#123;</span><br><span class="line">        debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main()&#123;</span><br><span class="line">    _setTargetPlatformForDesktop();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>GraphQL-Data mapping</title>
-    <url>/2019/05/05/31/</url>
-    <content><![CDATA[<p>data mapping</p>
-<span id="more"></span>
-<h2 id="Mapping-data"><a href="#Mapping-data" class="headerlink" title="Mapping data"></a>Mapping data</h2><h3 id="graphql-是如何把对象数据匹配到类型的"><a href="#graphql-是如何把对象数据匹配到类型的" class="headerlink" title="graphql 是如何把对象数据匹配到类型的"></a>graphql 是如何把对象数据匹配到类型的</h3><p>graphql 内部全部是关于声明类型 schema,然后在运行匹配到数据.<br>作为类型 schema 的设计者,你应该在处理这些元素.</p>
-<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="keyword">Query</span> <span class="punctuation">&#123;</span></span><br><span class="line">	products<span class="punctuation">(</span><span class="symbol">match</span><span class="punctuation">:</span> String<span class="punctuation">)</span><span class="punctuation">:</span> <span class="punctuation">[</span>Product<span class="punctuation">]</span> <span class="comment"># a list of products</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="keyword">type</span> Product <span class="punctuation">&#123;</span></span><br><span class="line">	<span class="symbol">id</span><span class="punctuation">:</span> ID</span><br><span class="line">	<span class="symbol">name</span><span class="punctuation">:</span> String</span><br><span class="line">	<span class="symbol">description</span><span class="punctuation">:</span> String</span><br><span class="line">	<span class="symbol">cost</span><span class="punctuation">:</span> Float</span><br><span class="line">	<span class="symbol">tax</span><span class="punctuation">:</span> Float</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后可以执行查询</p>
-<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">query</span> ProductQuery <span class="punctuation">&#123;</span></span><br><span class="line">	products<span class="punctuation">(</span><span class="symbol">match</span><span class="punctuation">:</span> <span class="string">&quot;Paper*&quot;</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">		id</span><br><span class="line">		name</span><br><span class="line">		cost</span><br><span class="line">		tax</span><br><span class="line">	<span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>对于 <code>Query.products</code>属性有一个绑定的 <code>DataFetcher</code>负责查找匹配输入参数的 product s 列表.<br>假设我们有 3 个下游服务.一个获取产品信息,一个获取产品价格信息,一个计算查新税收信息.<br>graphql-java 使用这些对象运行 data fetcher,获取信息然后将其匹配到 schema 指定的类型中.<br>我们的目标是获取到这 3 个源的信息,然后把它们作为一个 unified 类型展示.<br>我们可以对 cost 和 tax 需要计算的属性指定 data fetcher,但这需要更多的维护精力,可能导致 N+1 性能问题.<br>我们最好在 <code>Query.products</code> data fetcher 中获取所有的信息,同时创建一个 unified 数据视图.</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">DataFetcher</span> <span class="variable">produtctsDataFetcher</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DataFetcher</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">get</span><span class="params">(DataFetchingEnvironment env)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">matchArg</span> <span class="operator">=</span> env.getArgument(<span class="string">&quot;match&quot;</span>);</span><br><span class="line">        List&lt;ProductInfo&gt; productInfos = getMatchingProducts(matchArg);</span><br><span class="line">        List&lt;ProductCostInfo&gt; productConstInfo = getProdutConsts(productInfo);</span><br><span class="line">        List&lt;ProductTaxInfo&gt; productTaxInfo = getProductTax(productInfo);</span><br><span class="line">        <span class="keyword">return</span> mapDataTogether(productInfo,productCostInfo,productTaxInfo);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面有 3 个类型的信息需要被整合为一个以便 graphql 查询可以访问 id,name,cost,tax 属性.<br>有 2 中方法可以创建这个映射.一个是使用类型不安全的 <code>List&lt;Map&gt;</code> 结构,另一个是使用类型安全的 <code>List&lt;ProductDTO&gt;</code>封装这些数据.</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> List&lt;Map&gt; <span class="title function_">mapDataTogetherViaMap</span><span class="params">(List&lt;ProductInfo&gt; productInfo,List&lt;ProductCostInfo&gt; productCostInfo,List&lt;ProductTaxInfo&gt; productTaxInfo)</span> &#123;</span><br><span class="line">    List&lt;Map&gt; unifiedView = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;i &lt; productInfo.size();i++) &#123;</span><br><span class="line">        <span class="type">ProductInfo</span> <span class="variable">info</span> <span class="operator">=</span> productInfo.get(i);</span><br><span class="line">        <span class="type">ProductCostInfo</span> <span class="variable">cost</span> <span class="operator">=</span> productCostInfo.get(i);</span><br><span class="line">        <span class="type">ProductTaxInfo</span> <span class="variable">tax</span> <span class="operator">=</span> productTaxInfo.get(i);</span><br><span class="line"></span><br><span class="line">        Map&lt;String,Object&gt; objectMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        objectMap.put(<span class="string">&quot;id&quot;</span>,info.getId());</span><br><span class="line">        objectMap.put(<span class="string">&quot;name&quot;</span>,info.getName());</span><br><span class="line">        objectMap.put(<span class="string">&quot;descriptioin&quot;</span>,info.getDescription());</span><br><span class="line">        objectMap.put(<span class="string">&quot;cost&quot;</span>,cost.getCost());</span><br><span class="line">        objectMap.put(<span class="string">&quot;tax&quot;</span>,tax.getTax());</span><br><span class="line"></span><br><span class="line">        unifiedView.add(objectMap);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> unifiedView;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ProductDTO</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String id;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String description;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Float cost;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Float tax;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ProductDTO</span><span class="params">(String id, String name, String description, Float cost, Float tax)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.id = id;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.description = description;</span><br><span class="line">        <span class="built_in">this</span>.cost = cost;</span><br><span class="line">        <span class="built_in">this</span>.tax = tax;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getId</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getDescription</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> description;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Float <span class="title function_">getCost</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> cost;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Float <span class="title function_">getTax</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> tax;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> List&lt;ProductDTO&gt; <span class="title function_">mapDataTogetherViaDTO</span><span class="params">(List&lt;ProductInfo&gt; productInfo, List&lt;ProductCostInfo&gt; productCostInfo, List&lt;ProductTaxInfo&gt; productTaxInfo)</span> &#123;</span><br><span class="line">    List&lt;ProductDTO&gt; unifiedView = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; productInfo.size(); i++) &#123;</span><br><span class="line">        <span class="type">ProductInfo</span> <span class="variable">info</span> <span class="operator">=</span> productInfo.get(i);</span><br><span class="line">        <span class="type">ProductCostInfo</span> <span class="variable">cost</span> <span class="operator">=</span> productCostInfo.get(i);</span><br><span class="line">        <span class="type">ProductTaxInfo</span> <span class="variable">tax</span> <span class="operator">=</span> productTaxInfo.get(i);</span><br><span class="line"></span><br><span class="line">        <span class="type">ProductDTO</span> <span class="variable">productDTO</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ProductDTO</span>(</span><br><span class="line">                info.getId(),</span><br><span class="line">                info.getName(),</span><br><span class="line">                info.getDescription(),</span><br><span class="line">                cost.getCost(),</span><br><span class="line">                tax.getTax()</span><br><span class="line">        );</span><br><span class="line">        unifiedView.add(productDTO);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> unifiedView;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>graphql 引擎现在可以使用 object 列表然后运行查询获取 id,name,cost,tax 属性.<br>graphql-java 默认的 data fetcher <code>graphql.schema.PropertyDataFetcher</code> 同时支持 map 和 POJO.<br>对于列表的每一个对象都会通过 id 属性,或使用 name 在 map 里查找,或通过 getId() 方法获取,然后返回给 graphql response.对于查询中的每个类型都会执行这样的操作.<br>通过在高级 data fetcher 中创建一个 unified view,你就可以在运行时数据和 graphql schema 之间建立一个映射.</p>
 ]]></content>
   </entry>
   <entry>
@@ -157,6 +135,28 @@
 <p>上面的 🌰 <code>characterDataLoader.load(argId)</code> 会立即返回.这将会把 data 请求入队列,z 当所有的 graphql 属性都分发后再执行.<br>然后当 <code>DataLoader</code> 被分发后,他的 <code>BatchLoader</code> 函数被调用.这个代码可以异步执行,所以你可以有多个批量加载函数,他们可以同时执行.在上例中 <code>CompletableFuture.supplyAsync(() -&gt; getTheseCharacters(keys));</code> 将再另一个线程中返回 <code>getTheseCharacters()</code> 方法.</p>
 <h3 id="向你的-data-loader-传递-context"><a href="#向你的-data-loader-传递-context" class="headerlink" title="向你的 data loader 传递 context"></a>向你的 data loader 传递 context</h3><p>data load 库支持传递两个类型的 context 到 batch loader.第一个是每个 dataloader 一个全局的 context 对象,第二个是一个 loaded key 一个 context 对象的 map.<br>这允许你传递下游需要的额外信息.dataloader key 用在缓存结果,而 context 对象可以用在调用中.<br>在下面的 🌰 中,我们有一个全局的安全 context 对象,提供了一个调用 token,同时可以传递 graphql 原对象到每个 <code>dataLoader.load()</code> 调用中.</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BatchLoaderWithContext&lt;String,Object&gt; batchLoaderWithCtx = <span class="keyword">new</span> <span class="title class_">BatchLoaderWithContext</span>&lt;String,Object&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> CompletionStage&lt;List&lt;Object&gt;&gt; <span class="title function_">load</span><span class="params">(List&lt;String&gt; keys,BatchLoaderEnvironment loaderContext)</span> &#123;</span><br><span class="line">        <span class="comment">// 获取全局 context 对象</span></span><br><span class="line">        <span class="type">SecurityContext</span> <span class="variable">sercurityCtx</span> <span class="operator">=</span> loaderContext.getContext();</span><br><span class="line">        <span class="comment">// 每个键都有一个 context 对象集</span></span><br><span class="line">        Map&lt;Object,Object&gt; keysToSOurceObjects = loaderContext.getKeyContexts();</span><br><span class="line">        <span class="keyword">return</span> CompletableFuture.supplyAsync(() -&gt; getTheseCharacters(securityCtx.getToken(),keys,keysToSourceObjects));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">SecurityContext</span> <span class="variable">securityCtx</span> <span class="operator">=</span> SecurityContext.newSecurityContext();</span><br><span class="line"><span class="type">BatchLoaderContextProvider</span> <span class="variable">contextProvider</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BatchLoaderContextProvider</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object getÇontext() &#123;</span><br><span class="line">        <span class="keyword">return</span> securityCtx;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">DataLoaderOptions</span> <span class="variable">loaderOptions</span> <span class="operator">=</span> DataLoaderOptions.newOptions().setBatchLoaderContextProvider(contextProvider);</span><br><span class="line">DataLoader&lt;String,Object&gt; characterDataLoader = DataLoader.newDataLoader(batchLoaderWithCtx,loaderOptions);</span><br><span class="line"></span><br><span class="line"><span class="type">DataFetcher</span> <span class="variable">dataFetcherCallsTheDataLoader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DataFetcher</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">get</span><span class="params">(DataFetchingEnvironment environment)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">argId</span> <span class="operator">=</span> environment.getArgument(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">        <span class="type">Object</span> <span class="variable">source</span> <span class="operator">=</span> environment.getSource();</span><br><span class="line">        <span class="keyword">return</span> characterDataLoader.load(argId,source);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>GraphQL-Data mapping</title>
+    <url>/2019/05/05/31/</url>
+    <content><![CDATA[<p>data mapping</p>
+<span id="more"></span>
+<h2 id="Mapping-data"><a href="#Mapping-data" class="headerlink" title="Mapping data"></a>Mapping data</h2><h3 id="graphql-是如何把对象数据匹配到类型的"><a href="#graphql-是如何把对象数据匹配到类型的" class="headerlink" title="graphql 是如何把对象数据匹配到类型的"></a>graphql 是如何把对象数据匹配到类型的</h3><p>graphql 内部全部是关于声明类型 schema,然后在运行匹配到数据.<br>作为类型 schema 的设计者,你应该在处理这些元素.</p>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="keyword">Query</span> <span class="punctuation">&#123;</span></span><br><span class="line">	products<span class="punctuation">(</span><span class="symbol">match</span><span class="punctuation">:</span> String<span class="punctuation">)</span><span class="punctuation">:</span> <span class="punctuation">[</span>Product<span class="punctuation">]</span> <span class="comment"># a list of products</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="keyword">type</span> Product <span class="punctuation">&#123;</span></span><br><span class="line">	<span class="symbol">id</span><span class="punctuation">:</span> ID</span><br><span class="line">	<span class="symbol">name</span><span class="punctuation">:</span> String</span><br><span class="line">	<span class="symbol">description</span><span class="punctuation">:</span> String</span><br><span class="line">	<span class="symbol">cost</span><span class="punctuation">:</span> Float</span><br><span class="line">	<span class="symbol">tax</span><span class="punctuation">:</span> Float</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后可以执行查询</p>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">query</span> ProductQuery <span class="punctuation">&#123;</span></span><br><span class="line">	products<span class="punctuation">(</span><span class="symbol">match</span><span class="punctuation">:</span> <span class="string">&quot;Paper*&quot;</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">		id</span><br><span class="line">		name</span><br><span class="line">		cost</span><br><span class="line">		tax</span><br><span class="line">	<span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>对于 <code>Query.products</code>属性有一个绑定的 <code>DataFetcher</code>负责查找匹配输入参数的 product s 列表.<br>假设我们有 3 个下游服务.一个获取产品信息,一个获取产品价格信息,一个计算查新税收信息.<br>graphql-java 使用这些对象运行 data fetcher,获取信息然后将其匹配到 schema 指定的类型中.<br>我们的目标是获取到这 3 个源的信息,然后把它们作为一个 unified 类型展示.<br>我们可以对 cost 和 tax 需要计算的属性指定 data fetcher,但这需要更多的维护精力,可能导致 N+1 性能问题.<br>我们最好在 <code>Query.products</code> data fetcher 中获取所有的信息,同时创建一个 unified 数据视图.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">DataFetcher</span> <span class="variable">produtctsDataFetcher</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DataFetcher</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">get</span><span class="params">(DataFetchingEnvironment env)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">matchArg</span> <span class="operator">=</span> env.getArgument(<span class="string">&quot;match&quot;</span>);</span><br><span class="line">        List&lt;ProductInfo&gt; productInfos = getMatchingProducts(matchArg);</span><br><span class="line">        List&lt;ProductCostInfo&gt; productConstInfo = getProdutConsts(productInfo);</span><br><span class="line">        List&lt;ProductTaxInfo&gt; productTaxInfo = getProductTax(productInfo);</span><br><span class="line">        <span class="keyword">return</span> mapDataTogether(productInfo,productCostInfo,productTaxInfo);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面有 3 个类型的信息需要被整合为一个以便 graphql 查询可以访问 id,name,cost,tax 属性.<br>有 2 中方法可以创建这个映射.一个是使用类型不安全的 <code>List&lt;Map&gt;</code> 结构,另一个是使用类型安全的 <code>List&lt;ProductDTO&gt;</code>封装这些数据.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> List&lt;Map&gt; <span class="title function_">mapDataTogetherViaMap</span><span class="params">(List&lt;ProductInfo&gt; productInfo,List&lt;ProductCostInfo&gt; productCostInfo,List&lt;ProductTaxInfo&gt; productTaxInfo)</span> &#123;</span><br><span class="line">    List&lt;Map&gt; unifiedView = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;i &lt; productInfo.size();i++) &#123;</span><br><span class="line">        <span class="type">ProductInfo</span> <span class="variable">info</span> <span class="operator">=</span> productInfo.get(i);</span><br><span class="line">        <span class="type">ProductCostInfo</span> <span class="variable">cost</span> <span class="operator">=</span> productCostInfo.get(i);</span><br><span class="line">        <span class="type">ProductTaxInfo</span> <span class="variable">tax</span> <span class="operator">=</span> productTaxInfo.get(i);</span><br><span class="line"></span><br><span class="line">        Map&lt;String,Object&gt; objectMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        objectMap.put(<span class="string">&quot;id&quot;</span>,info.getId());</span><br><span class="line">        objectMap.put(<span class="string">&quot;name&quot;</span>,info.getName());</span><br><span class="line">        objectMap.put(<span class="string">&quot;descriptioin&quot;</span>,info.getDescription());</span><br><span class="line">        objectMap.put(<span class="string">&quot;cost&quot;</span>,cost.getCost());</span><br><span class="line">        objectMap.put(<span class="string">&quot;tax&quot;</span>,tax.getTax());</span><br><span class="line"></span><br><span class="line">        unifiedView.add(objectMap);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> unifiedView;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ProductDTO</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String id;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String description;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Float cost;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Float tax;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ProductDTO</span><span class="params">(String id, String name, String description, Float cost, Float tax)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.id = id;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.description = description;</span><br><span class="line">        <span class="built_in">this</span>.cost = cost;</span><br><span class="line">        <span class="built_in">this</span>.tax = tax;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getId</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getDescription</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> description;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Float <span class="title function_">getCost</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> cost;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Float <span class="title function_">getTax</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> tax;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> List&lt;ProductDTO&gt; <span class="title function_">mapDataTogetherViaDTO</span><span class="params">(List&lt;ProductInfo&gt; productInfo, List&lt;ProductCostInfo&gt; productCostInfo, List&lt;ProductTaxInfo&gt; productTaxInfo)</span> &#123;</span><br><span class="line">    List&lt;ProductDTO&gt; unifiedView = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; productInfo.size(); i++) &#123;</span><br><span class="line">        <span class="type">ProductInfo</span> <span class="variable">info</span> <span class="operator">=</span> productInfo.get(i);</span><br><span class="line">        <span class="type">ProductCostInfo</span> <span class="variable">cost</span> <span class="operator">=</span> productCostInfo.get(i);</span><br><span class="line">        <span class="type">ProductTaxInfo</span> <span class="variable">tax</span> <span class="operator">=</span> productTaxInfo.get(i);</span><br><span class="line"></span><br><span class="line">        <span class="type">ProductDTO</span> <span class="variable">productDTO</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ProductDTO</span>(</span><br><span class="line">                info.getId(),</span><br><span class="line">                info.getName(),</span><br><span class="line">                info.getDescription(),</span><br><span class="line">                cost.getCost(),</span><br><span class="line">                tax.getTax()</span><br><span class="line">        );</span><br><span class="line">        unifiedView.add(productDTO);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> unifiedView;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>graphql 引擎现在可以使用 object 列表然后运行查询获取 id,name,cost,tax 属性.<br>graphql-java 默认的 data fetcher <code>graphql.schema.PropertyDataFetcher</code> 同时支持 map 和 POJO.<br>对于列表的每一个对象都会通过 id 属性,或使用 name 在 map 里查找,或通过 getId() 方法获取,然后返回给 graphql response.对于查询中的每个类型都会执行这样的操作.<br>通过在高级 data fetcher 中创建一个 unified view,你就可以在运行时数据和 graphql schema 之间建立一个映射.</p>
 ]]></content>
   </entry>
   <entry>
@@ -285,7 +285,7 @@
 <p>我们的自定义 email scalar 类型将</p>
 <ul>
 <li>调用 <code>parseValue</code> 将 <code>$mainContact</code>变量转为运行时对象.</li>
-<li>调用 <code>parseLiteral</code> 将 AST <code>graphql.language.StringValue</code> “<a href="mailto:&#x62;&#x61;&#x63;&#107;&#117;&#112;&#64;&#x63;&#x6f;&#x6d;&#112;&#x61;&#110;&#121;&#x2e;&#x63;&#x6f;&#x6d;">backup@company.com</a>“ 转换为运行时对象.</li>
+<li>调用 <code>parseLiteral</code> 将 AST <code>graphql.language.StringValue</code> “<a href="mailto:&#x62;&#x61;&#x63;&#107;&#x75;&#112;&#64;&#x63;&#111;&#109;&#112;&#x61;&#x6e;&#121;&#x2e;&#x63;&#111;&#x6d;">backup@company.com</a>“ 转换为运行时对象.</li>
 <li>调用 <code>serialize</code> 将 mainContactEmial 运行时实现转为输出对象形式.</li>
 </ul>
 <h3 id="输入输出校验"><a href="#输入输出校验" class="headerlink" title="输入输出校验"></a>输入输出校验</h3><p>例如我们的 email scalar 将会校验输入输出是否是真是的 email 地址.<br><code>graphql.schema.Coercing</code> 协议如下:</p>
@@ -313,16 +313,6 @@
 ]]></content>
       <tags>
         <tag>译</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java 并发和多线程指南</title>
-    <url>/2019/08/26/52/</url>
-    <content><![CDATA[<span id="more"></span>]]></content>
-      <tags>
-        <tag>java</tag>
-        <tag>多线程</tag>
-        <tag>并发</tag>
       </tags>
   </entry>
   <entry>
@@ -531,6 +521,16 @@
 </li>
 </ul>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Java 并发和多线程指南</title>
+    <url>/2019/08/26/52/</url>
+    <content><![CDATA[<span id="more"></span>]]></content>
+      <tags>
+        <tag>java</tag>
+        <tag>多线程</tag>
+        <tag>并发</tag>
+      </tags>
   </entry>
   <entry>
     <title>Kotlin/Native</title>
@@ -1215,35 +1215,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ObjectBox高级-2-Object IDs</title>
-    <url>/2019/02/26/19/</url>
-    <content><![CDATA[<p>objectbox</p>
-<span id="more"></span>
-<p>Object 必须具有一个类型为 <code>long</code> 的属性.当然可以使用它的包装类 <code>java.lang.Long</code>,但是不建议使用包装类.<br>其他类型的 ID ( UID 等)可以自由定义，查询等操作。</p>
-<h3 id="news-vs-persisted-entities"><a href="#news-vs-persisted-entities" class="headerlink" title="news vs. persisted entities"></a>news vs. persisted entities</h3><p>当创建一个对象时，还没有存入，它们的 ID 是 0.一旦该对象存入，ObjectBox 将为该对象指定 ID.可以通过 <code>put()</code>返回值拿到该 ID.</p>
-<p>所以在 ObjectBox 内部通常把 ID 作为一个状态指示器,如果为 0 表示新创建，不为 0 表示已经存储。关联特别依赖这个特性.</p>
-<h3 id="特殊的-Object-IDs"><a href="#特殊的-Object-IDs" class="headerlink" title="特殊的 Object IDs"></a>特殊的 Object IDs</h3><p>Object IDs 可能是任意 <code>long</code> 值，除了以下两种:</p>
-<ul>
-<li>0: 或者当类型为 <code>Long</code> 时为 null,被认为是新创建，还未存储。<code>put</code>这个对象总是会插入一个新对象，并指定一个未使用过的 ID.</li>
-<li>0xFFFFFFFFFFFFFFFF (-1 in Java): ObjectBox 保留。</li>
-</ul>
-<h3 id="ObjectBox-指定-ID"><a href="#ObjectBox-指定-ID" class="headerlink" title="ObjectBox 指定 ID"></a>ObjectBox 指定 ID</h3><p>对于每一个新对象，ObjectBox 把比当前 box 中最大的 ID 值大的未使用的值指定给新对象的 ID.比如 box 中有一个 ID 为 1 和 ID 为 100 的对象，那么新创建对象的 ID 将为 101.</p>
-<p>默认只有 ObjectBox 可以指定 ID(👇 介绍).如果试图自己存入一个 ID 比当前 ID 值最大的还大的对象，ObjectBox 将抛出错误。</p>
-<h3 id="手动指定-IDs"><a href="#手动指定-IDs" class="headerlink" title="手动指定 IDs"></a>手动指定 IDs</h3><p>如果需要手动指定 ID,那么请添加如下注解:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Id(assignable = true)</span></span><br><span class="line"><span class="type">long</span> id;</span><br></pre></td></tr></table></figure>
-
-<p>这将会允许存入任意值 ID 的对象。当然设置 ID 为 0 时，ObjectBox 将制定新 ID</p>
-<blockquote>
-<p>自定义 ID 会打破自动状态指示监视(new vs. persisted). 所以应该立即存入该自定义 ID 对象，可能还得手动绑定 box，特别在关联状况下.</p>
-</blockquote>
-<h3 id="ID-的-String-别名-还在路上…"><a href="#ID-的-String-别名-还在路上…" class="headerlink" title="ID 的 String 别名 (还在路上…)"></a>ID 的 String 别名 (还在路上…)</h3><p>查看特性实现进度<a href="https://github.com/objectbox/objectbox-java/issues/167">String ID alias</a></p>
-]]></content>
-      <tags>
-        <tag>ObjectBox</tag>
-        <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ObjectBox高级-3-自定义类型</title>
     <url>/2019/02/26/46/</url>
     <content><![CDATA[<p>objectbox</p>
@@ -1269,6 +1240,35 @@
 <li>准备好应对未知: 定义一个 UNKNOWN 的 enmu 值。可以应对 null 或 unknown 值的情况。例如可以确保已经被移除的 enum 值不会导致 App 崩溃.</li>
 </ul>
 <h3 id="查询时的自定义类型"><a href="#查询时的自定义类型" class="headerlink" title="查询时的自定义类型"></a>查询时的自定义类型</h3><p><code>QueryBuilder</code> 是不关心自定类型的。请使用内置类型查询。</p>
+]]></content>
+      <tags>
+        <tag>ObjectBox</tag>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ObjectBox高级-2-Object IDs</title>
+    <url>/2019/02/26/19/</url>
+    <content><![CDATA[<p>objectbox</p>
+<span id="more"></span>
+<p>Object 必须具有一个类型为 <code>long</code> 的属性.当然可以使用它的包装类 <code>java.lang.Long</code>,但是不建议使用包装类.<br>其他类型的 ID ( UID 等)可以自由定义，查询等操作。</p>
+<h3 id="news-vs-persisted-entities"><a href="#news-vs-persisted-entities" class="headerlink" title="news vs. persisted entities"></a>news vs. persisted entities</h3><p>当创建一个对象时，还没有存入，它们的 ID 是 0.一旦该对象存入，ObjectBox 将为该对象指定 ID.可以通过 <code>put()</code>返回值拿到该 ID.</p>
+<p>所以在 ObjectBox 内部通常把 ID 作为一个状态指示器,如果为 0 表示新创建，不为 0 表示已经存储。关联特别依赖这个特性.</p>
+<h3 id="特殊的-Object-IDs"><a href="#特殊的-Object-IDs" class="headerlink" title="特殊的 Object IDs"></a>特殊的 Object IDs</h3><p>Object IDs 可能是任意 <code>long</code> 值，除了以下两种:</p>
+<ul>
+<li>0: 或者当类型为 <code>Long</code> 时为 null,被认为是新创建，还未存储。<code>put</code>这个对象总是会插入一个新对象，并指定一个未使用过的 ID.</li>
+<li>0xFFFFFFFFFFFFFFFF (-1 in Java): ObjectBox 保留。</li>
+</ul>
+<h3 id="ObjectBox-指定-ID"><a href="#ObjectBox-指定-ID" class="headerlink" title="ObjectBox 指定 ID"></a>ObjectBox 指定 ID</h3><p>对于每一个新对象，ObjectBox 把比当前 box 中最大的 ID 值大的未使用的值指定给新对象的 ID.比如 box 中有一个 ID 为 1 和 ID 为 100 的对象，那么新创建对象的 ID 将为 101.</p>
+<p>默认只有 ObjectBox 可以指定 ID(👇 介绍).如果试图自己存入一个 ID 比当前 ID 值最大的还大的对象，ObjectBox 将抛出错误。</p>
+<h3 id="手动指定-IDs"><a href="#手动指定-IDs" class="headerlink" title="手动指定 IDs"></a>手动指定 IDs</h3><p>如果需要手动指定 ID,那么请添加如下注解:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Id(assignable = true)</span></span><br><span class="line"><span class="type">long</span> id;</span><br></pre></td></tr></table></figure>
+
+<p>这将会允许存入任意值 ID 的对象。当然设置 ID 为 0 时，ObjectBox 将制定新 ID</p>
+<blockquote>
+<p>自定义 ID 会打破自动状态指示监视(new vs. persisted). 所以应该立即存入该自定义 ID 对象，可能还得手动绑定 box，特别在关联状况下.</p>
+</blockquote>
+<h3 id="ID-的-String-别名-还在路上…"><a href="#ID-的-String-别名-还在路上…" class="headerlink" title="ID 的 String 别名 (还在路上…)"></a>ID 的 String 别名 (还在路上…)</h3><p>查看特性实现进度<a href="https://github.com/objectbox/objectbox-java/issues/167">String ID alias</a></p>
 ]]></content>
       <tags>
         <tag>ObjectBox</tag>
@@ -3062,6 +3062,32 @@ NDKr21
 ]]></content>
   </entry>
   <entry>
+    <title>rust 中的字符串</title>
+    <url>/2022/03/26/03/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://betterprogramming.pub/strings-in-rust-28c08a2d3130">Exploring Strings in Rust</a></p>
+</blockquote>
+<span id="more"></span>
+
+<p>计算机如何存储解析字符序列的</p>
+<ul>
+<li>计算机按字节（8位）顺序存储</li>
+<li>字节可以代表任意对象。只不过我们可以把某些字节转化为人可理解的对象。这也就是 ASCII &#x2F; Unicode 码表的功能.</li>
+<li>字符串就是一系列可以通过码表进行解析的字节序列. 在 rust 中我们常用 <code>String</code>,<code>str</code>,<code>&amp;str</code>,<code>&amp;String</code>,<code>Box&lt;str&gt;</code>,<code>Box&lt;&amp;str&gt;</code> 等实现。</li>
+</ul>
+<p>C 语言中是这样处理字符串的.</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> <span class="built_in">string</span>[] = <span class="string">&quot;banana&quot;</span>; <span class="comment">// c 在末尾添加 `\0`</span></span><br><span class="line"><span class="type">char</span> long_mostly_empty_string[<span class="number">42</span>] = <span class="string">&quot;banana&quot;</span>; <span class="comment">// c 在末尾添加 `\0`</span></span><br><span class="line"><span class="type">char</span> just_a_different_initialization[] = &#123;<span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;\0&#x27;</span>&#125;; <span class="comment">// 必须明确添加 \0</span></span><br></pre></td></tr></table></figure>
+
+<p>rust 不使用 null-terminated 字符串主要还是性能优化考量。</p>
+<h3 id="str"><a href="#str" class="headerlink" title="str"></a>str</h3><p>C 的字符串内部没有强制编码类型。内部只是以 null terminator 结尾的字节序列. JS 使用 UTF-16 编码字符串，而 Rust 使用 UTF-8 编码字符串。</p>
+<p>rust 中最常见的就是字符串切片： <code>&amp;str, &amp;&#39;static str, &amp;&#39;a str</code>.</p>
+<p>rust 中的切片最终都会落脚到动态大小类型 (DST).也就是他们实现了 <code>!Sized</code> trait 或者没有实现 <code>Sized</code> trait</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">string</span>: <span class="type">Box</span>&lt;<span class="type">str</span>&gt; = <span class="type">Box</span>::<span class="title function_ invoke__">new</span>(*<span class="string">&quot;akaka&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>此处是无法获取动态类型大小的，因为解引用需要获取当前所指向的数据的所有权。</p>
+<p>引用就是一个指针的大小（usize） <code>std::mem::size_of::&lt;&amp;str&gt;()</code></p>
+]]></content>
+  </entry>
+  <entry>
     <title>rust android 交叉编译</title>
     <url>/2022/03/03/31/</url>
     <content><![CDATA[<p>记录下使用 rust 绑定 libgit2 动态库进行 安卓交叉编译时的过程。</p>
@@ -3120,32 +3146,6 @@ NDKr21
 ]]></content>
   </entry>
   <entry>
-    <title>rust 中的字符串</title>
-    <url>/2022/03/26/03/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://betterprogramming.pub/strings-in-rust-28c08a2d3130">Exploring Strings in Rust</a></p>
-</blockquote>
-<span id="more"></span>
-
-<p>计算机如何存储解析字符序列的</p>
-<ul>
-<li>计算机按字节（8位）顺序存储</li>
-<li>字节可以代表任意对象。只不过我们可以把某些字节转化为人可理解的对象。这也就是 ASCII &#x2F; Unicode 码表的功能.</li>
-<li>字符串就是一系列可以通过码表进行解析的字节序列. 在 rust 中我们常用 <code>String</code>,<code>str</code>,<code>&amp;str</code>,<code>&amp;String</code>,<code>Box&lt;str&gt;</code>,<code>Box&lt;&amp;str&gt;</code> 等实现。</li>
-</ul>
-<p>C 语言中是这样处理字符串的.</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> <span class="built_in">string</span>[] = <span class="string">&quot;banana&quot;</span>; <span class="comment">// c 在末尾添加 `\0`</span></span><br><span class="line"><span class="type">char</span> long_mostly_empty_string[<span class="number">42</span>] = <span class="string">&quot;banana&quot;</span>; <span class="comment">// c 在末尾添加 `\0`</span></span><br><span class="line"><span class="type">char</span> just_a_different_initialization[] = &#123;<span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;\0&#x27;</span>&#125;; <span class="comment">// 必须明确添加 \0</span></span><br></pre></td></tr></table></figure>
-
-<p>rust 不使用 null-terminated 字符串主要还是性能优化考量。</p>
-<h3 id="str"><a href="#str" class="headerlink" title="str"></a>str</h3><p>C 的字符串内部没有强制编码类型。内部只是以 null terminator 结尾的字节序列. JS 使用 UTF-16 编码字符串，而 Rust 使用 UTF-8 编码字符串。</p>
-<p>rust 中最常见的就是字符串切片： <code>&amp;str, &amp;&#39;static str, &amp;&#39;a str</code>.</p>
-<p>rust 中的切片最终都会落脚到动态大小类型 (DST).也就是他们实现了 <code>!Sized</code> trait 或者没有实现 <code>Sized</code> trait</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">string</span>: <span class="type">Box</span>&lt;<span class="type">str</span>&gt; = <span class="type">Box</span>::<span class="title function_ invoke__">new</span>(*<span class="string">&quot;akaka&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>此处是无法获取动态类型大小的，因为解引用需要获取当前所指向的数据的所有权。</p>
-<p>引用就是一个指针的大小（usize） <code>std::mem::size_of::&lt;&amp;str&gt;()</code></p>
-]]></content>
-  </entry>
-  <entry>
     <title>teamcity自动化更新hexo博客</title>
     <url>/2019/03/09/22/</url>
     <content><![CDATA[<p>hexo deploy</p>
@@ -3185,7 +3185,7 @@ NDKr21
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 nodejs</span></span><br><span class="line">VERSION=v10.15.2</span><br><span class="line">DISTRO=linux-x64</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">checkNode</span></span>() &#123;</span><br><span class="line">  ISNODESUCCEED=$(node -v)</span><br><span class="line">  <span class="keyword">if</span> [ ISNODESUCCEED != <span class="variable">$VERSION</span> ]; <span class="keyword">then</span></span><br><span class="line">    installNode</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;NodeJS已安装&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">insallNode</span></span>() &#123;</span><br><span class="line">  <span class="built_in">mkdir</span> -p /usr/local/lib/nodejs</span><br><span class="line">  tar -xJf /data/teamcity_agent/others/node-<span class="variable">$VERSION</span>-<span class="variable">$DISTRO</span> <span class="comment"># -v 会输出解压日志，此处太多，所以关闭</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">export</span> PATH=/usr/local/lib/nodejs/node-<span class="variable">$VERSION</span>-<span class="variable">$DISTRO</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">source</span> ~/.profile</span><br><span class="line"></span><br><span class="line">  checkNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">checkNode</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">npm i</span><br><span class="line"><span class="comment"># 生成public文件</span></span><br><span class="line">./node_modules/hexo/bin/hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为 github.io 配置 CNAME</span></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="string">&quot;/CNAME&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;blog.dang8080.cn&quot;</span> &gt; CNAME</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 git</span></span><br><span class="line"></span><br><span class="line">git config --global credential.helper store <span class="comment"># 保存 github 提交者信息，下次不用再输密码</span></span><br><span class="line">git config --global user.name <span class="string">&quot;Humphrey&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;dang8080@qq.com&quot;</span></span><br><span class="line"></span><br><span class="line">git add --all</span><br><span class="line">git commit -m <span class="string">&quot;TeamCity CI 提交部署: <span class="subst">$(date)</span>&quot;</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
 
 <h3 id="问题"><a href="#问题" class="headerlink" title="问题:"></a>问题:</h3><blockquote>
-<p>所以问题来了,配置完了点击 <code>run</code> 查看 Build log 会发现 push 失败。因为通过 https 向 github 提交代码需要交互式输入用户密码。而此处没有提供，将密码硬编码到此 shell 里提交到 github 也不安全。<br>或者即使是通过修改 VCS root 使用 <a href="mailto:&#103;&#x69;&#116;&#x40;&#103;&#105;&#116;&#x68;&#x75;&#x62;&#46;&#x63;&#111;&#x6d;">git@github.com</a> ssh checkout 的代码，也无法推送到 github.</p>
+<p>所以问题来了,配置完了点击 <code>run</code> 查看 Build log 会发现 push 失败。因为通过 https 向 github 提交代码需要交互式输入用户密码。而此处没有提供，将密码硬编码到此 shell 里提交到 github 也不安全。<br>或者即使是通过修改 VCS root 使用 <a href="mailto:&#103;&#x69;&#x74;&#64;&#103;&#x69;&#116;&#104;&#117;&#98;&#46;&#x63;&#x6f;&#109;">git@github.com</a> ssh checkout 的代码，也无法推送到 github.</p>
 </blockquote>
 <h4 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位:"></a>问题定位:</h4><blockquote>
 <p>TeamCity SSH agent 使用本机(Linux&#x2F;MacOS)的 OpenSSH 管理 SSH,对于 Windows,需要手动安装 OpenSSH (CygWin,MinGW,Git for Windows).<br>SSH agent 必须添加到 <code>$PATH</code> 中.<br>第一次连接到远程地址时，SSH agent 会询问是否保存远程地址的 fingerprint 到地址数据库 <code>~/.ssh/known_hosts</code>中.<br>为了避免询问，可以提前配置。如果相信该远程地址，可以禁用远程地址检查</p>
